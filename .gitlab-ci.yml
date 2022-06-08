@@ -1,0 +1,57 @@
+variables:
+  PROJECT_ROOT_DIR: "app"
+
+stages:
+  - test
+  - package
+
+.docker_image:
+  image: "cirrusci/flutter:latest"
+
+# Built-in static analysis; provides linting suggestions and fleshes out errors
+check_source_code:
+  stage: test
+  extends: .docker_image
+  before_script:
+    - cd $PROJECT_ROOT_DIR
+  script:
+    - flutter analyze > code-quality-report.txt
+  artifacts:
+    reports:
+      codequality: $PROJECT_ROOT_DIR/code-quality-report.txt
+
+# Run tests and check for code coverage
+test:
+  stage: test
+  extends: .docker_image
+  before_script:
+    - cd $PROJECT_ROOT_DIR
+    - flutter pub global activate junitreport
+    - export PATH="$PATH:$HOME/.pub-cache/bin"
+  script:
+    - flutter test --machine --coverage | tojunit -o report.xml
+    - lcov --summary coverage/lcov.info
+    - genhtml coverage/lcov.info --output=coverage
+  coverage: '/lines\.*: \d+\.\d+\%/'
+  artifacts:
+    name: coverage
+    paths:
+      - $PROJECT_ROOT_DIR/coverage
+    reports:
+      junit: $PROJECT_ROOT_DIR/report.xml
+
+build_android:
+  stage: package
+  extends: .docker_image
+  before_script:
+    - cd $PROJECT_ROOT_DIR
+    - flutter packages get
+    - flutter clean
+  script:
+    - flutter build apk --release --build-number=$CI_PIPELINE_ID
+  artifacts:
+    paths:
+      - $PROJECT_ROOT_DIR/build/app/outputs/apk/release/app-release.apk
+    expire_in: 2 days
+  only:
+    - master
