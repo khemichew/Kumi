@@ -1,6 +1,8 @@
+import 'package:app/database_showcase.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:app/style.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,6 +41,7 @@ class MyHomePage extends StatefulWidget {
 
   final String title;
 
+
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
@@ -46,21 +49,13 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
 
-  static const TextStyle optionStyle =
-  TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-
-  static const TextStyle titleStyle =
-  TextStyle(fontSize: 24, fontWeight: FontWeight.w500);
-
-  static const TextStyle ordinaryStyle =
-  TextStyle(fontSize: 20, fontWeight: FontWeight.w300);
-
   final List<Widget> _widgetOptions = <Widget>[
     const MembershipPage(),
-    const Text(
-      'Index 1: Explore',
-      style: optionStyle,
-    ),
+    const DatabaseShowcase(),
+    // const Text(
+    //   'Index 1: Explore',
+    //   style: optionStyle,
+    // ),
     const Text(
       'Index 2: Savings',
       style: optionStyle,
@@ -143,7 +138,7 @@ class AccountPage extends StatelessWidget {
                 children: const [
                   Text(
                     'My\naccount',
-                    style: _MyHomePageState.titleStyle,
+                    style: titleStyle,
                   ),
                 ]
             ),
@@ -167,7 +162,7 @@ class MembershipPage extends StatelessWidget {
               children: [
                 const Text(
                   'My\nmemberships',
-                  style: _MyHomePageState.titleStyle,
+                  style: titleStyle,
                 ),
                 // TextButton(onPressed: null, child: const Text('Add', style: ordinaryStyle))
                 ClipRRect(
@@ -185,7 +180,7 @@ class MembershipPage extends StatelessWidget {
                         style: TextButton.styleFrom(
                           padding: const EdgeInsets.all(16.0),
                           primary: Colors.black,
-                          textStyle: _MyHomePageState.ordinaryStyle,
+                          textStyle: ordinaryStyle,
                         ),
                         onPressed: () {},
                         child: const Text('Add'),
