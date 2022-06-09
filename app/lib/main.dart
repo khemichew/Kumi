@@ -47,13 +47,13 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
 
   static const TextStyle optionStyle =
-  TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: Colors.black);
 
   static const TextStyle titleStyle =
-  TextStyle(fontSize: 24, fontWeight: FontWeight.w500);
+  TextStyle(fontSize: 24, fontWeight: FontWeight.w500, color: Colors.black);
 
   static const TextStyle ordinaryStyle =
-  TextStyle(fontSize: 20, fontWeight: FontWeight.w400);
+  TextStyle(fontSize: 20, fontWeight: FontWeight.w400, color: Colors.black);
 
   final List<Widget> _widgetOptions = <Widget>[
     const MembershipPage(),
@@ -135,7 +135,7 @@ class AccountPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.fromLTRB(20, 45, 20, 0),
+      margin: const EdgeInsets.fromLTRB(20, 50, 20, 0),
       child: Column(
         children: [
           Row(
@@ -159,34 +159,39 @@ class MembershipPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.fromLTRB(20, 45, 20, 0),
+      margin: const EdgeInsets.fromLTRB(15, 50, 15, 0),
       child: Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                'My\nmemberships',
-                style: _MyHomePageState.titleStyle,
-              ),
-              Container(
-                decoration:BoxDecoration(
-                  border: Border.all(
-                    color: Colors.black
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
+                  child: const Text(
+                    'My\nmemberships',
+                    style: _MyHomePageState.titleStyle,
                   ),
-                  color: Colors.white38,
-                  borderRadius: const BorderRadius.all(Radius.circular(10))
                 ),
+              ),
+              Expanded(
                 child:TextButton(
                   onPressed: () {  },
-                  child: SizedBox(
-                    width: 120,
+                  child: Container(
                     height: 60,
+                    decoration:BoxDecoration(
+                        border: Border.all(
+                            color: Colors.black
+                        ),
+                        color: Colors.white38,
+                        borderRadius: const BorderRadius.all(Radius.circular(10))
+                    ),
+                    padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: const [
-                        Text("Add", style: _MyHomePageState.ordinaryStyle),
-                        Icon(Icons.add)
+                        Text("Add", style: _MyHomePageState.optionStyle),
+                        Icon(Icons.add, color: Colors.black,)
                       ],
                     ),
                   ),
@@ -194,7 +199,7 @@ class MembershipPage extends StatelessWidget {
               ),
             ]
           ),
-          const SizedBox(height: 15),
+          // const SizedBox(height: 15),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: const [
@@ -202,7 +207,7 @@ class MembershipPage extends StatelessWidget {
               MembershipCard(storeName: 'Store B', color: Color.fromRGBO(248, 152, 128, 0.5),),
             ]
           ),
-          const SizedBox(height: 15),
+          // const SizedBox(height: 15),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: const [
@@ -224,17 +229,16 @@ class MembershipCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration:BoxDecoration(
-        color: color,
-        borderRadius: const BorderRadius.all(Radius.circular(10))
-      ),
+    return Expanded(
       child: TextButton(
         onPressed: () {  },
         child: Container(
-          width: 120,
           height: 100,
-          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 0.0),
+          decoration:BoxDecoration(
+            color: color,
+            borderRadius: const BorderRadius.all(Radius.circular(10))
+          ),
+          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -243,7 +247,7 @@ class MembershipCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(storeName, style: _MyHomePageState.ordinaryStyle),
-                  const Icon(Icons.chevron_right)
+                  const Icon(Icons.chevron_right, color: Colors.black,)
                 ]
               ),
               // const Icon(Icons.card_membership)
