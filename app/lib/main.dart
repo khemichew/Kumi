@@ -55,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
   static const TextStyle ordinaryStyle =
   TextStyle(fontSize: 20, fontWeight: FontWeight.w300);
 
-  List<Widget> _widgetOptions = <Widget>[
+  final List<Widget> _widgetOptions = <Widget>[
     MembershipPage(),
     Text(
       'Index 1: Explore',
@@ -120,7 +120,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
         currentIndex: _selectedIndex,
-        // backgroundColor: const Color.fromRGBO(255, 255, 255, 0.3),
         backgroundColor: const Color.fromRGBO(255, 229, 205, 1),
         selectedItemColor: const Color.fromRGBO(51, 85, 135, 1.0),
         onTap: _onItemTapped,
