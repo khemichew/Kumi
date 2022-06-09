@@ -55,17 +55,17 @@ class _MyHomePageState extends State<MyHomePage> {
   static const TextStyle ordinaryStyle =
   TextStyle(fontSize: 20, fontWeight: FontWeight.w300);
 
-  List<Widget> _widgetOptions = <Widget>[
-    MembershipPage(),
-    Text(
+  final List<Widget> _widgetOptions = <Widget>[
+    const MembershipPage(),
+    const Text(
       'Index 1: Explore',
       style: optionStyle,
     ),
-    Text(
+    const Text(
       'Index 2: Savings',
       style: optionStyle,
     ),
-    AccountPage(),
+    const AccountPage(),
   ];
 
   void _onItemTapped(int index) {
@@ -120,7 +120,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
         currentIndex: _selectedIndex,
-        // backgroundColor: const Color.fromRGBO(255, 255, 255, 0.3),
         backgroundColor: const Color.fromRGBO(255, 229, 205, 1),
         selectedItemColor: const Color.fromRGBO(51, 85, 135, 1.0),
         onTap: _onItemTapped,
@@ -131,6 +130,8 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 class AccountPage extends StatelessWidget {
+  const AccountPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -139,7 +140,7 @@ class AccountPage extends StatelessWidget {
           children: [
             Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
+                children: const [
                   Text(
                     'My\naccount',
                     style: _MyHomePageState.titleStyle,
@@ -153,6 +154,8 @@ class AccountPage extends StatelessWidget {
 }
 
 class MembershipPage extends StatelessWidget {
+  const MembershipPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -162,7 +165,7 @@ class MembershipPage extends StatelessWidget {
           Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
+                const Text(
                   'My\nmemberships',
                   style: _MyHomePageState.titleStyle,
                 ),
@@ -213,8 +216,8 @@ class MembershipPage extends StatelessWidget {
                         minWidth: 100,
                         minHeight: 100,
                       ),
-                      child: Center(
-                        child: const Text('lmao'),
+                      child: const Center(
+                        child: Text('lmao'),
                       ),
                     ),
                   ],
