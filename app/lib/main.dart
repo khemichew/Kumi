@@ -13,24 +13,14 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
+  final String _title = 'DRP 27';
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      title: _title,
+      home: MyHomePage(title: _title),
     );
   }
 }
@@ -54,16 +44,33 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  int _selectedIndex = 0;
 
-  void _incrementCounter() {
+  static const TextStyle optionStyle =
+  TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+
+  static const TextStyle titleStyle =
+  TextStyle(fontSize: 24, fontWeight: FontWeight.w500);
+
+  static const TextStyle ordinaryStyle =
+  TextStyle(fontSize: 20, fontWeight: FontWeight.w300);
+
+  List<Widget> _widgetOptions = <Widget>[
+    MembershipPage(),
+    Text(
+      'Index 1: Explore',
+      style: optionStyle,
+    ),
+    Text(
+      'Index 2: Savings',
+      style: optionStyle,
+    ),
+    AccountPage(),
+  ];
+
+  void _onItemTapped(int index) {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      _selectedIndex = index;
     });
   }
 
@@ -76,46 +83,146 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+        child: Container(
+          decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+                colors: [
+                  Color.fromRGBO(173, 190, 216, 1),
+                  Color.fromRGBO(255, 229, 205, 1),
+                ],
+              )
+          ),
+          child: Center(
+            child: _widgetOptions.elementAt(_selectedIndex),
+          ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.credit_card),
+            label: 'Memberships',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: 'Explore',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.currency_pound_outlined),
+            label: 'Savings',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_outline),
+            label: 'My account',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        // backgroundColor: const Color.fromRGBO(255, 255, 255, 0.3),
+        backgroundColor: const Color.fromRGBO(255, 229, 205, 1),
+        selectedItemColor: const Color.fromRGBO(51, 85, 135, 1.0),
+        onTap: _onItemTapped,
+        type: BottomNavigationBarType.fixed,
+      ),
+    );
+  }
+}
+
+class AccountPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.fromLTRB(20, 45, 20, 0),
+      child: Column(
+          children: [
+            Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'My\naccount',
+                    style: _MyHomePageState.titleStyle,
+                  ),
+                ]
+            ),
+          ]
+      ),
+    );
+  }
+}
+
+class MembershipPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.fromLTRB(20, 45, 20, 0),
+      child: Column(
+        children: [
+          Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'My\nmemberships',
+                  style: _MyHomePageState.titleStyle,
+                ),
+                // TextButton(onPressed: null, child: const Text('Add', style: ordinaryStyle))
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Stack(
+                    children: <Widget>[
+                      Positioned.fill(
+                        child: Container(
+                          decoration: const BoxDecoration(
+                              color: Colors.white24
+                          ),
+                        ),
+                      ),
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.all(16.0),
+                          primary: Colors.black,
+                          textStyle: _MyHomePageState.ordinaryStyle,
+                        ),
+                        onPressed: () {},
+                        child: const Text('Add'),
+                      ),
+                    ],
+                  ),
+                ),
+              ]
+          ),
+          Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Stack(
+                  children: <Widget>[
+                    Positioned.fill(
+                      child: Container(
+                        decoration: const BoxDecoration(
+                            color: Colors.white24
+                        ),
+                      ),
+                    ),
+                    Container(
+                      decoration: const BoxDecoration(
+                          color: Colors.white24
+                      ),
+                      constraints: const BoxConstraints(
+                        minWidth: 100,
+                        minHeight: 100,
+                      ),
+                      child: Center(
+                        child: const Text('lmao'),
+                      ),
+                    ),
+                  ],
+                ),
+              ),]
+          )
+        ],
+      ),
     );
   }
 }
