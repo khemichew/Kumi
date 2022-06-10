@@ -53,7 +53,7 @@ class RetailerList extends StatefulWidget {
   const RetailerList({Key? key}) : super(key: key);
 
   @override
-  State<RetailerList> createState() => _RetailerListState();
+  State<RetailerList> createState() => RetailerListState();
 }
 
 class RetailerListState extends State<RetailerList> {
