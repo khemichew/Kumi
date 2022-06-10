@@ -1,6 +1,8 @@
+import 'package:app/database_showcase.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:app/style.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,6 +41,7 @@ class MyHomePage extends StatefulWidget {
 
   final String title;
 
+
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
@@ -46,21 +49,13 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
 
-  static const TextStyle optionStyle =
-  TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: Colors.black);
-
-  static const TextStyle titleStyle =
-  TextStyle(fontSize: 24, fontWeight: FontWeight.w500, color: Colors.black);
-
-  static const TextStyle ordinaryStyle =
-  TextStyle(fontSize: 20, fontWeight: FontWeight.w400, color: Colors.black);
-
   final List<Widget> _widgetOptions = <Widget>[
     const MembershipPage(),
-    const Text(
-      'Index 1: Explore',
-      style: optionStyle,
-    ),
+    const DatabaseShowcase(),
+    // const Text(
+    //   'Index 1: Explore',
+    //   style: optionStyle,
+    // ),
     const Text(
       'Index 2: Savings',
       style: optionStyle,
@@ -137,17 +132,17 @@ class AccountPage extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.fromLTRB(20, 50, 20, 0),
       child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              Text(
-                'My\naccount',
-                style: _MyHomePageState.titleStyle,
-              ),
-            ]
-          ),
-        ]
+          children: [
+            Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const [
+                  Text(
+                    'My\naccount',
+                    style: titleStyle,
+                  ),
+                ]
+            ),
+          ]
       ),
     );
   }
@@ -161,60 +156,60 @@ class MembershipPage extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.fromLTRB(15, 50, 15, 0),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
-                  child: const Text(
-                    'My\nmemberships',
-                    style: _MyHomePageState.titleStyle,
-                  ),
-                ),
-              ),
-              Expanded(
-                child:TextButton(
-                  onPressed: () {  },
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
                   child: Container(
-                    height: 60,
-                    decoration:BoxDecoration(
-                        border: Border.all(
-                            color: Colors.black
-                        ),
-                        color: Colors.white38,
-                        borderRadius: const BorderRadius.all(Radius.circular(10))
-                    ),
                     padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
-                        Text("Add", style: _MyHomePageState.optionStyle),
-                        Icon(Icons.add, color: Colors.black,)
-                      ],
+                    child: const Text(
+                      'My\nmemberships',
+                      style: titleStyle,
                     ),
                   ),
                 ),
-              ),
-            ]
+                Expanded(
+                  child:TextButton(
+                    onPressed: () {  },
+                    child: Container(
+                      height: 60,
+                      decoration:BoxDecoration(
+                          border: Border.all(
+                              color: Colors.black
+                          ),
+                          color: Colors.white38,
+                          borderRadius: const BorderRadius.all(Radius.circular(10))
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: const [
+                          Text("Add", style: optionStyle),
+                          Icon(Icons.add, color: Colors.black,)
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ]
           ),
-          // const SizedBox(height: 15),
+          // SizedBox(height: 40,),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              MembershipCard(storeName: 'Store A', color: Color.fromRGBO(255, 191, 0, 0.5),),
-              MembershipCard(storeName: 'Store B', color: Color.fromRGBO(248, 152, 128, 0.5),),
-            ]
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: const [
+                MembershipCard(storeName: 'Store A', color: Color.fromRGBO(255, 191, 0, 0.5),),
+                MembershipCard(storeName: 'Store B', color: Color.fromRGBO(248, 152, 128, 0.5),),
+              ]
           ),
-          // const SizedBox(height: 15),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              MembershipCard(storeName: 'Store C', color: Color.fromRGBO(137, 207, 240, 0.5),),
-              MembershipCard(storeName: 'Store D', color: Color.fromRGBO(115, 113, 255, 0.5),),
-            ]
-          )
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: const [
+                MembershipCard(storeName: 'Store C', color: Color.fromRGBO(137, 207, 240, 0.5),),
+                MembershipCard(storeName: 'Store D', color: Color.fromRGBO(115, 113, 255, 0.5),),
+              ]
+          ),
         ],
       ),
     );
@@ -223,7 +218,7 @@ class MembershipPage extends StatelessWidget {
 
 class MembershipCard extends StatelessWidget {
   const MembershipCard({Key? key, required this.storeName, required this.color}) : super(key: key);
-  
+
   final String storeName;
   final Color color;
 
@@ -235,8 +230,8 @@ class MembershipCard extends StatelessWidget {
         child: Container(
           height: 100,
           decoration:BoxDecoration(
-            color: color,
-            borderRadius: const BorderRadius.all(Radius.circular(10))
+              color: color,
+              borderRadius: const BorderRadius.all(Radius.circular(10))
           ),
           padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
           child: Column(
@@ -244,11 +239,11 @@ class MembershipCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(storeName, style: _MyHomePageState.ordinaryStyle),
-                  const Icon(Icons.chevron_right, color: Colors.black,)
-                ]
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(storeName, style: ordinaryStyle),
+                    const Icon(Icons.chevron_right, color: Colors.black,)
+                  ]
               ),
               // const Icon(Icons.card_membership)
             ],
