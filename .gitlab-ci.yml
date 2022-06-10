@@ -1,9 +1,9 @@
 variables:
   PROJECT_ROOT_DIR: "app"
 
-default:
-  tags:
-    - flutterfire-runner
+#default:
+#  tags:
+#    - flutterfire-runner
 
 stages:
   - test
