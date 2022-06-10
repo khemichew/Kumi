@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:app/style.dart';
+// import 'package:app/style.dart';
 
 @immutable
 class Retailer {
@@ -53,11 +53,11 @@ class RetailerList extends StatefulWidget {
   const RetailerList({Key? key}) : super(key: key);
 
   @override
-  _RetailerListState createState() => _RetailerListState();
+  RetailerListState createState() => RetailerListState();
 }
 
-class _RetailerListState extends State<RetailerList> {
-  static const int LIMIT = 20;
+class RetailerListState extends State<RetailerList> {
+  static const int displayLimit = 20;
   RetailerQuery query = RetailerQuery.nameAsc;
 
   @override
@@ -116,7 +116,7 @@ class _RetailerListState extends State<RetailerList> {
 
                 // Create list of retailer entries
                 return ListView.builder(
-                  itemCount: min(data.size, LIMIT),
+                  itemCount: min(data.size, displayLimit),
                   itemBuilder: (context, index) {
                     return _RetailerItem(
                       data.docs[index].data(),
