@@ -47,13 +47,13 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
 
   static const TextStyle optionStyle =
-  TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: Colors.black);
 
   static const TextStyle titleStyle =
-  TextStyle(fontSize: 24, fontWeight: FontWeight.w500);
+  TextStyle(fontSize: 24, fontWeight: FontWeight.w500, color: Colors.black);
 
   static const TextStyle ordinaryStyle =
-  TextStyle(fontSize: 20, fontWeight: FontWeight.w300);
+  TextStyle(fontSize: 20, fontWeight: FontWeight.w400, color: Colors.black);
 
   final List<Widget> _widgetOptions = <Widget>[
     const MembershipPage(),
@@ -86,14 +86,14 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: Container(
           decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topRight,
-                end: Alignment.bottomLeft,
-                colors: [
-                  Color.fromRGBO(173, 190, 216, 1),
-                  Color.fromRGBO(255, 229, 205, 1),
-                ],
-              )
+            gradient: LinearGradient(
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              colors: [
+                Color.fromRGBO(173, 190, 216, 1),
+                Color.fromRGBO(255, 229, 205, 1),
+              ],
+            )
           ),
           child: Center(
             child: _widgetOptions.elementAt(_selectedIndex),
@@ -135,19 +135,19 @@ class AccountPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.fromLTRB(20, 45, 20, 0),
+      margin: const EdgeInsets.fromLTRB(20, 50, 20, 0),
       child: Column(
-          children: [
-            Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Text(
-                    'My\naccount',
-                    style: _MyHomePageState.titleStyle,
-                  ),
-                ]
-            ),
-          ]
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: const [
+              Text(
+                'My\naccount',
+                style: _MyHomePageState.titleStyle,
+              ),
+            ]
+          ),
+        ]
       ),
     );
   }
@@ -159,72 +159,101 @@ class MembershipPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.fromLTRB(20, 45, 20, 0),
+      margin: const EdgeInsets.fromLTRB(15, 50, 15, 0),
       child: Column(
         children: [
           Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'My\nmemberships',
-                  style: _MyHomePageState.titleStyle,
-                ),
-                // TextButton(onPressed: null, child: const Text('Add', style: ordinaryStyle))
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Stack(
-                    children: <Widget>[
-                      Positioned.fill(
-                        child: Container(
-                          decoration: const BoxDecoration(
-                              color: Colors.white24
-                          ),
-                        ),
-                      ),
-                      TextButton(
-                        style: TextButton.styleFrom(
-                          padding: const EdgeInsets.all(16.0),
-                          primary: Colors.black,
-                          textStyle: _MyHomePageState.ordinaryStyle,
-                        ),
-                        onPressed: () {},
-                        child: const Text('Add'),
-                      ),
-                    ],
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
+                  child: const Text(
+                    'My\nmemberships',
+                    style: _MyHomePageState.titleStyle,
                   ),
                 ),
-              ]
-          ),
-          Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Stack(
-                  children: <Widget>[
-                    Positioned.fill(
-                      child: Container(
-                        decoration: const BoxDecoration(
-                            color: Colors.white24
+              ),
+              Expanded(
+                child:TextButton(
+                  onPressed: () {  },
+                  child: Container(
+                    height: 60,
+                    decoration:BoxDecoration(
+                        border: Border.all(
+                            color: Colors.black
                         ),
-                      ),
+                        color: Colors.white38,
+                        borderRadius: const BorderRadius.all(Radius.circular(10))
                     ),
-                    Container(
-                      decoration: const BoxDecoration(
-                          color: Colors.white24
-                      ),
-                      constraints: const BoxConstraints(
-                        minWidth: 100,
-                        minHeight: 100,
-                      ),
-                      child: const Center(
-                        child: Text('lmao'),
-                      ),
+                    padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: const [
+                        Text("Add", style: _MyHomePageState.optionStyle),
+                        Icon(Icons.add, color: Colors.black,)
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),]
+              ),
+            ]
+          ),
+          // const SizedBox(height: 15),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: const [
+              MembershipCard(storeName: 'Store A', color: Color.fromRGBO(255, 191, 0, 0.5),),
+              MembershipCard(storeName: 'Store B', color: Color.fromRGBO(248, 152, 128, 0.5),),
+            ]
+          ),
+          // const SizedBox(height: 15),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: const [
+              MembershipCard(storeName: 'Store C', color: Color.fromRGBO(137, 207, 240, 0.5),),
+              MembershipCard(storeName: 'Store D', color: Color.fromRGBO(115, 113, 255, 0.5),),
+            ]
           )
         ],
+      ),
+    );
+  }
+}
+
+class MembershipCard extends StatelessWidget {
+  const MembershipCard({Key? key, required this.storeName, required this.color}) : super(key: key);
+  
+  final String storeName;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: TextButton(
+        onPressed: () {  },
+        child: Container(
+          height: 100,
+          decoration:BoxDecoration(
+            color: color,
+            borderRadius: const BorderRadius.all(Radius.circular(10))
+          ),
+          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(storeName, style: _MyHomePageState.ordinaryStyle),
+                  const Icon(Icons.chevron_right, color: Colors.black,)
+                ]
+              ),
+              // const Icon(Icons.card_membership)
+            ],
+          ),
+        ),
       ),
     );
   }
