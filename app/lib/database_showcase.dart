@@ -56,8 +56,8 @@ class RetailerList extends StatefulWidget {
   State<RetailerList> createState() => _RetailerListState();
 }
 
-class _RetailerListState extends State<RetailerList> {
-  static const int _limit = 20;
+class RetailerListState extends State<RetailerList> {
+  static const int displayLimit = 20;
   RetailerQuery query = RetailerQuery.nameAsc;
 
   @override
@@ -116,7 +116,7 @@ class _RetailerListState extends State<RetailerList> {
 
                 // Create list of retailer entries
                 return ListView.builder(
-                  itemCount: min(data.size, _limit),
+                  itemCount: min(data.size, displayLimit),
                   itemBuilder: (context, index) {
                     return _RetailerItem(
                       data.docs[index].data(),
