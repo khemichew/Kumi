@@ -1,4 +1,5 @@
 import 'package:app/database_showcase.dart';
+import 'package:app/savings.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -58,10 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
     //   'Index 1: Explore',
     //   style: optionStyle,
     // ),
-    const Text(
-      'Index 2: Savings',
-      style: optionStyle,
-    ),
+    const SavingsPage(),
     const AccountPage(),
   ];
 
@@ -134,15 +132,14 @@ class AccountPage extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.fromLTRB(20, 50, 20, 0),
       child: Column(
-          children: [
-            Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Text(
-                    'My\naccount',
-                    style: titleStyle,
-                  ),
-                ]
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+            child: const Text(
+              'My\naccount',
+              style: titleStyle,
             ),
             Row(
 
