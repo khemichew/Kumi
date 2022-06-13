@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-const TextStyle optionStyle =
-    TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: Colors.black);
-
 const TextStyle titleStyle =
-    TextStyle(fontSize: 24, fontWeight: FontWeight.w600, color: Colors.black);
+    TextStyle(fontSize: 23, fontWeight: FontWeight.w500, color: Colors.black);
+
+const TextStyle largeTitleStyle =
+TextStyle(fontSize: 32, fontWeight: FontWeight.w500, color: Colors.black);
 
 const TextStyle ordinaryStyle =
     TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: Colors.black);

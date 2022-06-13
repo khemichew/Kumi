@@ -66,7 +66,7 @@ class MembershipPageHead extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: const [
-                  Text("Add", style: optionStyle),
+                  Text("Add", style: ordinaryStyle),
                   Icon(Icons.add, color: Colors.black,)
                 ],
               ),
