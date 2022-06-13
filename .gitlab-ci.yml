@@ -19,7 +19,7 @@ check_source_code:
   before_script:
     - cd $PROJECT_ROOT_DIR
   script:
-    - flutter analyze > code-quality-report.txt
+    - sudo flutter analyze > code-quality-report.txt
   artifacts:
     reports:
       codequality: $PROJECT_ROOT_DIR/code-quality-report.txt
@@ -33,7 +33,7 @@ test:
 #    - flutter pub global activate junitreport
 #    - export PATH="$PATH:$HOME/.pub-cache/bin"
   script:
-    - flutter test --machine --coverage
+    - sudo flutter test --machine --coverage
 #    - lcov --summary coverage/lcov.info
 #    - genhtml coverage/lcov.info --output=coverage
 #  coverage: '/lines\.*: \d+\.\d+\%/'
