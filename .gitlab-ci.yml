@@ -1,6 +1,10 @@
 variables:
   PROJECT_ROOT_DIR: "app"
 
+default:
+  tags:
+    - flutterfire-drp-2
+
 stages:
   - test
   - package
@@ -11,7 +15,7 @@ stages:
 # Built-in static analysis; provides linting suggestions and fleshes out errors
 check_source_code:
   stage: test
-  extends: .docker_image
+#  extends: .docker_image
   before_script:
     - cd $PROJECT_ROOT_DIR
   script:
@@ -23,26 +27,26 @@ check_source_code:
 # Run tests and check for code coverage
 test:
   stage: test
-  extends: .docker_image
+#  extends: .docker_image
   before_script:
     - cd $PROJECT_ROOT_DIR
-    - flutter pub global activate junitreport
-    - export PATH="$PATH:$HOME/.pub-cache/bin"
+#    - flutter pub global activate junitreport
+#    - export PATH="$PATH:$HOME/.pub-cache/bin"
   script:
-    - flutter test --machine --coverage | tojunit -o report.xml
-    - lcov --summary coverage/lcov.info
-    - genhtml coverage/lcov.info --output=coverage
-  coverage: '/lines\.*: \d+\.\d+\%/'
-  artifacts:
-    name: coverage
-    paths:
-      - $PROJECT_ROOT_DIR/coverage
-    reports:
-      junit: $PROJECT_ROOT_DIR/report.xml
+    - flutter test --machine --coverage
+#    - lcov --summary coverage/lcov.info
+#    - genhtml coverage/lcov.info --output=coverage
+#  coverage: '/lines\.*: \d+\.\d+\%/'
+#  artifacts:
+#    name: coverage
+#    paths:
+#      - $PROJECT_ROOT_DIR/coverage
+#    reports:
+#      junit: $PROJECT_ROOT_DIR/report.xml
 
 build_android:
   stage: package
-  extends: .docker_image
+#  extends: .docker_image
   before_script:
     - cd $PROJECT_ROOT_DIR
     - flutter packages get
