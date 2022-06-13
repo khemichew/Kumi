@@ -1,4 +1,5 @@
 import 'package:app/database_showcase.dart';
+import 'package:app/savings.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -60,11 +61,8 @@ class _MyHomePageState extends State<MyHomePage> {
     //   'Index 1: Explore',
     //   style: optionStyle,
     // ),
-    const Text(
-      'Index 2: Savings',
-      style: optionStyle,
-    ),
-    const MyaccountPage(),
+    const SavingsPage(),
+    const AccountPage(),
   ];
 
   void _onItemTapped(int index) {
