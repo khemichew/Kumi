@@ -19,6 +19,16 @@ TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.black);
 const TextStyle hugeStyle =
 TextStyle(fontSize: 50, fontWeight: FontWeight.w500, color: Colors.black);
 
+const TextStyle ordinaryWhiteStyle =
+TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: Colors.white);
+
+const defaultBoxShadow = [
+    BoxShadow(
+        color: Colors.black,
+        offset: Offset(0, 5),
+        blurRadius: 5
+    ),
+];
 
 
 Future<String> loadAsset() async {
