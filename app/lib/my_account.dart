@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:app/style.dart';
 
-class MyaccountPage extends StatelessWidget {
-  const MyaccountPage({Key? key}) : super(key: key);
+class MyAccountPage extends StatelessWidget {
+  const MyAccountPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
