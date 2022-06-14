@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+import 'package:app/memberships.dart';
 
 import 'package:app/firebase_options.dart';
 import 'package:app/database_showcase.dart';
 import 'package:app/savings.dart';
-import 'package:app/memberships.dart';
-import 'package:app/myaccount.dart';
+import 'package:app/my_account.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -61,7 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
     //   style: optionStyle,
     // ),
     SavingsPage(),
-    const MyaccountPage(),
+    const MyAccountPage(),
   ];
 
   void _onItemTapped(int index) {
