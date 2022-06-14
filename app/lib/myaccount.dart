@@ -7,7 +7,7 @@ class MyaccountPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.fromLTRB(20, 50, 20, 0),
+      margin: const EdgeInsets.fromLTRB(20, 60, 20, 0),
       child: Column(
           children: [
             Row(
@@ -15,16 +15,67 @@ class MyaccountPage extends StatelessWidget {
                 children: const [
                   Text(
                     'My\nAccount',
-                    style: titleStyle,
+                    style: largeTitleStyle,
                   ),
+                  // Image(image: AssetImage('../asset/dingzhen_cute.jpeg'))
+                  CircleAvatar(
+                    backgroundImage: AssetImage('assets/dzdl.jpeg'),
+                    radius: 60,
+                  )
                 ]
             ),
-            Column(
-              mainAxisSize: MainAxisSize.max,
-              children: const [
-                  PersonalDetail(field: "Name", entry: "Jim Brown"),
-                  PersonalDetail(field: "Email Address", entry: "123@dmail.com")
-              ],
+              // mainAxisSize: MainAxisSize.max,
+            const SizedBox(height: 50),
+            const Align(
+              alignment: Alignment.topLeft,
+              child: PersonalDetail(field: "Name", entry: "Jim Brown")
+            ),
+            const SizedBox(height: 30),
+            const Align(
+                alignment: Alignment.topLeft,
+                child: PersonalDetail(field: "Email Address", entry: "jim.brown@dmail.com")
+            ),
+            const SizedBox(height: 30),
+            const Align(
+                alignment: Alignment.topLeft,
+                child: PersonalDetail(field: "Phone Number", entry: "1234567890")
+            ),
+            const SizedBox(height: 50),
+            Container(
+              height: 100,
+              decoration:BoxDecoration(
+                  border: Border.all(
+                      color: Colors.black,
+                      width: 2
+                  ),
+                  borderRadius: const BorderRadius.all(Radius.circular(10))
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(Icons.history, size: 50,),
+                      Text("History", style: smallStyle,),
+                    ],
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(Icons.star_border_rounded, size: 50,),
+                      Text("Saved", style: smallStyle),
+                    ],
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(Icons.settings_outlined, size: 50,),
+                      Text("Settings", style: smallStyle),
+                    ],
+                  ),
+                ],
+              )
             )
           ]
       ),
@@ -40,19 +91,13 @@ class PersonalDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        height: 100,
-        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(field, style: titleStyle),
-            Text(entry, style: ordinaryStyle),
-          ],
-        ),
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(field, style: emphStyle),
+        Text(entry, style: ordinaryStyle),
+      ],
     );
   }
 }
