@@ -34,23 +34,9 @@ class SavingsPage extends StatelessWidget {
               style: largeTitleStyle,
             ),
           ),
-          Container(
-              height: 100,
-              width: 200,
-              padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 2.0),
-              decoration:BoxDecoration(
-                  border: Border.all(
-                      color: Colors.black,
-                      width: 2
-                  ),
-                  borderRadius: const BorderRadius.all(Radius.circular(20))
-              ),
-              child: const Align(
-                alignment: Alignment.center,
-                child:
-                  Text("\$6324", style: hugeStyle,)
-              ),
-          ),
+
+          const SavingAmount(),
+          const PieChartFilter(),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: PieChart(
@@ -58,35 +44,109 @@ class SavingsPage extends StatelessWidget {
               colorList: colorList,
             )
           ),
-          Table(border: TableBorder.all(),
-            columnWidths: const <int, TableColumnWidth>{
-              0: IntrinsicColumnWidth(),
-              1: FlexColumnWidth(),
-              2: FixedColumnWidth(64),
-            },
-            defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-            children: const <TableRow>[
-              TableRow(
-                children: <Widget>[
-                  SavingStore(store: "Store A"),
-                  SavingAmt(amount: "\$5.60")
-                ],
-              ),
-              TableRow(
-                children: <Widget>[
-              SavingStore(store: "Store B"),
-                  SavingAmt(amount: "\$5.60")
-                ],
-              ),
-              TableRow(
-                children: <Widget>[
-                  SavingStore(store: "Store C"),
-                  SavingAmt(amount: "\$5.60")
-                ],
-              ),
-            ],)
+          const SavingAmtFilter(),
+          const SavingTable()
         ],
       ),
+    );
+  }
+}
+
+class SavingTable extends StatelessWidget {
+  const SavingTable({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Table(border: TableBorder.all(),
+      columnWidths: const <int, TableColumnWidth>{
+        0: IntrinsicColumnWidth(),
+        1: FlexColumnWidth(),
+        2: FixedColumnWidth(64),
+      },
+      defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+      children: const <TableRow>[
+        TableRow(
+          children: <Widget>[
+            SavingStore(store: "Store A"),
+            SavingAmt(amount: "\$5.60")
+          ],
+        ),
+        TableRow(
+          children: <Widget>[
+        SavingStore(store: "Store B"),
+            SavingAmt(amount: "\$5.60")
+          ],
+        ),
+        TableRow(
+          children: <Widget>[
+            SavingStore(store: "Store C"),
+            SavingAmt(amount: "\$5.60")
+          ],
+        ),
+      ],);
+  }
+}
+
+class SavingAmount extends StatelessWidget {
+  const SavingAmount({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        height: 100,
+        width: 200,
+        padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 2.0),
+        decoration:BoxDecoration(
+            border: Border.all(
+                color: Colors.black,
+                width: 2
+            ),
+            borderRadius: const BorderRadius.all(Radius.circular(20))
+        ),
+        child: const Align(
+          alignment: Alignment.center,
+          child:
+            Text("\$6324", style: hugeStyle,)
+        ),
+    );
+  }
+}
+
+class PieChartFilter extends StatelessWidget {
+  const PieChartFilter({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        TextButton(
+          style: outlineButtonStyle,
+          onPressed: () { },
+          child: const Text('All', style: filterStyle,),
+        ),
+        TextButton(
+          style: outlineButtonStyle,
+          onPressed: () { },
+          child: const Text('This Year',style: filterStyle,),
+        ),
+        TextButton(
+          style: outlineButtonStyle,
+          onPressed: () { },
+          child: const Text('This Month',style: filterStyle,),
+        ),
+        TextButton(
+          style: outlineButtonStyle,
+          onPressed: () { },
+          child: const Text('This Week',style: filterStyle,),
+        ),
+      ],
     );
   }
 }
@@ -134,4 +194,68 @@ class SavingAmt extends StatelessWidget {
 }
 
 
+class SavingAmtFilter extends StatelessWidget {
+  const SavingAmtFilter({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Container(
+          height: 25,
+          width: 40,
+          margin: EdgeInsets.zero,
+          child: TextButton(
+            style: smallOptStyle,
+            onPressed: () { },
+            child: const Text('All', style: smallOptTextStyle,),
+          )
+        ),
+        Container(
+            height: 25,
+            width: 50,
+            margin: EdgeInsets.zero,
+            child: TextButton(
+              style: smallOptStyle,
+              onPressed: () { },
+              child: const Text('Recent', style: smallOptTextStyle,),
+            )
+        ),
+        Container(
+            height: 25,
+            width: 55,
+            margin: EdgeInsets.zero,
+            child: TextButton(
+              style: smallOptStyle,
+              onPressed: () { },
+              child: const Text('Grocery', style: smallOptTextStyle,),
+            )
+        ),
+        Container(
+            height: 25,
+            width: 40,
+            margin: EdgeInsets.zero,
+            child: TextButton(
+              style: smallOptStyle,
+              onPressed: () { },
+              child: const Text('Food', style: smallOptTextStyle,),
+            )
+        ),
+        Container(
+            height: 25,
+            width: 70,
+            margin: EdgeInsets.zero,
+            child: TextButton(
+              style: smallOptStyle,
+              onPressed: () { },
+              child: const Text('Healthcare', style: smallOptTextStyle,),
+            )
+        ),
+      ],
+    );
+  }
+}
 
