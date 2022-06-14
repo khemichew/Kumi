@@ -33,17 +33,3 @@ final retailerEntries = FirebaseFirestore.instance
 
 // The different ways we can sort/filter entries
 enum RetailerQuery { nameAsc, nameDesc, ratingAsc, ratingDesc }
-
-// extension on Query<Retailer> {
-//   // Create a firebase query from a [RetailerQuery]
-//   Query<Retailer> queryBy(RetailerQuery query) {
-//     switch (query) {
-//       case RetailerQuery.nameAsc:
-//       case RetailerQuery.nameDesc:
-//         return orderBy('name', descending: query == RetailerQuery.nameDesc);
-//       case RetailerQuery.ratingAsc:
-//       case RetailerQuery.ratingDesc:
-//         return orderBy('rating', descending: query == RetailerQuery.ratingDesc);
-//     }
-//   }
-// }
