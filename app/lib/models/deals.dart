@@ -34,10 +34,15 @@ class Deal {
       'discountedPrice': discountedPrice
     };
   }
+
+  @override
+  String toString() {
+    return "$name $description $retailerId $retailPrice $discountedPrice";
+  }
 }
 
 final dealEntries = FirebaseFirestore.instance
-    .collection('deals')
+    .collection('fake-deals')
     .withConverter<Deal>(
         fromFirestore: (snapshots, _) => Deal.fromJson(snapshots.data()!),
         toFirestore: (entry, _) => entry.toJson());

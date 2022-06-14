@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:math';
 
 const TextStyle optionStyle =
     TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: Colors.black);
@@ -10,9 +9,12 @@ const TextStyle titleStyle =
 const TextStyle ordinaryStyle =
     TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: Colors.black);
 
-Color getRandomPastelColour() {
-    Color randomColour = Color((Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0);
-    Color saturated = randomColour;
-    Color white = Colors.white.withOpacity(0.3);
-    return Color.alphaBlend(white, saturated);
-}
+const BoxDecoration gradientBackground = BoxDecoration(
+    gradient: LinearGradient(
+  begin: Alignment.topRight,
+  end: Alignment.bottomLeft,
+  colors: [
+    Color.fromRGBO(173, 190, 216, 1),
+    Color.fromRGBO(255, 229, 205, 1),
+  ],
+));
