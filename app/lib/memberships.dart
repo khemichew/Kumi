@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:app/style.dart';
+import 'package:barcode_widget/barcode_widget.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MembershipPage extends StatelessWidget {
@@ -127,10 +128,19 @@ class MembershipCard extends StatelessWidget {
 }
 
 class MembershipBarcode extends StatelessWidget {
-  const MembershipBarcode({Key? key, required this.storeName, required this.color}) : super(key: key);
+  MembershipBarcode({Key? key, required this.storeName, required this.color}) : super(key: key);
 
   final String storeName;
   final Color color;
+
+  // Create a DataMatrix barcode
+  final dm = Barcode.dataMatrix();
+
+// Generate a SVG with "Hello World!"
+//   final svg = bc.toSvg('Hello World!', width: 200, height: 200);
+
+// Save the image
+//   await File('barcode.svg').writeAsString(svg);
 
   @override
   Widget build(BuildContext context) {
@@ -151,7 +161,7 @@ class MembershipBarcode extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            height: 250,
+            height: 200,
             margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 0.0),
             padding: const EdgeInsets.all(15.0),
             decoration: BoxDecoration(
@@ -161,10 +171,23 @@ class MembershipBarcode extends StatelessWidget {
               boxShadow: defaultBoxShadow
             ),
             child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                const Image(image: AssetImage('assets/dingzhen_cute.jpeg')),
-                Text('$storeName card', style: ordinaryStyle), // TUDOU: info button
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                // const Image(image: AssetImage('assets/dingzhen_cute.jpeg')),
+                BarcodeWidget(
+                  // Nectar - Khemi
+                  barcode: Barcode.gs128(),
+                  data: '${appIdMap['nectar']!}1234567890',
+                ),
+                Container(
+                  width: double.maxFinite,
+                  decoration: BoxDecoration(
+                      color: color,
+                      borderRadius: const BorderRadius.all(Radius.circular(10)),
+                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
+                  child: Text('$storeName card', style: ordinaryStyle, textAlign: TextAlign.center,),
+                ),
               ]
             ),
           ),
@@ -201,11 +224,11 @@ class MembershipBarcode extends StatelessWidget {
               ),
               padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
               child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
-                    Text('Store details', style: ordinaryStyle),
-                    Icon(Icons.chevron_right, color: Colors.black,)
-                  ]
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const [
+                  Text('Store details', style: ordinaryStyle),
+                  Icon(Icons.chevron_right, color: Colors.black,)
+                ]
               ),
             ),
           ),

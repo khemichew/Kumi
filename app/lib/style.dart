@@ -34,3 +34,7 @@ const defaultBoxShadow = [
 Future<String> loadAsset() async {
     return await rootBundle.loadString('assets/config.json');
 }
+
+final Map<String, String> appIdMap = {
+    'nectar': '(299)'
+};
