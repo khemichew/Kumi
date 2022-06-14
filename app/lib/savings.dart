@@ -46,6 +46,23 @@ class SavingsPage extends StatelessWidget {
           const SavingAmount(),
           const PieChartFilter(),
           Container(
+              height: 100,
+              width: 200,
+              padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 2.0),
+              decoration:BoxDecoration(
+                  border: Border.all(
+                      color: Colors.black,
+                      width: 2
+                  ),
+                  borderRadius: const BorderRadius.all(Radius.circular(20))
+              ),
+              child: const Align(
+                alignment: Alignment.center,
+                child:
+                  Text("\$6324", style: hugeStyle,)
+              ),
+          ),
+          Container(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: PieChart(
               totalValue: 100,

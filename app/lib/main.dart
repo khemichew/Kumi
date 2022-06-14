@@ -1,11 +1,13 @@
-import 'package:app/database_showcase.dart';
-import 'package:app/savings.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:app/memberships.dart';
 
-import 'myaccount.dart';
+import 'package:app/firebase_options.dart';
+import 'package:app/database_showcase.dart';
+import 'package:app/savings.dart';
+import 'package:app/memberships.dart';
+import 'package:app/myaccount.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

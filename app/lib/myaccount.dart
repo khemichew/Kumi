@@ -14,7 +14,7 @@ class MyaccountPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: const [
                   Text(
-                    'My\nAccount',
+                    'My\naccount',
                     style: largeTitleStyle,
                   ),
                   // Image(image: AssetImage('../asset/dingzhen_cute.jpeg'))
@@ -25,7 +25,7 @@ class MyaccountPage extends StatelessWidget {
                 ]
             ),
               // mainAxisSize: MainAxisSize.max,
-            const SizedBox(height: 50),
+            const SizedBox(height: 30),
             const Align(
               alignment: Alignment.topLeft,
               child: PersonalDetail(field: "Name", entry: "Jim Brown")
@@ -33,16 +33,16 @@ class MyaccountPage extends StatelessWidget {
             const SizedBox(height: 30),
             const Align(
                 alignment: Alignment.topLeft,
-                child: PersonalDetail(field: "Email Address", entry: "jim.brown@dmail.com")
+                child: PersonalDetail(field: "Email address", entry: "jim.brown@dmail.com")
             ),
             const SizedBox(height: 30),
             const Align(
                 alignment: Alignment.topLeft,
-                child: PersonalDetail(field: "Phone Number", entry: "1234567890")
+                child: PersonalDetail(field: "Phone number", entry: "1234567890")
             ),
             const SizedBox(height: 50),
             Container(
-              height: 100,
+              height: 80,
               decoration:BoxDecoration(
                   border: Border.all(
                       color: Colors.black,
