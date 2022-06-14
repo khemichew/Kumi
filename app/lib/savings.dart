@@ -52,7 +52,7 @@ class SavingsPage extends StatelessWidget {
               ),
           ),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: PieChart(
               dataMap: dataMap,chartType: ChartType.ring,
               colorList: colorList,
@@ -121,7 +121,7 @@ class SavingAmt extends StatelessWidget {
   Widget build(BuildContext context) {
     return TableCell(
       verticalAlignment: TableCellVerticalAlignment.middle,
-      child: Container(
+      child: SizedBox(
           height: 32,
           width: 80,
           child: Align(
