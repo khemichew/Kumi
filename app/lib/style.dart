@@ -34,6 +34,17 @@ final ButtonStyle flatButtonStyle = TextButton.styleFrom(
     ),
 );
 
+const TextStyle ordinaryWhiteStyle =
+TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: Colors.white);
+
+const defaultBoxShadow = [
+    BoxShadow(
+        color: Colors.black,
+        offset: Offset(0, 5),
+        blurRadius: 5
+    ),
+];
+
 final ButtonStyle outlineButtonStyle = OutlinedButton.styleFrom(
     primary: Colors.black87,
     minimumSize: const Size(80, 36),
@@ -79,3 +90,7 @@ final ButtonStyle smallOptStyle = OutlinedButton.styleFrom(
 Future<String> loadAsset() async {
     return await rootBundle.loadString('assets/config.json');
 }
+
+final Map<String, String> appIdMap = {
+    'nectar': '(299)'
+};
