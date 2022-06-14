@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
@@ -94,3 +96,9 @@ Future<String> loadAsset() async {
 final Map<String, String> appIdMap = {
     'nectar': '(299)'
 };
+Color getRandomPastelColour() {
+    Color randomColour = Color((Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0);
+    Color saturated = randomColour;
+    Color white = Colors.white.withOpacity(0.3);
+    return Color.alphaBlend(white, saturated);
+}
