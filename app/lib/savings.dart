@@ -6,12 +6,20 @@ import 'package:pie_chart/pie_chart.dart';
 class SavingsPage extends StatelessWidget {
   SavingsPage({Key? key}) : super(key: key);
 
-  final Map<String, double> dataMap = {
-    "Groceries": 5,
-    "Food": 3,
-    "Fashion": 2,
-    "Healthcare": 2,
-  };
+  Map<String, double> buildDataMap(double groceryAmt, double foodAmt, double fashionAmt, double hcAmt) {
+    double total = groceryAmt + foodAmt + fashionAmt + hcAmt;
+    double groceryPercent = groceryAmt / total;
+    String groceryEntry = "Grocery:  ${groceryPercent.toStringAsFixed(2)}%";
+    double foodPercent = foodAmt / total;
+    String foodEntry = "Food:  ${foodPercent.toStringAsFixed(2)}%";
+    double fashionPercent = fashionAmt / total;
+    String fashionEntry = "Fashion:  ${fashionPercent.toStringAsFixed(2)}%";
+    double hcPercent = hcAmt / total;
+    String hcEntry = "Healthcare:  ${hcPercent.toStringAsFixed(2)}%";
+    return <String, double>{groceryEntry: groceryAmt, foodEntry: foodAmt, fashionEntry: fashionAmt, hcEntry: hcAmt };
+  }
+
+  // final Map<String, double> dataMap = buildDataMap(36.75, 46.20, 19.99, 5.50);
 
   final colorList = <Color>[
     Colors.orangeAccent,
@@ -38,9 +46,11 @@ class SavingsPage extends StatelessWidget {
           const SavingAmount(),
           const PieChartFilter(),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: PieChart(
-              dataMap: dataMap,chartType: ChartType.ring,
+              totalValue: 100,
+              dataMap: buildDataMap(36.75, 46.20, 19.99, 5.50),
+              chartType: ChartType.ring,
               colorList: colorList,
             )
           ),
@@ -181,7 +191,7 @@ class SavingAmt extends StatelessWidget {
   Widget build(BuildContext context) {
     return TableCell(
       verticalAlignment: TableCellVerticalAlignment.middle,
-      child: Container(
+      child: SizedBox(
           height: 32,
           width: 80,
           child: Align(
