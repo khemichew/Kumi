@@ -1,0 +1,90 @@
+import csv
+from traceback import print_exception
+from playwright.sync_api import sync_playwright
+def main():
+    with sync_playwright() as p:
+        header = ['store','product','type','promotion','validity','ori price','promo price']
+        f = open('web-scraping/deals-data.csv', 'w')
+        writer = csv.writer(f)
+        writer.writerow(header)
+        browser = p.firefox.launch(headless=True)
+        page = browser.new_page()
+        # page.goto("https://www.tesco.com/groceries/en-GB/promotions/all")
+        tesco(page, writer)
+        sainsburys(page, writer)
+        waitrose(page, writer)
+        f.close()
+        browser.close()
+
+
+def tesco(page, writer):
+    page.goto("https://www.tesco.com/groceries/en-GB/promotions/all?page=1&count=48")
+    for num in range(2,5):
+        items = page.locator('.product-list--list-item')
+        print(items.count())
+        for i in range(items.count()):
+            
+            string = items.nth(i).inner_text()
+            info = string.split('\n')
+            if (len(info) != 16): 
+                continue
+            final = ["Tesco",info[0], info[3], info[6], info[7], float(info[9][1:]),'']
+
+            price = info[6].split()[0]
+            if ('£' in price):
+                final[6] = convertCurrency(price)
+            else:
+                final[6] = final[5]
+    
+            writer.writerow(final)
+        # page.locator('[aria-label="Go to results page"]').click()
+        page.goto("https://www.tesco.com/groceries/en-GB/promotions/all?" + "page=" + 
+                    str(num) + "&count=48")
+
+        
+def sainsburys(page, writer):
+    page.goto("https://www.sainsburys.co.uk/shop/gb/groceries/great-offers")
+    items = page.locator('.greatOffersItem')
+    print(items.count())
+    for i in range(items.count()):
+        string = items.nth(i).inner_text()
+        info = string.split('\n')
+        if (len(info) == 14):
+            final = ["Sainsbury",info[0],'', info[1],'','', info[6]]
+        else:
+            final = ["Sainsbury",info[0],'', info[2],'','', info[7]]
+
+        final[6] = convertCurrency(final[6])
+        writer.writerow(final)
+
+def waitrose(page, writer):
+    NUM_OF_PAGES = 3
+    page.goto("https://www.waitrose.com/ecom/shop/browse/offers?sortBy=MOST_POPULAR")
+    page.locator('[data-test="accept-all"]').click()
+    for i in range(NUM_OF_PAGES):
+        page.locator('[aria-label="Load more"]').click()
+    items = page.locator('[data-testid="product-pod"]')
+    print(items.count())
+    for i in range(items.count()):
+        string = items.nth(i).inner_text()
+        info = string.split('\n')
+        final = ["Waitrose",info[1] + ' ' +info[2]
+                ,'', info[7], '','',info[11]]
+
+
+        final[6] = convertCurrency(final[6])
+
+        if ("Was" in info[7]):
+            final[5] = convertCurrency(info[7].split().pop())
+        else:
+            final[5] = final[6]
+        writer.writerow(final)
+
+def convertCurrency(money):
+    if ('p' in money):
+        res = float(money[:len(money)-1])/100
+    else:
+        res = float(money[1:])
+    return res
+    
+main()

@@ -18,6 +18,16 @@ const TextStyle smallOptTextStyle =
 const TextStyle ordinaryStyle =
     TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: Colors.black);
 
+const BoxDecoration gradientBackground = BoxDecoration(
+    gradient: LinearGradient(
+  begin: Alignment.topRight,
+  end: Alignment.bottomLeft,
+  colors: [
+    Color.fromRGBO(173, 190, 216, 1),
+    Color.fromRGBO(255, 229, 205, 1),
+  ],
+));
+
 const TextStyle smallStyle =
     TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.black);
 

@@ -101,6 +101,7 @@ class MembershipCard extends StatelessWidget {
           );
         },
         child: Container(
+          width: MediaQuery. of(context). size. width,
           height: 100,
           decoration:BoxDecoration(
               color: color,
@@ -174,11 +175,13 @@ class MembershipBarcode extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 // const Image(image: AssetImage('assets/dingzhen_cute.jpeg')),
-                BarcodeWidget(
+                SizedBox(
+                    width: MediaQuery. of(context). size. width * 0.67,
+                    child: BarcodeWidget(
                   // Nectar - Khemi
                   barcode: Barcode.gs128(),
                   data: '${appIdMap['nectar']!}1234567890',
-                ),
+                )),
                 Container(
                   width: double.maxFinite,
                   decoration: BoxDecoration(
