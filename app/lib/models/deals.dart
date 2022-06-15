@@ -6,8 +6,8 @@ class Deal {
   final String name;
   final String description;
   final int retailerId;
-  final double retailPrice;
-  final double discountedPrice;
+  final num retailPrice;
+  final num discountedPrice;
 
   const Deal(
       {required this.name,
@@ -21,8 +21,8 @@ class Deal {
             name: json['name']! as String,
             description: json['description']! as String,
             retailerId: json['retailerId']! as int,
-            retailPrice: json['retailPrice']! as double,
-            discountedPrice: json['discountedPrice']! as double);
+            retailPrice: json['retailPrice']! as num,
+            discountedPrice: json['discountedPrice']! as num);
 
   Map<String, Object?> toJson() {
     return {

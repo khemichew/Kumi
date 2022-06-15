@@ -8,14 +8,14 @@ class SavingsPage extends StatelessWidget {
 
   Map<String, double> buildDataMap(double groceryAmt, double foodAmt, double fashionAmt, double hcAmt) {
     double total = groceryAmt + foodAmt + fashionAmt + hcAmt;
-    double groceryPercent = groceryAmt / total;
-    String groceryEntry = "Grocery:  ${groceryPercent.toStringAsFixed(2)}%";
-    double foodPercent = foodAmt / total;
-    String foodEntry = "Food:  ${foodPercent.toStringAsFixed(2)}%";
-    double fashionPercent = fashionAmt / total;
-    String fashionEntry = "Fashion:  ${fashionPercent.toStringAsFixed(2)}%";
-    double hcPercent = hcAmt / total;
-    String hcEntry = "Healthcare:  ${hcPercent.toStringAsFixed(2)}%";
+    double groceryPercent = groceryAmt / total * 100;
+    String groceryEntry = "Grocery:  ${groceryPercent.toStringAsFixed(0)}%";
+    double foodPercent = foodAmt / total * 100;
+    String foodEntry = "Food:  ${foodPercent.toStringAsFixed(0)}%";
+    double fashionPercent = fashionAmt / total * 100;
+    String fashionEntry = "Fashion:  ${fashionPercent.toStringAsFixed(0)}%";
+    double hcPercent = hcAmt / total * 100;
+    String hcEntry = "Healthcare:  ${hcPercent.toStringAsFixed(0)}%";
     return <String, double>{groceryEntry: groceryAmt, foodEntry: foodAmt, fashionEntry: fashionAmt, hcEntry: hcAmt };
   }
 

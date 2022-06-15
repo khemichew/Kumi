@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:app/style.dart';
-
 import 'models/fake_user.dart';
 
 class MyAccountPage extends StatelessWidget {
@@ -27,21 +26,30 @@ class MyAccountPage extends StatelessWidget {
                   )
                 ]
             ),
-              // mainAxisSize: MainAxisSize.max,
             const SizedBox(height: 30),
-            const Align(
+            Align(
               alignment: Alignment.topLeft,
-              child: PersonalDetail(field: "Name", entry: "Jim Brown")
-            ),
-            const SizedBox(height: 30),
-            const Align(
-                alignment: Alignment.topLeft,
-                child: PersonalDetail(field: "Email address", entry: "jim.brown@dmail.com")
-            ),
-            const SizedBox(height: 30),
-            const Align(
-                alignment: Alignment.topLeft,
-                child: PersonalDetail(field: "Phone number", entry: "1234567890")
+              child: FutureBuilder<QuerySnapshot>(
+                  future: fakeUserEntries.get(),
+                  builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.hasError) {
+                      return const Center(child: Text("Something went wrong"));
+                    }
+
+                    if (!snapshot.hasData) {
+                      return const Center(child: Text("No entries found"));
+                    }
+
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      final data = snapshot.requireData;
+                      final user = data.docs[0].data() as FakeUser;
+                      // print(data.docs.length);
+                      return
+                          _FakeUserItem(user);
+                    }
+
+                    return const Center(child: CircularProgressIndicator());
+                  })
             ),
             const SizedBox(height: 50),
             Container(
@@ -80,53 +88,11 @@ class MyAccountPage extends StatelessWidget {
                 ],
               )
             ),
-            SizedBox(
-              height: 50,
-              child: FutureBuilder<QuerySnapshot>(
-                  future: fakeUserEntries.get(),
-                  builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                    if (snapshot.hasError) {
-                      return const Center(child: Text("Something went wrong"));
-                    }
-
-                    if (!snapshot.hasData) {
-                      return const Center(child: Text("No entries found"));
-                    }
-
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      final data = snapshot.requireData;
-                      // print(data.docs.length);
-                      return _FakeUserItem(data.docs[0].data() as FakeUser).name;
-                    }
-
-                    return const Center(child: CircularProgressIndicator());
-                  }),
-            )
           ]
       ),
     );
   }
 }
-
-class PersonalDetail extends StatelessWidget {
-  const PersonalDetail({Key? key, required this.field, required this.entry}) : super(key: key);
-
-  final String field;
-  final String entry;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(field, style: emphStyle),
-        Text(entry, style: ordinaryStyle),
-      ],
-    );
-  }
-}
-
 
 class _FakeUserItem extends StatelessWidget {
   final FakeUser fakeUser;
@@ -135,16 +101,57 @@ class _FakeUserItem extends StatelessWidget {
 
   Widget get name {
     return Text(fakeUser.name,
-        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold));
+        style: ordinaryStyle);
   }
 
   Widget get emailAddress {
     return Text(fakeUser.emailAddress,
-        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold));
+        style: ordinaryStyle);
+  }
+
+  Widget get phoneNumber {
+    return Text(fakeUser.phoneNumber.toString(),
+        style:ordinaryStyle);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [name, emailAddress]);
+    return Column(children: [
+      Align(
+          alignment: Alignment.topLeft,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text("Name", style: emphStyle,),
+              name,
+            ]
+          )
+        ),
+      const SizedBox(height: 30),
+      Align(
+          alignment: Alignment.topLeft,
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text("Email Address", style: emphStyle,),
+                emailAddress,
+              ]
+          )
+      ),
+      const SizedBox(height: 30),
+      Align(
+          alignment: Alignment.topLeft,
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text("Phone Number", style: emphStyle,),
+                phoneNumber,
+              ]
+          )
+      ),
+    ]);
   }
 }
