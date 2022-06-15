@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:app/models/deals.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class Explore extends StatefulWidget {
   const Explore({Key? key}) : super(key: key);
@@ -49,9 +50,9 @@ class _ExploreState extends State<Explore> {
             fillColor: _color,
             prefixIcon: const Icon(Icons.search)),
         focusNode: _textFieldFocus
-        // Query when text field changes
-        // onChanged: ,
-        );
+      // Query when text field changes
+      // onChanged: ,
+    );
   }
 
   @override
@@ -104,38 +105,125 @@ class _DealsListState extends State<DealsList> {
 
 class _DealsItem extends StatelessWidget {
   final Deal deal;
+  final NumberFormat formatCurrency = NumberFormat.currency(locale: "en_GB", symbol: "£");
 
-  const _DealsItem(this.deal);
+  _DealsItem(this.deal);
 
-  Widget get title {
+  // TODO: add trailing ... if too long
+  Widget get productName {
     return Text(deal.name,
         style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold));
   }
 
-  // TODO: crop
   Widget get image {
-    return Image.asset('assets/images/food-placeholder.jpg');
+    return AspectRatio(
+        aspectRatio: 3.0,
+        child: Container(
+          decoration: const BoxDecoration(
+              image: DecorationImage(
+                fit: BoxFit.fitWidth,
+                alignment: FractionalOffset.topCenter,
+                image: AssetImage('assets/images/food-placeholder.jpg'),
+              )),
+        ));
   }
 
-  // Widget get discount {
-  //
-  // }
+  // TODO: retrieve from database
+  Widget get retailer {
+    return const Text("Tesco Express");
+  }
+
+  Widget get retailPrice {
+    return Align(
+      alignment: Alignment.bottomRight,
+      child: Text(formatCurrency.format(deal.retailPrice),
+          style: const TextStyle(
+              color: Colors.grey,
+              fontWeight: FontWeight.w100,
+              decoration: TextDecoration.lineThrough)
+    ));
+    // return
+  }
+
+  Widget get discountedPrice {
+    return Align(
+      alignment: Alignment.bottomRight,
+      child:  Text(formatCurrency.format(deal.discountedPrice),
+            style: const TextStyle(fontWeight: FontWeight.bold)
+        )
+    );
+  }
 
   Widget get details {
-    return Row(children: [
-      Align(
-        alignment: Alignment.topLeft,
-        child: title,
-      ),
-      // Align(
-      //   alignment: Alignment.topRight,
-      //   child:
-      // )
-    ]);
+    return Table(
+        columnWidths: const <int, TableColumnWidth>{
+          0: FlexColumnWidth(),
+          1: IntrinsicColumnWidth()
+        },
+        defaultVerticalAlignment: TableCellVerticalAlignment.bottom,
+        children: [
+          TableRow(
+              children: [
+                productName,
+                retailPrice
+              ]
+          ),
+          TableRow(
+              children: [
+                retailer,
+                discountedPrice
+              ]
+          )
+        ]
+    );
+  }
+
+  dynamic onTapBehaviour(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return DealDialog(deal);
+      }
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [image, details]);
+    const SizedBox pad = SizedBox(height: 8);
+
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () {
+        onTapBehaviour(context);
+      },
+      child: Column(
+          children: [
+              image,
+              pad,
+              details,
+              pad
+            ]
+      )
+    );
+  }
+}
+
+class DealDialog extends StatelessWidget {
+  final Deal deal;
+
+  const DealDialog(this.deal, {Key? key}): super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text(deal.name),
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: [
+            Text(deal.description)
+          ]
+        )
+      )
+    );
   }
 }

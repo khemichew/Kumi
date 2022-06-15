@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:app/models/retailers.dart';
 
 @immutable
 class Deal {
@@ -22,7 +21,7 @@ class Deal {
             name: json['name']! as String,
             description: json['description']! as String,
             retailerId: json['retailerId']! as int,
-            retailPrice: json['retailPrice']! as double,
+            retailPrice: (json['retailPrice'] as num).toDouble(),
             discountedPrice: json['discountedPrice']! as double);
 
   Map<String, Object?> toJson() {
