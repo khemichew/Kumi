@@ -133,7 +133,9 @@ class PieChartFilter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return SizedBox(
+      width: MediaQuery. of(context). size. width,
+        child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         TextButton(
@@ -154,10 +156,10 @@ class PieChartFilter extends StatelessWidget {
         TextButton(
           style: outlineButtonStyle,
           onPressed: () { },
-          child: const Text('This Week',style: filterStyle,),
+          child: const Text('This Week',style: filterStyle, ),
         ),
       ],
-    );
+    ));
   }
 }
 
