@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:app/style.dart';
 import 'package:pie_chart/pie_chart.dart';
@@ -42,6 +43,15 @@ class SavingsPage extends StatelessWidget {
               style: largeTitleStyle,
             ),
           ),
+          TextButton(onPressed: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return const AddingShopForm();
+                }
+            );
+          },
+              child: const Text("Press me!")),
 
           const SavingAmount(),
           const PieChartFilter(),
@@ -271,3 +281,98 @@ class SavingAmtFilter extends StatelessWidget {
   }
 }
 
+class AddingShopForm extends StatefulWidget {
+  const AddingShopForm({super.key});
+
+  @override
+  AddShoppingState createState() => AddShoppingState();
+}
+
+class AddShoppingState extends State<AddingShopForm> {
+
+  final storeController = TextEditingController();
+  final amountController = TextEditingController();
+  final dateController = TextEditingController();
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    storeController.dispose();
+    amountController.dispose();
+    dateController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      child: contentBox(context),
+    );
+  }
+
+  Future<void> addShopping(String store, String amount, String date) {
+    return FirebaseFirestore.instance.collection("test-users")
+        .add({
+      'store': store,
+      'amount': amount,
+      'date': date
+        });
+  }
+
+  contentBox(context) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            const Text("Store: "),
+            SizedBox(
+              width: 100,
+              child: TextField(
+                controller: storeController,
+              ),
+            ),
+            Text((storeController.text))
+          ],
+
+        ),
+
+        Row(
+          children: [
+            const Text("Amount:  £"),
+            SizedBox(
+              width: 100,
+              child: TextField(
+                controller: amountController,
+              ),
+            ),
+            Text((amountController.text))
+          ],
+
+        ),
+
+        Row(
+          children: [
+            const Text("Date: "),
+            SizedBox(
+              width: 100,
+              child: TextField(
+                decoration: const InputDecoration(
+                  hintText: 'dd-mm-yyyy'
+                ),
+                controller: dateController,
+              ),
+            ),
+            Text((dateController.text))
+          ],
+
+        ),
+
+        TextButton(onPressed: ()
+        {
+          addShopping(storeController.text, amountController.text, dateController.text);
+          Navigator.pop(context);
+        },
+            child: const Text("Submit"))
+      ],);
+  }
+}

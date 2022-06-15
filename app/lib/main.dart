@@ -3,7 +3,6 @@ import 'package:app/explore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:app/memberships.dart';
-import 'package:app/firebase_options.dart';
 import 'package:app/savings.dart';
 import 'package:app/my_account.dart';
 
