@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:app/style.dart';
+
+import 'models/fake_user.dart';
 
 class MyAccountPage extends StatelessWidget {
   const MyAccountPage({Key? key}) : super(key: key);
@@ -76,6 +79,28 @@ class MyAccountPage extends StatelessWidget {
                   ),
                 ],
               )
+            ),
+            SizedBox(
+              height: 50,
+              child: FutureBuilder<QuerySnapshot>(
+                  future: fakeUserEntries.get(),
+                  builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.hasError) {
+                      return const Center(child: Text("Something went wrong"));
+                    }
+
+                    if (!snapshot.hasData) {
+                      return const Center(child: Text("No entries found"));
+                    }
+
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      final data = snapshot.requireData;
+                      // print(data.docs.length);
+                      return _FakeUserItem(data.docs[0].data() as FakeUser).name;
+                    }
+
+                    return const Center(child: CircularProgressIndicator());
+                  }),
             )
           ]
       ),
@@ -99,5 +124,27 @@ class PersonalDetail extends StatelessWidget {
         Text(entry, style: ordinaryStyle),
       ],
     );
+  }
+}
+
+
+class _FakeUserItem extends StatelessWidget {
+  final FakeUser fakeUser;
+
+  const _FakeUserItem(this.fakeUser);
+
+  Widget get name {
+    return Text(fakeUser.name,
+        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold));
+  }
+
+  Widget get emailAddress {
+    return Text(fakeUser.emailAddress,
+        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(children: [name, emailAddress]);
   }
 }
