@@ -19,10 +19,10 @@ void main() {
     expect(find.text('My\nmemberships'), findsOneWidget);
 
     // Tap the 'person' icon and switch to account page.
-    await tester.tap(find.byIcon(Icons.person_outline));
+    await tester.tap(find.byIcon(Icons.currency_pound_outlined));
     await tester.pump();
 
     // Verify at account page.
-    expect(find.text('My\naccount'), findsOneWidget);
+    expect(find.text('You have saved:'), findsOneWidget);
   });
 }
