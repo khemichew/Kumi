@@ -131,6 +131,7 @@ class _DealsItem extends StatelessWidget {
       //   alignment: Alignment.topRight,
       //   child:
       // )
+      Text("${deal.name} ${deal.description} ${deal.discountedPrice}")
     ]);
   }
 
