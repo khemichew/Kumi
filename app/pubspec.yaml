@@ -39,6 +39,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   firebase_core: ^1.17.1
   cloud_firestore: ^3.1.17
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:
@@ -64,11 +65,10 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/
     - assets/images/food-placeholder.jpg
+    - assets/dzdl.jpeg
 
-
-  # An image assets can refer to one or more resolution-specific "variants", see
+  # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
   # For details regarding adding assets from package dependencies, see
@@ -77,7 +77,7 @@ flutter:
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a
-  # list giving the assets and other descriptors for the font. For
+  # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
     - family: Overpass
@@ -87,10 +87,9 @@ flutter:
           style: italic
   #   - family: Trajan Pro
   #     fonts:
-  #       - assets: fonts/TrajanPro.ttf
-  #       - assets: fonts/TrajanPro_Bold.ttf
+  #       - asset: fonts/TrajanPro.ttf
+  #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
-
