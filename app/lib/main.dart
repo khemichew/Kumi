@@ -2,8 +2,10 @@ import 'package:app/explore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-import 'package:app/style.dart';
 import 'package:app/memberships.dart';
+import 'package:app/firebase_options.dart';
+import 'package:app/savings.dart';
+import 'package:app/my_account.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -55,11 +57,8 @@ class _MyHomePageState extends State<MyHomePage> {
   final List<Widget> _widgetOptions = <Widget>[
     const MembershipPage(),
     const Explore(),
-    const Text(
-      'Index 2: Savings',
-      style: optionStyle,
-    ),
-    const AccountPage(),
+    SavingsPage(),
+    const MyAccountPage(),
   ];
 
   void _onItemTapped(int index) {
@@ -119,65 +118,6 @@ class _MyHomePageState extends State<MyHomePage> {
         onTap: _onItemTapped,
         type: BottomNavigationBarType.fixed,
       ),
-    );
-  }
-}
-
-class AccountPage extends StatelessWidget {
-  const AccountPage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.fromLTRB(20, 50, 20, 0),
-      child: Column(
-          children: [
-            Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Text(
-                    'My\naccount',
-                    style: titleStyle,
-                  ),
-                ]
-            ),
-            Row(
-
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                PersonalDetail(field: "Name", entry: "Jim Brown")
-              ],
-            )
-          ]
-      ),
-    );
-  }
-}
-
-class PersonalDetail extends StatelessWidget {
-  const PersonalDetail({Key? key, required this.field, required this.entry}) : super(key: key);
-
-  final String field;
-  final String entry;
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-        child: Container(
-          height: 100,
-          decoration:const BoxDecoration(
-              color: Color.fromRGBO(0,0,0,0),
-          ),
-          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-                    Text(field, style: titleStyle),
-                    Text(entry, style: ordinaryStyle),
-            ],
-          ),
-        ),
     );
   }
 }
