@@ -58,7 +58,7 @@ const defaultBoxShadow = [
 final ButtonStyle outlineButtonStyle = OutlinedButton.styleFrom(
     primary: Colors.black87,
     minimumSize: const Size(80, 36),
-    padding: const EdgeInsets.symmetric(horizontal: 15),
+    padding: const EdgeInsets.symmetric(horizontal: 5),
     shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(3)),
     ),

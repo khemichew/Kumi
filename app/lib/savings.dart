@@ -144,7 +144,7 @@ class PieChartFilter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: MediaQuery. of(context). size. width,
+      width: MediaQuery. of(context). size. width * 5,
         child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
