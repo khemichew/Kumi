@@ -13,11 +13,15 @@ class Explore extends StatefulWidget {
 }
 
 class _ExploreState extends State<Explore> {
+  late String queryText;
+  late Stream queryStream;
   late FocusNode _textFieldFocus;
+  static const displayLimit = 20;
   Color _color = Colors.black12;
 
   @override
   void initState() {
+    queryText = "";
     _textFieldFocus = FocusNode();
     _textFieldFocus.addListener(() {
       if (_textFieldFocus.hasFocus) {
@@ -30,28 +34,41 @@ class _ExploreState extends State<Explore> {
         });
       }
     });
+    queryStream = dealEntries.snapshots();
     super.initState();
   }
 
   Widget _searchBar() {
     return TextField(
-        textAlignVertical: TextAlignVertical.center,
-        decoration: InputDecoration(
-            hintText: "Search deals..",
-            contentPadding: const EdgeInsets.all(15),
-            enabledBorder: OutlineInputBorder(
+      textAlignVertical: TextAlignVertical.center,
+      decoration: InputDecoration(
+          hintText: "Search deals..",
+          contentPadding: const EdgeInsets.all(15),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30),
+            borderSide: const BorderSide(color: Colors.white),
+          ),
+          focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(30),
-              borderSide: const BorderSide(color: Colors.white),
-            ),
-            focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30),
-                borderSide: const BorderSide(color: Colors.white)),
-            filled: true,
-            fillColor: _color,
-            prefixIcon: const Icon(Icons.search)),
-        focusNode: _textFieldFocus
+              borderSide: const BorderSide(color: Colors.white)),
+          filled: true,
+          fillColor: _color,
+          prefixIcon: const Icon(Icons.search)),
+      focusNode: _textFieldFocus,
       // Query when text field changes
-      // onChanged: ,
+      onChanged: (value) {
+        setState(() {
+          queryText = value;
+          if (queryText.isEmpty || queryText.trim().isEmpty) {
+            queryStream = dealEntries.snapshots();
+          } else {
+            queryStream = dealEntries
+                .where('name', isGreaterThanOrEqualTo: queryText)
+                .where('name', isLessThan: '$queryText\uf8ff')
+                .snapshots();
+          }
+        });
+      },
     );
   }
 
@@ -60,52 +77,35 @@ class _ExploreState extends State<Explore> {
     return Scaffold(
         appBar: AppBar(
             backgroundColor: Colors.white, title: _searchBar(), elevation: 0),
-        body: const DealsList());
-  }
-}
+        body: StreamBuilder<QuerySnapshot>(
+            stream: queryStream as Stream<QuerySnapshot<Object?>>,
+            builder:
+                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.hasError) {
+                return const Center(child: Text("Something went wrong"));
+              }
 
-class DealsList extends StatefulWidget {
-  const DealsList({Key? key}) : super(key: key);
+              if (!snapshot.hasData) {
+                return const Center(child: Text("No entries found"));
+              }
 
-  @override
-  State<DealsList> createState() => _DealsListState();
-}
+              final data = snapshot.requireData;
 
-class _DealsListState extends State<DealsList> {
-  static const int displayLimit = 20;
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<QuerySnapshot>(
-        future: dealEntries.get(),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.hasError) {
-            return const Center(child: Text("Something went wrong"));
-          }
-
-          if (!snapshot.hasData) {
-            return const Center(child: Text("No entries found"));
-          }
-
-          if (snapshot.connectionState == ConnectionState.done) {
-            final data = snapshot.requireData;
-            return ListView.builder(
-              padding: const EdgeInsets.all(15.0),
-              itemCount: min(data.size, displayLimit),
-              itemBuilder: (context, index) {
-                return _DealsItem(data.docs[index].data() as Deal);
-              },
-            );
-          }
-
-          return const Center(child: CircularProgressIndicator());
-        });
+              return ListView.builder(
+                padding: const EdgeInsets.all(15.0),
+                itemCount: min(data.size, displayLimit),
+                itemBuilder: (context, index) {
+                  return _DealsItem(data.docs[index].data() as Deal);
+                },
+              );
+            }));
   }
 }
 
 class _DealsItem extends StatelessWidget {
   final Deal deal;
-  final NumberFormat formatCurrency = NumberFormat.currency(locale: "en_GB", symbol: "£");
+  final NumberFormat formatCurrency =
+      NumberFormat.currency(locale: "en_GB", symbol: "£");
 
   _DealsItem(this.deal);
 
@@ -121,10 +121,10 @@ class _DealsItem extends StatelessWidget {
         child: Container(
           decoration: const BoxDecoration(
               image: DecorationImage(
-                fit: BoxFit.fitWidth,
-                alignment: FractionalOffset.topCenter,
-                image: AssetImage('assets/images/food-placeholder.jpg'),
-              )),
+            fit: BoxFit.fitWidth,
+            alignment: FractionalOffset.topCenter,
+            image: AssetImage('assets/images/food-placeholder.jpg'),
+          )),
         ));
   }
 
@@ -135,23 +135,20 @@ class _DealsItem extends StatelessWidget {
 
   Widget get retailPrice {
     return Align(
-      alignment: Alignment.bottomRight,
-      child: Text(formatCurrency.format(deal.retailPrice),
-          style: const TextStyle(
-              color: Colors.grey,
-              fontWeight: FontWeight.w100,
-              decoration: TextDecoration.lineThrough)
-    ));
+        alignment: Alignment.bottomRight,
+        child: Text(formatCurrency.format(deal.retailPrice),
+            style: const TextStyle(
+                color: Colors.grey,
+                fontWeight: FontWeight.w100,
+                decoration: TextDecoration.lineThrough)));
     // return
   }
 
   Widget get discountedPrice {
     return Align(
-      alignment: Alignment.bottomRight,
-      child:  Text(formatCurrency.format(deal.discountedPrice),
-            style: const TextStyle(fontWeight: FontWeight.bold)
-        )
-    );
+        alignment: Alignment.bottomRight,
+        child: Text(formatCurrency.format(deal.discountedPrice),
+            style: const TextStyle(fontWeight: FontWeight.bold)));
   }
 
   Widget get details {
@@ -162,29 +159,17 @@ class _DealsItem extends StatelessWidget {
         },
         defaultVerticalAlignment: TableCellVerticalAlignment.bottom,
         children: [
-          TableRow(
-              children: [
-                productName,
-                retailPrice
-              ]
-          ),
-          TableRow(
-              children: [
-                retailer,
-                discountedPrice
-              ]
-          )
-        ]
-    );
+          TableRow(children: [productName, retailPrice]),
+          TableRow(children: [retailer, discountedPrice])
+        ]);
   }
 
   dynamic onTapBehaviour(BuildContext context) {
     return showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return DealDialog(deal);
-      }
-    );
+        context: context,
+        builder: (BuildContext context) {
+          return DealDialog(deal);
+        });
   }
 
   @override
@@ -192,38 +177,24 @@ class _DealsItem extends StatelessWidget {
     const SizedBox pad = SizedBox(height: 8);
 
     return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onTap: () {
-        onTapBehaviour(context);
-      },
-      child: Column(
-          children: [
-              image,
-              pad,
-              details,
-              pad
-            ]
-      )
-    );
+        behavior: HitTestBehavior.translucent,
+        onTap: () {
+          onTapBehaviour(context);
+        },
+        child: Column(children: [image, pad, details, pad]));
   }
 }
 
 class DealDialog extends StatelessWidget {
   final Deal deal;
 
-  const DealDialog(this.deal, {Key? key}): super(key: key);
+  const DealDialog(this.deal, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(deal.name),
-      content: SingleChildScrollView(
-        child: ListBody(
-          children: [
-            Text(deal.description)
-          ]
-        )
-      )
-    );
+        title: Text(deal.name),
+        content: SingleChildScrollView(
+            child: ListBody(children: [Text(deal.description)])));
   }
 }
