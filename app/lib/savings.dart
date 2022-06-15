@@ -311,7 +311,7 @@ class AddShoppingState extends State<AddingShopForm> {
   }
 
   Future<void> addShopping(String store, String amount, String date) {
-    return FirebaseFirestore.instance.collection("test-users")
+    return FirebaseFirestore.instance.collection("test-spend-record")
         .add({
       'store': store,
       'amount': amount,
