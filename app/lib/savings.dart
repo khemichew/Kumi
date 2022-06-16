@@ -414,6 +414,8 @@ class AddingShopForm extends StatefulWidget {
 
 class AddShoppingState extends State<AddingShopForm> {
 
+  DateTime selectedDate = DateTime.now();
+
   final storeController = TextEditingController();
   final amountController = TextEditingController();
   final dateController = TextEditingController();
@@ -446,6 +448,19 @@ class AddShoppingState extends State<AddingShopForm> {
       'amount': amount,
       'date': date
         });
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+      });
+    }
   }
 
   contentBox(context) {
@@ -506,20 +521,36 @@ class AddShoppingState extends State<AddingShopForm> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                const Text("          Date:  ", style: ordinaryStyle,),
-                SizedBox(
+                const Text("          Date:", style: ordinaryStyle,),
+                Container(
                   width: 120,
                   height: 40,
-                  child: TextField(
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                      hintText: 'dd-mm-yyyy'
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                        color: Colors.black
                     ),
-                    textAlignVertical: TextAlignVertical.center,
-                    controller: dateController,
+                    color: Colors.white,
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                  ),
+                  child: TextButton(
+                    onPressed: () => _selectDate(context),
+                    child: Text("${selectedDate.toLocal()}".split(' ')[0]),
                   ),
                 ),
-                Text((dateController.text))
+
+                // SizedBox(
+                //   width: 120,
+                //   height: 40,
+                //   child: TextField(
+                //     decoration: const InputDecoration(
+                //         border: OutlineInputBorder(),
+                //       hintText: 'dd-mm-yyyy'
+                //     ),
+                //     textAlignVertical: TextAlignVertical.center,
+                //     controller: dateController,
+                //   ),
+                // ),
+                // Text((dateController.text))
               ],
 
             ),
