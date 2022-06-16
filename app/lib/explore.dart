@@ -120,7 +120,8 @@ class _ExploreState extends State<Explore> {
                     child: Text("Rating ⬇"),
                   ),
                 ];
-              })),
+              })
+      ),
 
       focusNode: _textFieldFocus,
       // Query when text field changes
@@ -165,10 +166,15 @@ class _DealsItem extends StatelessWidget {
 
   _DealsItem(this.deal);
 
-  // TODO: add trailing ... if too long
   Widget get productName {
     return Text(deal.name,
-        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold));
+        style: const TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+          overflow: TextOverflow.fade,
+        ),
+        maxLines: 2,
+        softWrap: false);
   }
 
   Widget get image {

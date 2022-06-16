@@ -14,7 +14,7 @@ class MembershipPage extends StatelessWidget {
       margin: const EdgeInsets.fromLTRB(15, 50, 15, 0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
-        children: const [MembershipPageHead(), MembershipList()],
+        children: const [MembershipPageHead(), Flexible(child: MembershipList())],
       ),
     );
   }
@@ -153,18 +153,6 @@ class MembershipCard extends StatelessWidget {
                 image: NetworkImage(retailer.imageUrl), fit: BoxFit.cover),
             borderRadius: const BorderRadius.all(Radius.circular(10))),
         padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                Expanded(child: title),
-                const Icon(
-                  Icons.chevron_right,
-                  color: Colors.black,
-                )
-              ]),
-            ]),
       ),
     );
   }
@@ -179,6 +167,10 @@ class MembershipBarcode extends StatelessWidget {
 
   // Create a DataMatrix barcode
   final dm = Barcode.dataMatrix();
+
+  void exploreDealBasedOnStore() {
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -227,9 +219,9 @@ class MembershipBarcode extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           vertical: 5.0, horizontal: 10.0),
                       child: FittedBox(
-                        fit: BoxFit.fitWidth,
+                        fit: BoxFit.scaleDown,
                         child: Text(
-                          '$storeName card',
+                          '$storeName barcode',
                           style: ordinaryStyle,
                           textAlign: TextAlign.center,
                         ),
@@ -249,7 +241,7 @@ class MembershipBarcode extends StatelessWidget {
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: const [
-                    Text('Deals & rewards', style: ordinaryWhiteStyle),
+                    Text('Deals', style: ordinaryWhiteStyle),
                     Icon(
                       Icons.chevron_right,
                       color: Colors.white,
@@ -258,7 +250,7 @@ class MembershipBarcode extends StatelessWidget {
             ),
           ),
           TextButton(
-            onPressed: () {},
+            onPressed: exploreDealBasedOnStore,
             child: Container(
               height: 50,
               decoration: BoxDecoration(
