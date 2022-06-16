@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:app/style.dart';
+// import 'models/fake_spend_record.dart';
 import 'models/fake_user.dart';
 
 final recordEntries = FirebaseFirestore.instance.collection("test-spend-record");
@@ -31,8 +32,8 @@ class MyAccountPage extends StatelessWidget {
             const SizedBox(height: 30),
             Align(
               alignment: Alignment.topLeft,
-              child: FutureBuilder<QuerySnapshot>(
-                  future: fakeUserEntries.get(),
+              child: StreamBuilder<QuerySnapshot>(
+                  stream: fakeUserEntries.get().asStream(),
                   builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                     if (snapshot.hasError) {
                       return const Center(child: Text("Something went wrong"));
@@ -44,8 +45,9 @@ class MyAccountPage extends StatelessWidget {
 
                     if (snapshot.connectionState == ConnectionState.done) {
                       final data = snapshot.requireData;
+                      //print(data.docs[2].id);
                       final user = data.docs[0].data() as FakeUser;
-                      // print(data.docs.length);
+
                       return
                           _FakeUserItem(user);
                     }
@@ -91,7 +93,7 @@ class MyAccountPage extends StatelessWidget {
               )
             ),
             // SizedBox(
-            //   width: 200,
+            //   width: 300,
             //   height:50,
             //   child: FutureBuilder<QuerySnapshot>(
             //       future: fakeSpendRecordEntries.get(),
@@ -107,6 +109,7 @@ class MyAccountPage extends StatelessWidget {
             //         if (snapshot.connectionState == ConnectionState.done) {
             //           final data = snapshot.requireData;
             //           // final records = data.docs as List<FakeSpendRecord>;
+            //           print(data.docs.length);
             //           return
             //             ListView.builder(
             //               padding: const EdgeInsets.all(15.0),
@@ -115,7 +118,7 @@ class MyAccountPage extends StatelessWidget {
             //                 return _SingleRecord(data.docs[index].data() as FakeSpendRecord);
             //               },
             //             );
-            //         }s
+            //         }
             //
             //         return const Center(child: CircularProgressIndicator());
             //       }),
@@ -150,11 +153,15 @@ class MyAccountPage extends StatelessWidget {
 //
 //   @override
 //   Widget build(BuildContext context) {
-//     return SizedBox(
-//       width: MediaQuery. of(context). size. width * 0.8,
-//       height: 20,
-//       child: Text("${record.store} ${record.amount} ${record.timestamp}"),
-//     );
+//     return
+//       Align(
+//         alignment: Alignment.topLeft,
+//         child: SizedBox(
+//           width: MediaQuery. of(context). size. width * 0.8,
+//           height: 20,
+//           child: Text("Store: ${record.store} with ${record.amount} at ${record.time}."),
+//         ),
+//       );
 //   }
 // }
 
@@ -219,14 +226,3 @@ class _FakeUserItem extends StatelessWidget {
     ]);
   }
 }
-
-// class _FakeSpendRecordList extends StatelessWidget {
-//   final List<FakeSpendRecord> record;
-//   const _FakeSpendRecordList(this.record);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     // TODO: implement build
-//     throw UnimplementedError();
-//   }
-// }
