@@ -1,4 +1,5 @@
 import 'package:app/models/deals.dart';
+import 'package:app/style.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -248,8 +249,44 @@ class DealDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-        title: Text(deal.name),
+        title: Text(deal.name, style: emphStyle,),
         content: SingleChildScrollView(
-            child: ListBody(children: [Text(deal.description)])));
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children :[
+                    const Align(
+                      alignment: Alignment.topLeft,
+                      child: Text("Store: Sainsbury", style: ordinaryStyle,),
+                    ),
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(deal.description, style: ordinaryStyle,),
+                    ),
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Text("Original Price: ${deal.retailPrice},", style: ordinaryStyle,),
+                    ),
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Text("Current Price: ${deal.discountedPrice}\n\n", style: ordinaryStyle,),
+                    ),
+                    Align(
+                      alignment: Alignment.center,
+                      child: Text("Discount: ${percentOff(deal.retailPrice, deal.discountedPrice)}% OFF!!!", style: emphStyle,),
+                    ),
+                  ]
+              ),
+            )));
   }
+
+  String percentOff(num original, num current) {
+    double prev = original.toDouble();
+    double curr = current.toDouble();
+    double ratio = (prev - curr) / prev;
+    // print("prev: ${prev}, curr: ${curr}, ratio: ${ratio}");
+    return (ratio * 100).toStringAsFixed(1);
+  }
+
 }
