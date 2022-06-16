@@ -1,5 +1,6 @@
 import 'package:app/models/fake_spend_record.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:collection/collection.dart';
 
 // import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:fl_chart/fl_chart.dart';
@@ -10,6 +11,17 @@ import 'package:app/style.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
 
 enum TimeInterval { week, month, year }
+
+@immutable
+class TotalRecord {
+  final num amount;
+  final int timeInterval;
+
+  const TotalRecord({
+    required this.amount,
+    required this.timeInterval,
+  });
+}
 
 class SavingsPage extends StatelessWidget {
   SavingsPage({Key? key}) : super(key: key);
@@ -45,18 +57,23 @@ class SavingsPage extends StatelessWidget {
   final List<FakeSpendRecord> data = [
     FakeSpendRecord(
       store: "Tesco",
-      amount: 30,
+      amount: 20,
       time: DateTime.parse("2022-03-13"),
     ),
     FakeSpendRecord(
       store: "Tesco",
+      amount: 100,
+      time: DateTime.parse("2022-04-20"),
+    ),
+    FakeSpendRecord(
+      store: "Tesco",
       amount: 50,
-      time: DateTime.parse("2022-04-13"),
+      time: DateTime.parse("2022-06-04"),
     ),
     FakeSpendRecord(
       store: "Tesco",
       amount: 10,
-      time: DateTime.parse("2022-05-13"),
+      time: DateTime.parse("2022-06-16"),
     ),
   ];
 
@@ -86,7 +103,7 @@ class SavingsPage extends StatelessWidget {
 class ShoppingsChart extends StatefulWidget {
   final List<FakeSpendRecord> data;
 
-  const ShoppingsChart(this.data);
+  const ShoppingsChart(this.data, {super.key});
 
   @override
   ShoppingsChartState createState() => ShoppingsChartState(data);
@@ -98,53 +115,71 @@ class ShoppingsChartState extends State<ShoppingsChart> {
 
   ShoppingsChartState(this.data);
 
-  BarChartData monthlyData() {
-    return BarChartData(
-      borderData: FlBorderData(
-          border: const Border(
-        top: BorderSide.none,
-        right: BorderSide.none,
-        left: BorderSide(width: 1),
-        bottom: BorderSide(width: 1),
-      )),
-      groupsSpace: 10,
-      barGroups: data
-          .map(
-              (dataItem) => BarChartGroupData(x: dataItem.time.month, barRods: [
-                    BarChartRodData(
-                        y: dataItem.amount.toDouble(),
-                        width: 15,
-                        colors: [Colors.amber]),
-                  ]))
-          .toList(),
-      titlesData: FlTitlesData(
-          show: true,
-          rightTitles: SideTitles(showTitles: false),
-          topTitles: SideTitles(showTitles: false),
-          bottomTitles: SideTitles(
-            showTitles: true,
-            getTitles: bottomTitles,
-            reservedSize: 42,
-          ),
-          leftTitles: SideTitles(
-            showTitles: true,
-            reservedSize: 28,
-            interval: 1,
-            getTitles: leftTitles,
-          )),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        const PieChartFilter(),
+        SizedBox(
+            width: MediaQuery.of(context).size.width * 5,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextButton(
+                  style: outlineButtonStyle,
+                  onPressed: () {
+                    setState(() {
+                      interval = TimeInterval.year;
+                    });
+                  },
+                  child: const Text(
+                    'Total',
+                    style: filterStyle,
+                  ),
+                ),
+                TextButton(
+                  style: outlineButtonStyle,
+                  onPressed: () {
+                    setState(() {
+                      interval = TimeInterval.year;
+                    });
+                  },
+                  child: const Text(
+                    'This Year',
+                    style: filterStyle,
+                  ),
+                ),
+                TextButton(
+                  style: outlineButtonStyle,
+                  onPressed: () {
+                    setState(() {
+                      interval = TimeInterval.month;
+                    });
+                  },
+                  child: const Text(
+                    'This Month',
+                    style: filterStyle,
+                  ),
+                ),
+                TextButton(
+                  style: outlineButtonStyle,
+                  onPressed: () {
+                    setState(() {
+                      interval = TimeInterval.week;
+                    });
+                  },
+                  child: const Text(
+                    'This Week',
+                    style: filterStyle,
+                  ),
+                ),
+              ],
+            )),
         Container(
             height: 200,
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: BarChart(monthlyData())),
+            child: BarChart(interval == TimeInterval.month ? monthlyData() :
+                            interval == TimeInterval.week ? weeklyData() : yearlyData())),
         // const SavingAmtFilter(),
         const SavingTable(),
 
@@ -166,7 +201,158 @@ class ShoppingsChartState extends State<ShoppingsChart> {
     );
   }
 
-  String leftTitles(double value) {
+  BarChartData weeklyData() {
+    final Map<int, List<FakeSpendRecord>> info = groupBy(
+        data.where((dataItem) => dataItem.time.month == DateTime.now().month),
+            (FakeSpendRecord r) {
+          return r.time.day~/7;
+        });
+    List<TotalRecord> list = [];
+    info.forEach((k, v) =>
+        list.add(TotalRecord(amount: groupTimeInterval(v), timeInterval: k)));
+    return BarChartData(
+      borderData: FlBorderData(
+          border: const Border(
+        top: BorderSide.none,
+        right: BorderSide.none,
+        left: BorderSide(width: 1),
+        bottom: BorderSide(width: 1),
+      )),
+      groupsSpace: 10,
+      barGroups: list
+          .map(
+              (dataItem) => BarChartGroupData(x: dataItem.timeInterval, barRods: [
+                    BarChartRodData(
+                        y: dataItem.amount.toDouble(),
+                        width: 15,
+                        colors: [Colors.amber]),
+                  ]))
+          .toList(),
+      titlesData: FlTitlesData(
+          show: true,
+          rightTitles: SideTitles(showTitles: false),
+          topTitles: SideTitles(showTitles: false),
+          bottomTitles: SideTitles(
+            showTitles: true,
+            getTitles: weeklyBottomTitles,
+            reservedSize: 42,
+          ),
+          leftTitles: SideTitles(
+            showTitles: true,
+            reservedSize: 28,
+            interval: 1,
+            getTitles: weeklyLeftTitles,
+          )),
+    );
+  }
+
+  double groupTimeInterval(List<FakeSpendRecord> v) {
+    double total = v.map((e) => e.amount).sum.toDouble();
+    return total;
+  }
+
+  BarChartData monthlyData() {
+    final Map<int, List<FakeSpendRecord>> info = groupBy(
+        data.where((dataItem) => dataItem.time.year == DateTime.now().year),
+        (FakeSpendRecord r) {
+      return r.time.month;
+    });
+    List<TotalRecord> list = [];
+    info.forEach((k, v) =>
+        list.add(TotalRecord(amount: groupTimeInterval(v), timeInterval: k)));
+    return BarChartData(
+      borderData: FlBorderData(
+          border: const Border(
+        top: BorderSide.none,
+        right: BorderSide.none,
+        left: BorderSide(width: 1),
+        bottom: BorderSide(width: 1),
+      )),
+      groupsSpace: 10,
+      barGroups: list
+          .map((dataItem) =>
+              BarChartGroupData(x: dataItem.timeInterval, barRods: [
+                BarChartRodData(
+                    y: dataItem.amount.toDouble(),
+                    width: 15,
+                    colors: [Colors.blue]),
+              ]))
+          .toList(),
+      titlesData: FlTitlesData(
+          show: true,
+          rightTitles: SideTitles(showTitles: false),
+          topTitles: SideTitles(showTitles: false),
+          bottomTitles: SideTitles(
+            showTitles: true,
+            getTitles: monthlyBottomTitles,
+            reservedSize: 42,
+          ),
+          leftTitles: SideTitles(
+            showTitles: true,
+            reservedSize: 28,
+            interval: 1,
+            getTitles: monthlyLeftTitles,
+          )),
+    );
+  }
+
+  BarChartData yearlyData() {
+    final Map<int, List<FakeSpendRecord>> info =
+        groupBy(data, (FakeSpendRecord r) {
+      return r.time.year;
+    });
+    List<TotalRecord> list = [];
+    info.forEach((k, v) =>
+        list.add(TotalRecord(amount: groupTimeInterval(v), timeInterval: k)));
+    return BarChartData(
+      borderData: FlBorderData(
+          border: const Border(
+        top: BorderSide.none,
+        right: BorderSide.none,
+        left: BorderSide(width: 1),
+        bottom: BorderSide(width: 1),
+      )),
+      groupsSpace: 10,
+      barGroups: list
+          .map((dataItem) =>
+              BarChartGroupData(x: dataItem.timeInterval, barRods: [
+                BarChartRodData(
+                    y: dataItem.amount.toDouble(),
+                    width: 15,
+                    colors: [Colors.red]),
+              ]))
+          .toList(),
+      titlesData: FlTitlesData(
+          show: true,
+          rightTitles: SideTitles(showTitles: false),
+          topTitles: SideTitles(showTitles: false),
+          bottomTitles: SideTitles(
+            showTitles: true,
+            // getTitles: bottomTitles,
+            reservedSize: 42,
+          ),
+          leftTitles: SideTitles(
+            showTitles: true,
+            reservedSize: 28,
+            interval: 1,
+            getTitles: yearlyLeftTitles,
+          )),
+    );
+  }
+
+  String weeklyLeftTitles(double value) {
+    String ret = "";
+    if (value.toInt() % 10 == 0) {
+      ret = '£${value.toStringAsFixed(0)}';
+    }
+    return ret;
+  }
+
+  String weeklyBottomTitles(double value) {
+    return 'Week ${value.toStringAsFixed(0)}';
+  }
+
+  String monthlyLeftTitles(double value) {
     String ret = "";
     if (value.toInt() % 20 == 0) {
       ret = '£${value.toStringAsFixed(0)}';
@@ -174,7 +360,7 @@ class ShoppingsChartState extends State<ShoppingsChart> {
     return ret;
   }
 
-  String bottomTitles(double value) {
+  String monthlyBottomTitles(double value) {
     String text;
     switch (value.toInt()) {
       case 1:
@@ -218,6 +404,14 @@ class ShoppingsChartState extends State<ShoppingsChart> {
         break;
     }
     return text;
+  }
+
+  String yearlyLeftTitles(double value) {
+    String ret = "";
+    if (value.toInt() % 100 == 0) {
+      ret = '£${value.toStringAsFixed(0)}';
+    }
+    return ret;
   }
 }
 

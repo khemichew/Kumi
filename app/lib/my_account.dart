@@ -110,7 +110,6 @@ class MyAccountPage extends StatelessWidget {
                     if (snapshot.connectionState == ConnectionState.done) {
                       final data = snapshot.requireData;
                       // final records = data.docs as List<FakeSpendRecord>;
-                      print(data.docs.length);
                       return
                         ListView.builder(
                           padding: const EdgeInsets.all(15.0),
