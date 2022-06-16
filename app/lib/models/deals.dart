@@ -45,4 +45,3 @@ final dealEntries = FirebaseFirestore.instance
     .withConverter<Deal>(
         fromFirestore: (snapshots, _) => Deal.fromJson(snapshots.data()!),
         toFirestore: (entry, _) => entry.toJson());
-
