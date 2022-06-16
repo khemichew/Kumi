@@ -5,7 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class FakeSpendRecord {
   final String store;
   final num amount;
-  final Timestamp timestamp;
+  final DateTime timestamp;
 
   const FakeSpendRecord(
       {required this.store,
@@ -16,7 +16,7 @@ class FakeSpendRecord {
       : this(
       store: json['store']! as String,
       amount: json['amount']! as num,
-      timestamp: json['timestamp']! as Timestamp);
+      timestamp: json['timestamp']! as DateTime);
 
   Map<String, Object?> toJson() {
     return {
