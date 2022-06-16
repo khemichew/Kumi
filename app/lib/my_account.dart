@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:app/style.dart';
 import 'models/fake_user.dart';
 
+final recordEntries = FirebaseFirestore.instance.collection("test-spend-record");
+
 class MyAccountPage extends StatelessWidget {
   const MyAccountPage({Key? key}) : super(key: key);
 
@@ -88,11 +90,73 @@ class MyAccountPage extends StatelessWidget {
                 ],
               )
             ),
+            // SizedBox(
+            //   width: 200,
+            //   height:50,
+            //   child: FutureBuilder<QuerySnapshot>(
+            //       future: fakeSpendRecordEntries.get(),
+            //       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            //         if (snapshot.hasError) {
+            //           return const Center(child: Text("Something went wrong"));
+            //         }
+            //
+            //         if (!snapshot.hasData) {
+            //           return const Center(child: Text("No entries found"));
+            //         }
+            //
+            //         if (snapshot.connectionState == ConnectionState.done) {
+            //           final data = snapshot.requireData;
+            //           // final records = data.docs as List<FakeSpendRecord>;
+            //           return
+            //             ListView.builder(
+            //               padding: const EdgeInsets.all(15.0),
+            //               itemCount:10,
+            //               itemBuilder: (context, index) {
+            //                 return _SingleRecord(data.docs[index].data() as FakeSpendRecord);
+            //               },
+            //             );
+            //         }s
+            //
+            //         return const Center(child: CircularProgressIndicator());
+            //       }),
+            // )
           ]
       ),
     );
   }
 }
+//
+// class _RecordList extends StatelessWidget {
+//   final List<FakeSpendRecord> records;
+//
+//   const _RecordList(this.records);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return ListView.builder(
+//       padding: const EdgeInsets.all(15.0),
+//       itemCount:10,
+//       itemBuilder: (context, index) {
+//         return _SingleRecord(data.docs[index].data() as SingleRecord);
+//       },
+//     );
+//   }
+// }
+
+// class _SingleRecord extends StatelessWidget {
+//   final FakeSpendRecord record;
+//
+//   const _SingleRecord(this.record);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return SizedBox(
+//       width: MediaQuery. of(context). size. width * 0.8,
+//       height: 20,
+//       child: Text("${record.store} ${record.amount} ${record.timestamp}"),
+//     );
+//   }
+// }
 
 class _FakeUserItem extends StatelessWidget {
   final FakeUser fakeUser;
@@ -155,3 +219,14 @@ class _FakeUserItem extends StatelessWidget {
     ]);
   }
 }
+
+// class _FakeSpendRecordList extends StatelessWidget {
+//   final List<FakeSpendRecord> record;
+//   const _FakeSpendRecordList(this.record);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     // TODO: implement build
+//     throw UnimplementedError();
+//   }
+// }

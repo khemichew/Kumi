@@ -1,7 +1,10 @@
+import 'package:app/models/fake_spend_record.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:app/style.dart';
-import 'package:pie_chart/pie_chart.dart';
+// import 'package:pie_chart/pie_chart.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SavingsPage extends StatelessWidget {
@@ -29,6 +32,25 @@ class SavingsPage extends StatelessWidget {
     Colors.deepOrangeAccent
   ];
 
+  final List<FakeSpendRecord> data = [
+    FakeSpendRecord(
+      store: "Tesco",
+      amount: 30,
+      timestamp: DateTime.parse("2022-03-13"),
+    ),
+    FakeSpendRecord(
+      store: "Tesco",
+      amount: 50,
+      timestamp: DateTime.parse("2022-04-13"),
+    ),
+    FakeSpendRecord(
+      store: "Tesco",
+      amount: 10,
+      timestamp: DateTime.parse("2022-05-13"),
+    ),
+
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -47,13 +69,9 @@ class SavingsPage extends StatelessWidget {
 
           const PieChartFilter(),
           Container(
+            height: 200,
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: PieChart(
-              totalValue: 100,
-              dataMap: buildDataMap(36.75, 46.20, 19.99, 5.50),
-              chartType: ChartType.ring,
-              colorList: colorList,
-            )
+            child: ShoppingsChart(data: data)
           ),
           const SavingAmtFilter(),
           const SavingTable(),
@@ -287,6 +305,105 @@ class SavingAmtFilter extends StatelessWidget {
     );
   }
 }
+
+class ShoppingsChart extends StatelessWidget {
+  final List<FakeSpendRecord> data;
+
+  const ShoppingsChart({super.key, required this.data});
+
+  @override
+  Widget build(BuildContext context) {
+    return  BarChart(BarChartData(
+            borderData: FlBorderData(
+                border: const Border(
+                  top: BorderSide.none,
+                  right: BorderSide.none,
+                  left: BorderSide(width: 1),
+                  bottom: BorderSide(width: 1),
+                )),
+            groupsSpace: 10,
+            barGroups: data
+                .map((dataItem) =>
+                BarChartGroupData(x: dataItem.timestamp.month, barRods: [
+                  BarChartRodData(
+                      y: dataItem.amount.toDouble(),
+                      width: 15,
+                      colors: [Colors.amber]),
+                ]))
+                .toList(),
+            titlesData: FlTitlesData(
+            show: true,
+            rightTitles: SideTitles(showTitles: false),
+            topTitles: SideTitles(showTitles: false),
+            bottomTitles: SideTitles(
+                showTitles: true,
+                getTitles: bottomTitles,
+                reservedSize: 42,
+              ),
+            leftTitles: SideTitles(
+                showTitles: true,
+                reservedSize: 28,
+                interval: 1,
+                getTitles: leftTitles,
+              )),
+    ));
+  }
+
+  String leftTitles(double value) {
+    String ret = "";
+    if (value.toInt() % 20 == 0) {
+      ret = '£${value.toStringAsFixed(0)}';
+    }
+    return ret;
+  }
+
+  String bottomTitles(double value) {
+    String text;
+    switch (value.toInt()) {
+      case 1:
+        text = "Jan";
+        break;
+      case 2:
+        text = "Feb";
+        break;
+      case 3:
+        text = 'Mar';
+        break;
+      case 4:
+        text = 'Apr';
+        break;
+      case 5:
+        text = 'May';
+        break;
+      case 6:
+        text = 'Jun';
+        break;
+      case 7:
+        text = 'Jul';
+        break;
+      case 8:
+        text = 'Aug';
+        break;
+      case 9:
+        text = 'Sep';
+        break;
+      case 10:
+        text = 'Oct';
+        break;
+      case 11:
+        text = 'Nov';
+        break;
+      case 12:
+        text = 'Dec';
+        break;
+      default:
+        text = '';
+        break;
+    }
+    return text;
+  }
+}
+
 
 class AddingShopForm extends StatefulWidget {
   const AddingShopForm({super.key});
