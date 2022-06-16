@@ -7,23 +7,20 @@ class FakeSpendRecord {
   final num amount;
   final DateTime time;
 
-  const FakeSpendRecord(
-      {required this.store,
-      required this.amount,
-      required this.time,});
+  const FakeSpendRecord({
+    required this.store,
+    required this.amount,
+    required this.time,
+  });
 
   FakeSpendRecord.fromJson(Map<String, dynamic> json)
       : this(
-      store: json['store']! as String,
-      amount: num.parse(json['amount']),
-      time: (json['time'] as Timestamp).toDate());
+            store: json['store']! as String,
+            amount: num.parse(json['amount']),
+            time: (json['time'] as Timestamp).toDate());
 
   Map<String, Object?> toJson() {
-    return {
-      'store': store,
-      'amount': amount,
-      'time': time
-    };
+    return {'store': store, 'amount': amount, 'time': time};
   }
 
   @override
@@ -35,6 +32,6 @@ class FakeSpendRecord {
 final fakeSpendRecordEntries = FirebaseFirestore.instance
     .collection('test-spend-record')
     .withConverter<FakeSpendRecord>(
-        fromFirestore: (snapshots, _) => FakeSpendRecord.fromJson(snapshots.data()!),
+        fromFirestore: (snapshots, _) =>
+            FakeSpendRecord.fromJson(snapshots.data()!),
         toFirestore: (entry, _) => entry.toJson());
-

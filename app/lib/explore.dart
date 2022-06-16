@@ -1,10 +1,15 @@
 import 'package:app/models/deals.dart';
+import 'package:app/style.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'dart:async';
 
-enum DealQuery { nameAsc, nameDesc, ratingDesc, }
+enum DealQuery {
+  nameAsc,
+  nameDesc,
+  ratingDesc,
+}
 
 class Explore extends StatefulWidget {
   const Explore({Key? key}) : super(key: key);
@@ -47,21 +52,20 @@ class _ExploreState extends State<Explore> {
     super.dispose();
   }
 
-
   void updateQuery(String query) {
     Query<Deal> tempQuery;
     if (queryType == DealQuery.nameAsc || queryType == DealQuery.nameDesc) {
-        tempQuery = dealEntries.orderBy('name', descending: queryType == DealQuery.nameDesc);
+      tempQuery = dealEntries.orderBy('name',
+          descending: queryType == DealQuery.nameDesc);
     } else if (queryType == DealQuery.ratingDesc) {
-      tempQuery = dealEntries.orderBy('rating', descending: queryType == DealQuery.ratingDesc);
+      tempQuery = dealEntries.orderBy('rating',
+          descending: queryType == DealQuery.ratingDesc);
     } else {
       tempQuery = dealEntries.orderBy('name');
     }
 
     queryText = query;
-    if (queryText.isEmpty || queryText
-        .trim()
-        .isEmpty) {
+    if (queryText.isEmpty || queryText.trim().isEmpty) {
       queryStream = tempQuery.limit(displayLimit).snapshots();
     } else {
       queryStream = tempQuery
@@ -99,16 +103,14 @@ class _ExploreState extends State<Explore> {
           prefixIcon: const Icon(Icons.search),
           suffixIcon: PopupMenuButton<DealQuery>(
               onSelected: (value) => setState(() {
-                queryType = value;
-                updateQuery(queryText);
-              }),
+                    queryType = value;
+                    updateQuery(queryText);
+                  }),
               icon: const Icon(Icons.filter_alt_rounded),
               itemBuilder: (BuildContext context) {
                 return [
                   const PopupMenuItem(
-                      value: DealQuery.nameAsc,
-                      child: Text("Name ⬆")
-                  ),
+                      value: DealQuery.nameAsc, child: Text("Name ⬆")),
                   const PopupMenuItem(
                     value: DealQuery.nameDesc,
                     child: Text("Name ⬇"),
@@ -118,8 +120,8 @@ class _ExploreState extends State<Explore> {
                     child: Text("Rating ⬇"),
                   ),
                 ];
-              }
-          )),
+              })
+      ),
 
       focusNode: _textFieldFocus,
       // Query when text field changes
@@ -160,32 +162,39 @@ class _ExploreState extends State<Explore> {
 class _DealsItem extends StatelessWidget {
   final Deal deal;
   final NumberFormat formatCurrency =
-  NumberFormat.currency(locale: "en_GB", symbol: "£");
+      NumberFormat.currency(locale: "en_GB", symbol: "£");
 
   _DealsItem(this.deal);
 
-  // TODO: add trailing ... if too long
   Widget get productName {
     return Text(deal.name,
-        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold));
+        style: const TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+          overflow: TextOverflow.fade,
+        ),
+        maxLines: 2,
+        softWrap: false);
   }
 
   Widget get image {
     return AspectRatio(
         aspectRatio: 3.0,
         child: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
               image: DecorationImage(
-                fit: BoxFit.fitWidth,
-                alignment: FractionalOffset.topCenter,
-                image: AssetImage('assets/images/food-placeholder.jpg'),
-              )),
+            fit: BoxFit.fitWidth,
+            alignment: FractionalOffset.topCenter,
+            image: NetworkImage(deal.imageUrl),
+          )),
         ));
   }
 
   // TODO: retrieve from database
   Widget get retailer {
-    return const Text("Tesco Express");
+    return Text(
+      deal.retailerId,
+    );
   }
 
   Widget get retailPrice {
@@ -248,8 +257,58 @@ class DealDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-        title: Text(deal.name),
+        title: Text(
+          deal.name,
+          style: emphStyle,
+        ),
         content: SingleChildScrollView(
-            child: ListBody(children: [Text(deal.description)])));
+            child: Align(
+          alignment: Alignment.topLeft,
+          child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+            Align(
+              alignment: Alignment.topLeft,
+              child: Text(
+                "Store: ${deal.retailerId}\n",
+                style: smallStyle,
+              ),
+            ),
+            Align(
+              alignment: Alignment.topLeft,
+              child: Text(
+                "Description: ${deal.description}\n",
+                style: smallStyle,
+              ),
+            ),
+            Align(
+              alignment: Alignment.topLeft,
+              child: Text(
+                "Original Price:  ${deal.retailPrice}\n",
+                style: smallStyle,
+              ),
+            ),
+            Align(
+              alignment: Alignment.topLeft,
+              child: Text(
+                "Current Price:  ${deal.discountedPrice}\n\n",
+                style: smallStyle,
+              ),
+            ),
+            Align(
+              alignment: Alignment.center,
+              child: Text(
+                "Discount:  ${percentOff(deal.retailPrice, deal.discountedPrice)}% OFF!!!",
+                style: emphStyle,
+              ),
+            ),
+          ]),
+        )));
+  }
+
+  String percentOff(num original, num current) {
+    double prev = original.toDouble();
+    double curr = current.toDouble();
+    double ratio = (prev - curr) / prev;
+    // print("prev: ${prev}, curr: ${curr}, ratio: ${ratio}");
+    return (ratio * 100).toStringAsFixed(1);
   }
 }
