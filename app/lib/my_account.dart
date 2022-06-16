@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:app/style.dart';
 
 // import 'models/fake_spend_record.dart';
+import 'models/fake_spend_record.dart';
 import 'models/fake_user.dart';
 
 final recordEntries =
@@ -149,24 +150,24 @@ class MyAccountPage extends StatelessWidget {
 //   }
 // }
 
-// class _SingleRecord extends StatelessWidget {
-//   final FakeSpendRecord record;
-//
-//   const _SingleRecord(this.record);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return
-//       Align(
-//         alignment: Alignment.topLeft,
-//         child: SizedBox(
-//           width: MediaQuery. of(context). size. width * 0.8,
-//           height: 20,
-//           child: Text("Store: ${record.store} with ${record.amount} at ${record.time}."),
-//         ),
-//       );
-//   }
-// }
+class _SingleRecord extends StatelessWidget {
+  final FakeSpendRecord record;
+
+  const _SingleRecord(this.record);
+
+  @override
+  Widget build(BuildContext context) {
+    return
+      Align(
+        alignment: Alignment.topLeft,
+        child: SizedBox(
+          width: MediaQuery. of(context). size. width * 0.8,
+          height: 20,
+          child: Text("Store: ${record.store} with ${record.amount} at ${record.time}."),
+        ),
+      );
+  }
+}
 
 class _FakeUserItem extends StatelessWidget {
   final FakeUser fakeUser;
