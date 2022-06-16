@@ -8,13 +8,15 @@ class Deal {
   final String retailerId;
   final num retailPrice;
   final num discountedPrice;
+  final String imageUrl;
 
   const Deal(
       {required this.name,
       required this.description,
       required this.retailerId,
       required this.retailPrice,
-      required this.discountedPrice});
+      required this.discountedPrice,
+      required this.imageUrl});
 
   Deal.fromJson(Map<String, Object?> json)
       : this(
@@ -22,7 +24,8 @@ class Deal {
             description: json['description']! as String,
             retailerId: json['retailerId']! as String,
             retailPrice: json['retailPrice']! as num,
-            discountedPrice: json['discountedPrice']! as num);
+            discountedPrice: json['discountedPrice']! as num,
+            imageUrl: json['imageUrl']! as String);
 
   Map<String, Object?> toJson() {
     return {
@@ -30,7 +33,8 @@ class Deal {
       'description': description,
       'retailerId': retailerId,
       'retailPrice': retailPrice,
-      'discountedPrice': discountedPrice
+      'discountedPrice': discountedPrice,
+      'imageUrl': imageUrl
     };
   }
 

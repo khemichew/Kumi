@@ -181,11 +181,11 @@ class _DealsItem extends StatelessWidget {
     return AspectRatio(
         aspectRatio: 3.0,
         child: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
               image: DecorationImage(
             fit: BoxFit.fitWidth,
             alignment: FractionalOffset.topCenter,
-            image: AssetImage('assets/images/food-placeholder.jpg'),
+            image: NetworkImage(deal.imageUrl),
           )),
         ));
   }
