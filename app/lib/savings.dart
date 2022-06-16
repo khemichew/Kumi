@@ -73,7 +73,7 @@ class SavingsPage extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: ShoppingsChart(data: data)
           ),
-          const SavingAmtFilter(),
+          // const SavingAmtFilter(),
           const SavingTable(),
 
           Container(
@@ -146,16 +146,15 @@ class SavingAmount extends StatelessWidget {
         width: 200,
         alignment: Alignment.center,
         padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 2.0),
-        decoration:BoxDecoration(
-            border: Border.all(
-                color: Colors.black,
-                width: 2
-            ),
-            borderRadius: const BorderRadius.all(Radius.circular(20))
+
+        decoration: const BoxDecoration(
+          color: Colors.amberAccent,
+          boxShadow: defaultBoxShadow,
+          borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
         child: const Align(
           alignment: Alignment.center,
-          child: Text("\$6324", style: hugeStyle,),
+          child: Text("£63.24", style: hugeStyle,),
         ),
     );
   }
