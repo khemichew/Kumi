@@ -82,8 +82,12 @@ class SavingsPage extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.fromLTRB(15, 40, 15, 0),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
+          const SizedBox(
+            width: 100,
+            height: 50,
+          ),
           Container(
             padding:
                 const EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
@@ -92,7 +96,6 @@ class SavingsPage extends StatelessWidget {
               style: largeTitleStyle,
             ),
           ),
-          const SavingAmount(),
           ShoppingsChart(data)
         ],
       ),
@@ -112,6 +115,7 @@ class ShoppingsChart extends StatefulWidget {
 class ShoppingsChartState extends State<ShoppingsChart> {
   final List<FakeSpendRecord> data;
   TimeInterval interval = TimeInterval.month;
+  int totalPrice = 30;
 
   ShoppingsChartState(this.data);
 
@@ -120,6 +124,30 @@ class ShoppingsChartState extends State<ShoppingsChart> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
+        const SizedBox(
+          width: 100,
+          height: 30,
+        ),
+        Container(
+          height: 100,
+          width: 200,
+          alignment: Alignment.center,
+          padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 2.0),
+          decoration: BoxDecoration(
+              border: Border.all(color: Colors.black, width: 2),
+              borderRadius: const BorderRadius.all(Radius.circular(20))),
+          child: Align(
+            alignment: Alignment.center,
+            child: Text(
+              "£$totalPrice",
+              style: hugeStyle,
+            ),
+          ),
+        ),
+        const SizedBox(
+          width: 100,
+          height: 30,
+        ),
         SizedBox(
             width: MediaQuery.of(context).size.width * 5,
             child: Row(
@@ -129,6 +157,7 @@ class ShoppingsChartState extends State<ShoppingsChart> {
                   style: outlineButtonStyle,
                   onPressed: () {
                     setState(() {
+                      totalPrice = 1024;
                       interval = TimeInterval.year;
                     });
                   },
@@ -141,6 +170,7 @@ class ShoppingsChartState extends State<ShoppingsChart> {
                   style: outlineButtonStyle,
                   onPressed: () {
                     setState(() {
+                      totalPrice = 621;
                       interval = TimeInterval.year;
                     });
                   },
@@ -153,6 +183,7 @@ class ShoppingsChartState extends State<ShoppingsChart> {
                   style: outlineButtonStyle,
                   onPressed: () {
                     setState(() {
+                      totalPrice = 30;
                       interval = TimeInterval.month;
                     });
                   },
@@ -165,6 +196,7 @@ class ShoppingsChartState extends State<ShoppingsChart> {
                   style: outlineButtonStyle,
                   onPressed: () {
                     setState(() {
+                      totalPrice = 0;
                       interval = TimeInterval.week;
                     });
                   },
@@ -175,12 +207,24 @@ class ShoppingsChartState extends State<ShoppingsChart> {
                 ),
               ],
             )),
+        const SizedBox(
+          width: 100,
+          height: 30,
+        ),
         Container(
             height: 200,
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: BarChart(interval == TimeInterval.month ? monthlyData() :
-                            interval == TimeInterval.week ? weeklyData() : yearlyData())),
+            child: BarChart(interval == TimeInterval.month
+                ? monthlyData()
+                : interval == TimeInterval.week
+                    ? weeklyData()
+                    : yearlyData())
+        ),
         // const SavingAmtFilter(),
+        const SizedBox(
+                  width: 100,
+                  height: 10,
+                ),
         const SavingTable(),
 
         Container(
@@ -204,9 +248,9 @@ class ShoppingsChartState extends State<ShoppingsChart> {
   BarChartData weeklyData() {
     final Map<int, List<FakeSpendRecord>> info = groupBy(
         data.where((dataItem) => dataItem.time.month == DateTime.now().month),
-            (FakeSpendRecord r) {
-          return r.time.day~/7;
-        });
+        (FakeSpendRecord r) {
+      return r.time.day ~/ 7;
+    });
     List<TotalRecord> list = [];
     info.forEach((k, v) =>
         list.add(TotalRecord(amount: groupTimeInterval(v), timeInterval: k)));
@@ -220,13 +264,13 @@ class ShoppingsChartState extends State<ShoppingsChart> {
       )),
       groupsSpace: 10,
       barGroups: list
-          .map(
-              (dataItem) => BarChartGroupData(x: dataItem.timeInterval, barRods: [
-                    BarChartRodData(
-                        y: dataItem.amount.toDouble(),
-                        width: 15,
-                        colors: [Colors.amber]),
-                  ]))
+          .map((dataItem) =>
+              BarChartGroupData(x: dataItem.timeInterval, barRods: [
+                BarChartRodData(
+                    y: dataItem.amount.toDouble(),
+                    width: 15,
+                    colors: [Colors.amber]),
+              ]))
           .toList(),
       titlesData: FlTitlesData(
           show: true,
@@ -239,7 +283,7 @@ class ShoppingsChartState extends State<ShoppingsChart> {
           ),
           leftTitles: SideTitles(
             showTitles: true,
-            reservedSize: 28,
+            reservedSize: 35,
             interval: 1,
             getTitles: weeklyLeftTitles,
           )),
@@ -285,11 +329,11 @@ class ShoppingsChartState extends State<ShoppingsChart> {
           bottomTitles: SideTitles(
             showTitles: true,
             getTitles: monthlyBottomTitles,
-            reservedSize: 42,
+            reservedSize: 20,
           ),
           leftTitles: SideTitles(
             showTitles: true,
-            reservedSize: 28,
+            reservedSize: 35,
             interval: 1,
             getTitles: monthlyLeftTitles,
           )),
@@ -328,12 +372,12 @@ class ShoppingsChartState extends State<ShoppingsChart> {
           topTitles: SideTitles(showTitles: false),
           bottomTitles: SideTitles(
             showTitles: true,
-            // getTitles: bottomTitles,
+            getTitles: (e) => "2022",
             reservedSize: 42,
           ),
           leftTitles: SideTitles(
             showTitles: true,
-            reservedSize: 28,
+            reservedSize: 35,
             interval: 1,
             getTitles: yearlyLeftTitles,
           )),
@@ -455,10 +499,6 @@ class SavingTable extends StatelessWidget {
 }
 
 class SavingAmount extends StatelessWidget {
-  const SavingAmount({
-    Key? key,
-  }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Container(
