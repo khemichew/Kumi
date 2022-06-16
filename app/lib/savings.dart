@@ -61,7 +61,7 @@ class SavingsPage extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
             child: const Text(
-              "You have saved:",
+              "You have spent:",
               style: largeTitleStyle,
             ),
           ),
@@ -126,7 +126,7 @@ class SavingTable extends StatelessWidget {
         ),
         TableRow(
           children: <Widget>[
-            SavingStore(store: "Boots"),
+            SavingStore(store: "Waitrose"),
             SavingAmt(amount: "\$5.60")
           ],
         ),
