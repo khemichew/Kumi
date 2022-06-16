@@ -23,7 +23,7 @@ class MyAccountPage extends StatelessWidget {
                   ),
                   // Image(image: AssetImage('../asset/dingzhen_cute.jpeg'))
                   CircleAvatar(
-                    backgroundImage: AssetImage('assets/dzdl.jpeg'),
+                    backgroundImage: AssetImage('assets/dingzhen_cute.jpeg'),
                     radius: 60,
                   )
                 ]
