@@ -28,9 +28,7 @@ class MyApp extends StatelessWidget {
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate
       ],
-      supportedLocales: const [
-        Locale('en', "EN")
-      ],
+      supportedLocales: const [Locale('en', "EN")],
       debugShowCheckedModeBanner: false,
       title: _title,
       home: MyHomePage(title: _title),
@@ -52,7 +50,6 @@ class MyHomePage extends StatefulWidget {
   // always marked "final".
 
   final String title;
-
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -86,15 +83,14 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: Container(
           decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topRight,
-              end: Alignment.bottomLeft,
-              colors: [
-                Color.fromRGBO(173, 190, 216, 1),
-                Color.fromRGBO(255, 229, 205, 1),
-              ],
-            )
-          ),
+              gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            colors: [
+              Color.fromRGBO(173, 190, 216, 1),
+              Color.fromRGBO(255, 229, 205, 1),
+            ],
+          )),
           child: Center(
             child: _widgetOptions.elementAt(_selectedIndex),
           ),
@@ -112,7 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.currency_pound_outlined),
-            label: 'Savings',
+            label: 'Track',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person_outline),

@@ -16,17 +16,27 @@ class MembershipPage extends StatelessWidget {
           Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: const [
-                MembershipCard(storeName: 'Sainsburys', color: Color.fromRGBO(255, 191, 0, 0.5),),
-                MembershipCard(storeName: 'Tesco', color: Color.fromRGBO(248, 152, 128, 0.5),),
-              ]
-          ),
+                MembershipCard(
+                  storeName: 'Sainsburys',
+                  color: Color.fromRGBO(255, 191, 0, 0.5),
+                ),
+                MembershipCard(
+                  storeName: 'Tesco',
+                  color: Color.fromRGBO(248, 152, 128, 0.5),
+                ),
+              ]),
           Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: const [
-                MembershipCard(storeName: 'Boots', color: Color.fromRGBO(137, 207, 240, 0.5),),
-                MembershipCard(storeName: 'Waitrose', color: Color.fromRGBO(115, 113, 255, 0.5),),
-              ]
-          ),
+                MembershipCard(
+                  storeName: 'Boots',
+                  color: Color.fromRGBO(137, 207, 240, 0.5),
+                ),
+                MembershipCard(
+                  storeName: 'Waitrose',
+                  color: Color.fromRGBO(115, 113, 255, 0.5),
+                ),
+              ]),
         ],
       ),
     );
@@ -38,48 +48,47 @@ class MembershipPageHead extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
+    return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+      Expanded(
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
+          child: const Text(
+            'My\nmemberships',
+            style: titleStyle,
+          ),
+        ),
+      ),
+      Expanded(
+        child: TextButton(
+          onPressed: () {},
           child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
-            child: const Text(
-              'My\nmemberships',
-              style: titleStyle,
+            height: 60,
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.black),
+                color: Colors.white38,
+                borderRadius: const BorderRadius.all(Radius.circular(10))),
+            padding:
+                const EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: const [
+                Text("Add", style: ordinaryStyle),
+                Icon(
+                  Icons.add,
+                  color: Colors.black,
+                )
+              ],
             ),
           ),
         ),
-        Expanded(
-          child:TextButton(
-            onPressed: () {  },
-            child: Container(
-              height: 60,
-              decoration: BoxDecoration(
-                  border: Border.all(
-                      color: Colors.black
-                  ),
-                  color: Colors.white38,
-                  borderRadius: const BorderRadius.all(Radius.circular(10))
-              ),
-              padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Text("Add", style: ordinaryStyle),
-                  Icon(Icons.add, color: Colors.black,)
-                ],
-              ),
-            ),
-          ),
-        ),
-      ]
-    );
+      ),
+    ]);
   }
 }
 
 class MembershipCard extends StatelessWidget {
-  const MembershipCard({Key? key, required this.storeName, required this.color}) : super(key: key);
+  const MembershipCard({Key? key, required this.storeName, required this.color})
+      : super(key: key);
 
   final String storeName;
   final Color color;
@@ -90,34 +99,32 @@ class MembershipCard extends StatelessWidget {
       child: TextButton(
         onPressed: () {
           showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return MembershipBarcode(
-                storeName: storeName,
-                color: color,
-              );
-            }
-          );
+              context: context,
+              builder: (BuildContext context) {
+                return MembershipBarcode(
+                  storeName: storeName,
+                  color: color,
+                );
+              });
         },
         child: Container(
-          width: MediaQuery. of(context). size. width,
+          width: MediaQuery.of(context).size.width,
           height: 100,
-          decoration:BoxDecoration(
+          decoration: BoxDecoration(
               color: color,
-              borderRadius: const BorderRadius.all(Radius.circular(10))
-          ),
+              borderRadius: const BorderRadius.all(Radius.circular(10))),
           padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(storeName, style: ordinaryStyle),
-                    const Icon(Icons.chevron_right, color: Colors.black,)
-                  ]
-              ),
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                Text(storeName, style: ordinaryStyle),
+                const Icon(
+                  Icons.chevron_right,
+                  color: Colors.black,
+                )
+              ]),
               // const Icon(Icons.card_membership)
             ],
           ),
@@ -128,7 +135,8 @@ class MembershipCard extends StatelessWidget {
 }
 
 class MembershipBarcode extends StatelessWidget {
-  MembershipBarcode({Key? key, required this.storeName, required this.color}) : super(key: key);
+  MembershipBarcode({Key? key, required this.storeName, required this.color})
+      : super(key: key);
 
   final String storeName;
   final Color color;
@@ -165,51 +173,56 @@ class MembershipBarcode extends StatelessWidget {
             margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 0.0),
             padding: const EdgeInsets.all(15.0),
             decoration: BoxDecoration(
-              shape: BoxShape.rectangle,
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10.0),
-              boxShadow: defaultBoxShadow
-            ),
+                shape: BoxShape.rectangle,
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10.0),
+                boxShadow: defaultBoxShadow),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                // const Image(image: AssetImage('assets/dingzhen_cute.jpeg')),
-                SizedBox(
-                    width: MediaQuery. of(context). size. width * 0.67,
-                    child: BarcodeWidget(
-                  // Nectar - Khemi
-                  barcode: Barcode.gs128(),
-                  data: '${appIdMap['nectar']!}1234567890',
-                )),
-                Container(
-                  width: double.maxFinite,
-                  decoration: BoxDecoration(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  // const Image(image: AssetImage('assets/dingzhen_cute.jpeg')),
+                  SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.67,
+                      child: BarcodeWidget(
+                        // Nectar - Khemi
+                        barcode: Barcode.gs128(),
+                        data: '${appIdMap['nectar']!}1234567890',
+                      )),
+                  Container(
+                    width: double.maxFinite,
+                    decoration: BoxDecoration(
                       color: color,
                       borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 5.0, horizontal: 10.0),
+                    child: Text(
+                      '$storeName card',
+                      style: ordinaryStyle,
+                      textAlign: TextAlign.center,
+                    ),
                   ),
-                  padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
-                  child: Text('$storeName card', style: ordinaryStyle, textAlign: TextAlign.center,),
-                ),
-              ]
-            ),
+                ]),
           ),
           TextButton(
             onPressed: () {},
             child: Container(
               height: 50,
-              decoration:const BoxDecoration(
+              decoration: const BoxDecoration(
                   color: Color.fromRGBO(53, 219, 169, 1.0),
                   borderRadius: BorderRadius.all(Radius.circular(10)),
-                  boxShadow: defaultBoxShadow
-              ),
-              padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                  boxShadow: defaultBoxShadow),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Text('Deals & rewards', style: ordinaryWhiteStyle),
-                  Icon(Icons.chevron_right, color: Colors.white,)
-                ]
-              ),
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: const [
+                    Text('Deals & rewards', style: ordinaryWhiteStyle),
+                    Icon(
+                      Icons.chevron_right,
+                      color: Colors.white,
+                    )
+                  ]),
             ),
           ),
           TextButton(
@@ -217,26 +230,25 @@ class MembershipBarcode extends StatelessWidget {
             child: Container(
               height: 50,
               decoration: BoxDecoration(
-                  border: Border.all(
-                      color: Colors.black
-                  ),
+                  border: Border.all(color: Colors.black),
                   color: Colors.white,
                   borderRadius: const BorderRadius.all(Radius.circular(10)),
-                  boxShadow: defaultBoxShadow
-              ),
-              padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                  boxShadow: defaultBoxShadow),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Text('Store details', style: ordinaryStyle),
-                  Icon(Icons.chevron_right, color: Colors.black,)
-                ]
-              ),
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: const [
+                    Text('Store details', style: ordinaryStyle),
+                    Icon(
+                      Icons.chevron_right,
+                      color: Colors.black,
+                    )
+                  ]),
             ),
           ),
         ],
       ),
     );
   }
-  
 }
