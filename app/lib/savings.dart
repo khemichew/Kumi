@@ -533,7 +533,7 @@ class AddShoppingState extends State<AddingShopForm> {
                         color: Colors.black
                     ),
                     color: Colors.white,
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    borderRadius: const BorderRadius.all(Radius.circular(5)),
                   ),
                   child: TextButton(
                     onPressed: () => _selectDate(context),
