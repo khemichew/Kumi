@@ -32,7 +32,7 @@ class SavingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.fromLTRB(15, 80, 15, 0),
+      margin: const EdgeInsets.fromLTRB(15, 40, 15, 0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -43,17 +43,8 @@ class SavingsPage extends StatelessWidget {
               style: largeTitleStyle,
             ),
           ),
-          TextButton(onPressed: () {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return const AddingShopForm();
-                }
-            );
-          },
-              child: const Text("Press me!")),
-
           const SavingAmount(),
+
           const PieChartFilter(),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -65,7 +56,23 @@ class SavingsPage extends StatelessWidget {
             )
           ),
           const SavingAmtFilter(),
-          const SavingTable()
+          const SavingTable(),
+
+          Container(
+            alignment: Alignment.bottomRight,
+            child: FloatingActionButton(
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return const AddingShopForm();
+                    }
+                );
+              },
+              backgroundColor: const Color.fromRGBO(53, 219, 169, 1.0),
+              child: const Icon(Icons.add),
+            ),
+          ),
         ],
       ),
     );
@@ -119,6 +126,7 @@ class SavingAmount extends StatelessWidget {
     return Container(
         height: 100,
         width: 200,
+        alignment: Alignment.center,
         padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 2.0),
         decoration:BoxDecoration(
             border: Border.all(
@@ -129,8 +137,7 @@ class SavingAmount extends StatelessWidget {
         ),
         child: const Align(
           alignment: Alignment.center,
-          child:
-            Text("\$6324", style: hugeStyle,)
+          child: Text("\$6324", style: hugeStyle,),
         ),
     );
   }
