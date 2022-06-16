@@ -306,12 +306,17 @@ class AddShoppingState extends State<AddingShopForm> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      elevation: 0,
+      backgroundColor: Colors.transparent,
       child: contentBox(context),
     );
   }
 
   Future<void> addShopping(String store, String amount, String date) {
-    return FirebaseFirestore.instance.collection("test-users")
+    return FirebaseFirestore.instance.collection("test-spend-record")
         .add({
       'store': store,
       'amount': amount,
@@ -320,59 +325,103 @@ class AddShoppingState extends State<AddingShopForm> {
   }
 
   contentBox(context) {
-    return Column(
-      children: [
-        Row(
-          children: [
-            const Text("Store: "),
-            SizedBox(
-              width: 100,
-              child: TextField(
-                controller: storeController,
-              ),
-            ),
-            Text((storeController.text))
-          ],
-
+    return Container(
+      height: 250,
+        margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 0.0),
+        padding: const EdgeInsets.all(15.0),
+        decoration: BoxDecoration(
+            shape: BoxShape.rectangle,
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10.0),
+            boxShadow: defaultBoxShadow
         ),
-
-        Row(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text("Amount:  £"),
-            SizedBox(
-              width: 100,
-              child: TextField(
-                controller: amountController,
-              ),
-            ),
-            Text((amountController.text))
-          ],
-
-        ),
-
-        Row(
-          children: [
-            const Text("Date: "),
-            SizedBox(
-              width: 100,
-              child: TextField(
-                decoration: const InputDecoration(
-                  hintText: 'dd-mm-yyyy'
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                const Text("         Store: ", style: ordinaryStyle,),
+                SizedBox(
+                  width: 120,
+                  height: 40,
+                  child: TextField(
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                    ),
+                    controller: storeController,
+                  ),
                 ),
-                controller: dateController,
-              ),
+                Text((storeController.text))
+              ],
+
             ),
-            Text((dateController.text))
+            const SizedBox(height: 10,),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                const Text("Amount:  £ ", style: ordinaryStyle),
+                SizedBox(
+                  width: 120,
+                  height: 40,
+                  child: TextField(
+                    style: smallStyle,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                    ),
+                    controller: amountController,
+                  ),
+                ),
+                Text((amountController.text))
+              ],
+
+            ),
+            const SizedBox(height: 10,),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                const Text("          Date:  ", style: ordinaryStyle,),
+                SizedBox(
+                  width: 120,
+                  height: 40,
+                  child: TextField(
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                      hintText: 'dd-mm-yyyy'
+                    ),
+                    textAlignVertical: TextAlignVertical.center,
+                    controller: dateController,
+                  ),
+                ),
+                Text((dateController.text))
+              ],
+
+            ),
+            const SizedBox(height: 10,),
+
+            TextButton(
+              onPressed: () {
+                addShopping(storeController.text, amountController.text, dateController.text);
+                Navigator.pop(context);
+              },
+              child: Container(
+                height: 40,
+                width: 500,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                      color: Colors.black
+                  ),
+                  color: const Color.fromRGBO(53, 219, 169, 1.0),
+                  borderRadius: const BorderRadius.all(Radius.circular(10)),
+                ),
+                padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                child: const Text("Submit", style: ordinaryStyle, textAlign: TextAlign.center,)
+              )
+            )
           ],
-
-        ),
-
-        TextButton(onPressed: ()
-        {
-          addShopping(storeController.text, amountController.text, dateController.text);
-          Navigator.pop(context);
-        },
-            child: const Text("Submit"))
-      ],);
+        )
+    );
   }
 }
