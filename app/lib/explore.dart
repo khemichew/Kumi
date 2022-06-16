@@ -1,9 +1,8 @@
-import 'dart:math';
-
 import 'package:app/models/deals.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'dart:async';
 
 class Explore extends StatefulWidget {
   const Explore({Key? key}) : super(key: key);
@@ -16,6 +15,7 @@ class _ExploreState extends State<Explore> {
   late String queryText;
   late Stream queryStream;
   late FocusNode _textFieldFocus;
+  Timer? _debounce;
   static const displayLimit = 20;
   Color _color = Colors.black12;
 
@@ -34,8 +34,37 @@ class _ExploreState extends State<Explore> {
         });
       }
     });
-    queryStream = dealEntries.snapshots();
+    queryStream = dealEntries.limit(displayLimit).snapshots();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _debounce?.cancel();
+    super.dispose();
+  }
+
+
+  dynamic updateQuery(String query) {
+    queryText = query;
+    if (queryText.isEmpty || queryText.trim().isEmpty) {
+      queryStream = dealEntries.limit(displayLimit).snapshots();
+    } else {
+      queryStream = dealEntries
+          .where('name', isGreaterThanOrEqualTo: queryText)
+          .where('name', isLessThan: '$queryText\uf8ff')
+          .limit(displayLimit)
+          .snapshots();
+    }
+  }
+
+  dynamic _onSearchChanged(String query) {
+    if (_debounce?.isActive ?? false) {
+      _debounce!.cancel();
+    }
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      updateQuery(query);
+    });
   }
 
   Widget _searchBar() {
@@ -53,22 +82,14 @@ class _ExploreState extends State<Explore> {
               borderSide: const BorderSide(color: Colors.white)),
           filled: true,
           fillColor: _color,
-          prefixIcon: const Icon(Icons.search)),
+          prefixIcon: const Icon(Icons.search),
+          suffixIcon: IconButton(
+            icon: Icon(Icons.filter_alt_rounded), onPressed: () {  },
+          )),
+
       focusNode: _textFieldFocus,
       // Query when text field changes
-      onChanged: (value) {
-        setState(() {
-          queryText = value;
-          if (queryText.isEmpty || queryText.trim().isEmpty) {
-            queryStream = dealEntries.snapshots();
-          } else {
-            queryStream = dealEntries
-                .where('name', isGreaterThanOrEqualTo: queryText)
-                .where('name', isLessThan: '$queryText\uf8ff')
-                .snapshots();
-          }
-        });
-      },
+      onChanged: _onSearchChanged,
     );
   }
 
@@ -93,7 +114,7 @@ class _ExploreState extends State<Explore> {
 
               return ListView.builder(
                 padding: const EdgeInsets.all(15.0),
-                itemCount: min(data.size, displayLimit),
+                itemCount: data.size,
                 itemBuilder: (context, index) {
                   return _DealsItem(data.docs[index].data() as Deal);
                 },
