@@ -8,6 +8,7 @@ default:
 stages:
   - test
   - package
+  - deploy
 
 .docker_image:
   image: "cirrusci/flutter:latest"
@@ -57,5 +58,12 @@ build_android:
     paths:
       - $PROJECT_ROOT_DIR/build/app/outputs/apk/release/app-release.apk
     expire_in: 2 days
+  only:
+    - master
+
+deploy:
+  stage: deploy
+  script:
+    - echo "Deploying..."
   only:
     - master
