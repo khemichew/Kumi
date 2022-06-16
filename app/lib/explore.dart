@@ -5,7 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'dart:async';
 
-enum DealQuery { nameAsc, nameDesc, ratingDesc, }
+enum DealQuery {
+  nameAsc,
+  nameDesc,
+  ratingDesc,
+}
 
 class Explore extends StatefulWidget {
   const Explore({Key? key}) : super(key: key);
@@ -48,21 +52,20 @@ class _ExploreState extends State<Explore> {
     super.dispose();
   }
 
-
   void updateQuery(String query) {
     Query<Deal> tempQuery;
     if (queryType == DealQuery.nameAsc || queryType == DealQuery.nameDesc) {
-        tempQuery = dealEntries.orderBy('name', descending: queryType == DealQuery.nameDesc);
+      tempQuery = dealEntries.orderBy('name',
+          descending: queryType == DealQuery.nameDesc);
     } else if (queryType == DealQuery.ratingDesc) {
-      tempQuery = dealEntries.orderBy('rating', descending: queryType == DealQuery.ratingDesc);
+      tempQuery = dealEntries.orderBy('rating',
+          descending: queryType == DealQuery.ratingDesc);
     } else {
       tempQuery = dealEntries.orderBy('name');
     }
 
     queryText = query;
-    if (queryText.isEmpty || queryText
-        .trim()
-        .isEmpty) {
+    if (queryText.isEmpty || queryText.trim().isEmpty) {
       queryStream = tempQuery.limit(displayLimit).snapshots();
     } else {
       queryStream = tempQuery
@@ -100,16 +103,14 @@ class _ExploreState extends State<Explore> {
           prefixIcon: const Icon(Icons.search),
           suffixIcon: PopupMenuButton<DealQuery>(
               onSelected: (value) => setState(() {
-                queryType = value;
-                updateQuery(queryText);
-              }),
+                    queryType = value;
+                    updateQuery(queryText);
+                  }),
               icon: const Icon(Icons.filter_alt_rounded),
               itemBuilder: (BuildContext context) {
                 return [
                   const PopupMenuItem(
-                      value: DealQuery.nameAsc,
-                      child: Text("Name ⬆")
-                  ),
+                      value: DealQuery.nameAsc, child: Text("Name ⬆")),
                   const PopupMenuItem(
                     value: DealQuery.nameDesc,
                     child: Text("Name ⬇"),
@@ -119,8 +120,7 @@ class _ExploreState extends State<Explore> {
                     child: Text("Rating ⬇"),
                   ),
                 ];
-              }
-          )),
+              })),
 
       focusNode: _textFieldFocus,
       // Query when text field changes
@@ -161,7 +161,7 @@ class _ExploreState extends State<Explore> {
 class _DealsItem extends StatelessWidget {
   final Deal deal;
   final NumberFormat formatCurrency =
-  NumberFormat.currency(locale: "en_GB", symbol: "£");
+      NumberFormat.currency(locale: "en_GB", symbol: "£");
 
   _DealsItem(this.deal);
 
@@ -177,16 +177,18 @@ class _DealsItem extends StatelessWidget {
         child: Container(
           decoration: const BoxDecoration(
               image: DecorationImage(
-                fit: BoxFit.fitWidth,
-                alignment: FractionalOffset.topCenter,
-                image: AssetImage('assets/images/food-placeholder.jpg'),
-              )),
+            fit: BoxFit.fitWidth,
+            alignment: FractionalOffset.topCenter,
+            image: AssetImage('assets/images/food-placeholder.jpg'),
+          )),
         ));
   }
 
   // TODO: retrieve from database
   Widget get retailer {
-    return const Text("Tesco Express");
+    return Text(
+      deal.retailerId,
+    );
   }
 
   Widget get retailPrice {
@@ -249,36 +251,51 @@ class DealDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-        title: Text(deal.name, style: emphStyle,),
+        title: Text(
+          deal.name,
+          style: emphStyle,
+        ),
         content: SingleChildScrollView(
             child: Align(
+          alignment: Alignment.topLeft,
+          child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+            Align(
               alignment: Alignment.topLeft,
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children :[
-                    const Align(
-                      alignment: Alignment.topLeft,
-                      child: Text("Store: Sainsbury", style: ordinaryStyle,),
-                    ),
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Text(deal.description, style: ordinaryStyle,),
-                    ),
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Text("Original Price: ${deal.retailPrice},", style: ordinaryStyle,),
-                    ),
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Text("Current Price: ${deal.discountedPrice}\n\n", style: ordinaryStyle,),
-                    ),
-                    Align(
-                      alignment: Alignment.center,
-                      child: Text("Discount: ${percentOff(deal.retailPrice, deal.discountedPrice)}% OFF!!!", style: emphStyle,),
-                    ),
-                  ]
+              child: Text(
+                "Store: ${deal.retailerId}\n",
+                style: smallStyle,
               ),
-            )));
+            ),
+            Align(
+              alignment: Alignment.topLeft,
+              child: Text(
+                "Description: ${deal.description}\n",
+                style: smallStyle,
+              ),
+            ),
+            Align(
+              alignment: Alignment.topLeft,
+              child: Text(
+                "Original Price:  ${deal.retailPrice}\n",
+                style: smallStyle,
+              ),
+            ),
+            Align(
+              alignment: Alignment.topLeft,
+              child: Text(
+                "Current Price:  ${deal.discountedPrice}\n\n",
+                style: smallStyle,
+              ),
+            ),
+            Align(
+              alignment: Alignment.center,
+              child: Text(
+                "Discount:  ${percentOff(deal.retailPrice, deal.discountedPrice)}% OFF!!!",
+                style: emphStyle,
+              ),
+            ),
+          ]),
+        )));
   }
 
   String percentOff(num original, num current) {
@@ -288,5 +305,4 @@ class DealDialog extends StatelessWidget {
     // print("prev: ${prev}, curr: ${curr}, ratio: ${ratio}");
     return (ratio * 100).toStringAsFixed(1);
   }
-
 }
