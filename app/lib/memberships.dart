@@ -16,15 +16,15 @@ class MembershipPage extends StatelessWidget {
           Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: const [
-                MembershipCard(storeName: 'Store A', color: Color.fromRGBO(255, 191, 0, 0.5),),
-                MembershipCard(storeName: 'Store B', color: Color.fromRGBO(248, 152, 128, 0.5),),
+                MembershipCard(storeName: 'Sainsburys', color: Color.fromRGBO(255, 191, 0, 0.5),),
+                MembershipCard(storeName: 'Tesco', color: Color.fromRGBO(248, 152, 128, 0.5),),
               ]
           ),
           Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: const [
-                MembershipCard(storeName: 'Store C', color: Color.fromRGBO(137, 207, 240, 0.5),),
-                MembershipCard(storeName: 'Store D', color: Color.fromRGBO(115, 113, 255, 0.5),),
+                MembershipCard(storeName: 'Boots', color: Color.fromRGBO(137, 207, 240, 0.5),),
+                MembershipCard(storeName: 'Waitrose', color: Color.fromRGBO(115, 113, 255, 0.5),),
               ]
           ),
         ],

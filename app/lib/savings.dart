@@ -36,17 +36,17 @@ class SavingsPage extends StatelessWidget {
     FakeSpendRecord(
       store: "Tesco",
       amount: 30,
-      timestamp: DateTime.parse("2022-03-13"),
+      time: DateTime.parse("2022-03-13"),
     ),
     FakeSpendRecord(
       store: "Tesco",
       amount: 50,
-      timestamp: DateTime.parse("2022-04-13"),
+      time: DateTime.parse("2022-04-13"),
     ),
     FakeSpendRecord(
       store: "Tesco",
       amount: 10,
-      timestamp: DateTime.parse("2022-05-13"),
+      time: DateTime.parse("2022-05-13"),
     ),
 
   ];
@@ -114,19 +114,19 @@ class SavingTable extends StatelessWidget {
       children: const <TableRow>[
         TableRow(
           children: <Widget>[
-            SavingStore(store: "Store A"),
+            SavingStore(store: "Tesco"),
             SavingAmt(amount: "\$5.60")
           ],
         ),
         TableRow(
           children: <Widget>[
-        SavingStore(store: "Store B"),
+        SavingStore(store: "Sainsburys"),
             SavingAmt(amount: "\$5.60")
           ],
         ),
         TableRow(
           children: <Widget>[
-            SavingStore(store: "Store C"),
+            SavingStore(store: "Boots"),
             SavingAmt(amount: "\$5.60")
           ],
         ),
@@ -209,7 +209,7 @@ class SavingStore extends StatelessWidget {
       verticalAlignment: TableCellVerticalAlignment.middle,
       child: SizedBox(
           height: 32,
-          width: 60,
+          width: 90,
           child: Align(
               alignment: Alignment.center,
               child: Text(store, style: smallStyle,)
@@ -324,7 +324,7 @@ class ShoppingsChart extends StatelessWidget {
             groupsSpace: 10,
             barGroups: data
                 .map((dataItem) =>
-                BarChartGroupData(x: dataItem.timestamp.month, barRods: [
+                BarChartGroupData(x: dataItem.time.month, barRods: [
                   BarChartRodData(
                       y: dataItem.amount.toDouble(),
                       width: 15,
