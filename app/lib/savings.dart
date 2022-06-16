@@ -126,7 +126,7 @@ class SavingTable extends StatelessWidget {
             SavingTime(
               time: DateTime(2022, 3, 5),
             ),
-            const SavingAmt(amount: "\$5.60")
+            const SavingAmt(amount: "£5.60")
           ],
         ),
         TableRow(
@@ -135,7 +135,7 @@ class SavingTable extends StatelessWidget {
             SavingTime(
               time: DateTime(2022, 3, 7),
             ),
-            const SavingAmt(amount: "\$23.90")
+            const SavingAmt(amount: "£23.90")
           ],
         ),
         TableRow(
@@ -144,7 +144,7 @@ class SavingTable extends StatelessWidget {
             SavingTime(
               time: DateTime(2022, 3, 23),
             ),
-            const SavingAmt(amount: "\$12.65")
+            const SavingAmt(amount: "£12.65")
           ],
         ),
       ],

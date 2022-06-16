@@ -194,7 +194,7 @@ class MembershipBarcode extends StatelessWidget {
 
   contentBox(context) {
     return SizedBox(
-      height: 500,
+      height: 400,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -218,7 +218,8 @@ class MembershipBarcode extends StatelessWidget {
                         data: '${appIdMap['nectar']!}1234567890',
                       )),
                   Container(
-                      width: double.maxFinite,
+                      //width: double.maxFinite,
+                      width: MediaQuery.of(context).size.width * 0.45,
                       decoration: BoxDecoration(
                         color: color,
                         borderRadius:
@@ -230,7 +231,7 @@ class MembershipBarcode extends StatelessWidget {
                         fit: BoxFit.fitWidth,
                         child: Text(
                           '$storeName card',
-                          style: ordinaryStyle,
+                          style: cardNameStyle,
                           textAlign: TextAlign.center,
                         ),
                       )),

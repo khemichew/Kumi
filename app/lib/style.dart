@@ -16,6 +16,9 @@ const TextStyle smallOptTextStyle =
 const TextStyle ordinaryStyle =
     TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: Colors.black);
 
+const TextStyle cardNameStyle =
+TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: Colors.black);
+
 const BoxDecoration gradientBackground = BoxDecoration(
     gradient: LinearGradient(
   begin: Alignment.topRight,
