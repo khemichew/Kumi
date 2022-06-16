@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 @immutable
 class FakeUser {
-  final String avatar;
   final String emailAddress;
   // final List<Map<String, String>> memberships;
   final String name;
@@ -13,8 +12,7 @@ class FakeUser {
 
 
   const FakeUser(
-      {required this.avatar,
-        required this.emailAddress,
+      {required this.emailAddress,
         // required this.memberships,
         required this.name,
         required this.phoneNumber,
@@ -23,7 +21,6 @@ class FakeUser {
 
   FakeUser.fromJson(Map<String, Object?> json)
       : this(
-      avatar: json['avatar']! as String,
       emailAddress: json['emailAddress']! as String,
       // memberships: json['memberships']! as List<Map<String, String>>,
       name: json['name']! as String,
@@ -33,7 +30,6 @@ class FakeUser {
 
   Map<String, Object?> toJson() {
     return {
-      'avatar': avatar,
       'emailAddress': emailAddress,
       // 'memberships': memberships,
       'name': name,
@@ -50,7 +46,7 @@ class FakeUser {
 }
 
 final fakeUserEntries = FirebaseFirestore.instance
-    .collection('test-users')
+    .collection('fake-users')
     .withConverter<FakeUser>(
     fromFirestore: (snapshots, _) => FakeUser.fromJson(snapshots.data()!),
     toFirestore: (entry, _) => entry.toJson());
