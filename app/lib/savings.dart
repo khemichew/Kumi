@@ -453,9 +453,12 @@ class AddShoppingState extends State<AddingShopForm> {
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
+        locale: const Locale("en", "EN"),
         initialDate: selectedDate,
-        firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
+        firstDate: DateTime(2010),
+        lastDate: DateTime(2100)
+    );
+
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
@@ -534,6 +537,7 @@ class AddShoppingState extends State<AddingShopForm> {
                   ),
                   child: TextButton(
                     onPressed: () => _selectDate(context),
+                    // child: Text("${selectedDate.toLocal()}".split(' ')[0]),
                     child: Text("${selectedDate.toLocal()}".split(' ')[0]),
                   ),
                 ),

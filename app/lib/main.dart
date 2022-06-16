@@ -5,6 +5,7 @@ import 'firebase_options.dart';
 import 'package:app/memberships.dart';
 import 'package:app/savings.dart';
 import 'package:app/my_account.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,6 +24,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate
+      ],
+      supportedLocales: const [
+        Locale('en', "EN")
+      ],
       debugShowCheckedModeBanner: false,
       title: _title,
       home: MyHomePage(title: _title),
