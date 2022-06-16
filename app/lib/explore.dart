@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'dart:async';
 
+enum DealQuery { nameAsc, nameDesc, ratingDesc, }
+
 class Explore extends StatefulWidget {
   const Explore({Key? key}) : super(key: key);
 
@@ -18,6 +20,7 @@ class _ExploreState extends State<Explore> {
   Timer? _debounce;
   static const displayLimit = 20;
   Color _color = Colors.black12;
+  DealQuery queryType = DealQuery.nameAsc;
 
   @override
   void initState() {
@@ -45,12 +48,23 @@ class _ExploreState extends State<Explore> {
   }
 
 
-  dynamic updateQuery(String query) {
-    queryText = query;
-    if (queryText.isEmpty || queryText.trim().isEmpty) {
-      queryStream = dealEntries.limit(displayLimit).snapshots();
+  void updateQuery(String query) {
+    Query<Deal> tempQuery;
+    if (queryType == DealQuery.nameAsc || queryType == DealQuery.nameDesc) {
+        tempQuery = dealEntries.orderBy('name', descending: queryType == DealQuery.nameDesc);
+    } else if (queryType == DealQuery.ratingDesc) {
+      tempQuery = dealEntries.orderBy('rating', descending: queryType == DealQuery.ratingDesc);
     } else {
-      queryStream = dealEntries
+      tempQuery = dealEntries.orderBy('name');
+    }
+
+    queryText = query;
+    if (queryText.isEmpty || queryText
+        .trim()
+        .isEmpty) {
+      queryStream = tempQuery.limit(displayLimit).snapshots();
+    } else {
+      queryStream = tempQuery
           .where('name', isGreaterThanOrEqualTo: queryText)
           .where('name', isLessThan: '$queryText\uf8ff')
           .limit(displayLimit)
@@ -83,8 +97,28 @@ class _ExploreState extends State<Explore> {
           filled: true,
           fillColor: _color,
           prefixIcon: const Icon(Icons.search),
-          suffixIcon: IconButton(
-            icon: Icon(Icons.filter_alt_rounded), onPressed: () {  },
+          suffixIcon: PopupMenuButton<DealQuery>(
+              onSelected: (value) => setState(() {
+                queryType = value;
+                updateQuery(queryText);
+              }),
+              icon: const Icon(Icons.filter_alt_rounded),
+              itemBuilder: (BuildContext context) {
+                return [
+                  const PopupMenuItem(
+                      value: DealQuery.nameAsc,
+                      child: Text("Name ⬆")
+                  ),
+                  const PopupMenuItem(
+                    value: DealQuery.nameDesc,
+                    child: Text("Name ⬇"),
+                  ),
+                  const PopupMenuItem(
+                    value: DealQuery.ratingDesc,
+                    child: Text("Rating ⬇"),
+                  ),
+                ];
+              }
           )),
 
       focusNode: _textFieldFocus,
@@ -98,8 +132,8 @@ class _ExploreState extends State<Explore> {
     return Scaffold(
         appBar: AppBar(
             backgroundColor: Colors.white, title: _searchBar(), elevation: 0),
-        body: StreamBuilder<QuerySnapshot>(
-            stream: queryStream as Stream<QuerySnapshot<Object?>>,
+        body: StreamBuilder<QuerySnapshot<Deal>>(
+            stream: queryStream as Stream<QuerySnapshot<Deal>>,
             builder:
                 (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (snapshot.hasError) {
@@ -126,7 +160,7 @@ class _ExploreState extends State<Explore> {
 class _DealsItem extends StatelessWidget {
   final Deal deal;
   final NumberFormat formatCurrency =
-      NumberFormat.currency(locale: "en_GB", symbol: "£");
+  NumberFormat.currency(locale: "en_GB", symbol: "£");
 
   _DealsItem(this.deal);
 
@@ -142,10 +176,10 @@ class _DealsItem extends StatelessWidget {
         child: Container(
           decoration: const BoxDecoration(
               image: DecorationImage(
-            fit: BoxFit.fitWidth,
-            alignment: FractionalOffset.topCenter,
-            image: AssetImage('assets/images/food-placeholder.jpg'),
-          )),
+                fit: BoxFit.fitWidth,
+                alignment: FractionalOffset.topCenter,
+                image: AssetImage('assets/images/food-placeholder.jpg'),
+              )),
         ));
   }
 
