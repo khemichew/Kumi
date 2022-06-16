@@ -133,41 +133,7 @@ class MyAccountPage extends StatelessWidget {
   }
 }
 //
-// class _RecordList extends StatelessWidget {
-//   final List<FakeSpendRecord> records;
-//
-//   const _RecordList(this.records);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return ListView.builder(
-//       padding: const EdgeInsets.all(15.0),
-//       itemCount:10,
-//       itemBuilder: (context, index) {
-//         return _SingleRecord(data.docs[index].data() as SingleRecord);
-//       },
-//     );
-//   }
-// }
 
-class _SingleRecord extends StatelessWidget {
-  final FakeSpendRecord record;
-
-  const _SingleRecord(this.record);
-
-  @override
-  Widget build(BuildContext context) {
-    return
-      Align(
-        alignment: Alignment.topLeft,
-        child: SizedBox(
-          width: MediaQuery. of(context). size. width * 0.8,
-          height: 20,
-          child: Text("Store: ${record.store} with ${record.amount} at ${record.time}."),
-        ),
-      );
-  }
-}
 
 class _FakeUserItem extends StatelessWidget {
   final FakeUser fakeUser;

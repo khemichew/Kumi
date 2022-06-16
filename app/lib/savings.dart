@@ -509,6 +509,8 @@ class SavingTable extends StatelessWidget {
 }
 
 class SavingAmount extends StatelessWidget {
+  const SavingAmount({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -722,103 +724,103 @@ class SavingAmtFilter extends StatelessWidget {
   }
 }
 
-class ShoppingsChart extends StatelessWidget {
-  final List<FakeSpendRecord> data;
-
-  const ShoppingsChart({super.key, required this.data});
-
-  @override
-  Widget build(BuildContext context) {
-    return BarChart(BarChartData(
-      borderData: FlBorderData(
-          border: const Border(
-        top: BorderSide.none,
-        right: BorderSide.none,
-        left: BorderSide(width: 1),
-        bottom: BorderSide(width: 1),
-      )),
-      groupsSpace: 10,
-      barGroups: data
-          .map(
-              (dataItem) => BarChartGroupData(x: dataItem.time.month, barRods: [
-                    BarChartRodData(
-                        y: dataItem.amount.toDouble(),
-                        width: 15,
-                        colors: [Colors.amber]),
-                  ]))
-          .toList(),
-      titlesData: FlTitlesData(
-          show: true,
-          rightTitles: SideTitles(showTitles: false),
-          topTitles: SideTitles(showTitles: false),
-          bottomTitles: SideTitles(
-            showTitles: true,
-            getTitles: bottomTitles,
-            reservedSize: 42,
-          ),
-          leftTitles: SideTitles(
-            showTitles: true,
-            reservedSize: 28,
-            interval: 1,
-            getTitles: leftTitles,
-          )),
-    ));
-  }
-
-  String leftTitles(double value) {
-    String ret = "";
-    if (value.toInt() % 20 == 0) {
-      ret = '£${value.toStringAsFixed(0)}';
-    }
-    return ret;
-  }
-
-  String bottomTitles(double value) {
-    String text;
-    switch (value.toInt()) {
-      case 1:
-        text = "Jan";
-        break;
-      case 2:
-        text = "Feb";
-        break;
-      case 3:
-        text = 'Mar';
-        break;
-      case 4:
-        text = 'Apr';
-        break;
-      case 5:
-        text = 'May';
-        break;
-      case 6:
-        text = 'Jun';
-        break;
-      case 7:
-        text = 'Jul';
-        break;
-      case 8:
-        text = 'Aug';
-        break;
-      case 9:
-        text = 'Sep';
-        break;
-      case 10:
-        text = 'Oct';
-        break;
-      case 11:
-        text = 'Nov';
-        break;
-      case 12:
-        text = 'Dec';
-        break;
-      default:
-        text = '';
-        break;
-    }
-    return text;
-  }
-}
+// class ShoppingsChart extends StatelessWidget {
+//   final List<FakeSpendRecord> data;
+//
+//   const ShoppingsChart({super.key, required this.data});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return BarChart(BarChartData(
+//       borderData: FlBorderData(
+//           border: const Border(
+//         top: BorderSide.none,
+//         right: BorderSide.none,
+//         left: BorderSide(width: 1),
+//         bottom: BorderSide(width: 1),
+//       )),
+//       groupsSpace: 10,
+//       barGroups: data
+//           .map(
+//               (dataItem) => BarChartGroupData(x: dataItem.time.month, barRods: [
+//                     BarChartRodData(
+//                         y: dataItem.amount.toDouble(),
+//                         width: 15,
+//                         colors: [Colors.amber]),
+//                   ]))
+//           .toList(),
+//       titlesData: FlTitlesData(
+//           show: true,
+//           rightTitles: SideTitles(showTitles: false),
+//           topTitles: SideTitles(showTitles: false),
+//           bottomTitles: SideTitles(
+//             showTitles: true,
+//             getTitles: bottomTitles,
+//             reservedSize: 42,
+//           ),
+//           leftTitles: SideTitles(
+//             showTitles: true,
+//             reservedSize: 28,
+//             interval: 1,
+//             getTitles: leftTitles,
+//           )),
+//     ));
+//   }
+//
+//   String leftTitles(double value) {
+//     String ret = "";
+//     if (value.toInt() % 20 == 0) {
+//       ret = '£${value.toStringAsFixed(0)}';
+//     }
+//     return ret;
+//   }
+//
+//   String bottomTitles(double value) {
+//     String text;
+//     switch (value.toInt()) {
+//       case 1:
+//         text = "Jan";
+//         break;
+//       case 2:
+//         text = "Feb";
+//         break;
+//       case 3:
+//         text = 'Mar';
+//         break;
+//       case 4:
+//         text = 'Apr';
+//         break;
+//       case 5:
+//         text = 'May';
+//         break;
+//       case 6:
+//         text = 'Jun';
+//         break;
+//       case 7:
+//         text = 'Jul';
+//         break;
+//       case 8:
+//         text = 'Aug';
+//         break;
+//       case 9:
+//         text = 'Sep';
+//         break;
+//       case 10:
+//         text = 'Oct';
+//         break;
+//       case 11:
+//         text = 'Nov';
+//         break;
+//       case 12:
+//         text = 'Dec';
+//         break;
+//       default:
+//         text = '';
+//         break;
+//     }
+//     return text;
+//   }
+// }
 
 class AddingShopForm extends StatefulWidget {
   const AddingShopForm({super.key});
@@ -1032,3 +1034,71 @@ class AddShoppingState extends State<AddingShopForm> {
         ));
   }
 }
+
+// SizedBox(
+//   width: 300,
+//   height:50,
+//   child: FutureBuilder<QuerySnapshot>(
+//       future: fakeSpendRecordEntries.get(),
+//       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+//         if (snapshot.hasError) {
+//           return const Center(child: Text("Something went wrong"));
+//         }
+//
+//         if (!snapshot.hasData) {
+//           return const Center(child: Text("No entries found"));
+//         }
+//
+//         if (snapshot.connectionState == ConnectionState.done) {
+//           final data = snapshot.requireData;
+//           // final records = data.docs as List<FakeSpendRecord>;
+//           print(data.docs.length);
+//           return
+//             ListView.builder(
+//               padding: const EdgeInsets.all(15.0),
+//               itemCount:10,
+//               itemBuilder: (context, index) {
+//                 return _SingleRecord(data.docs[index].data() as FakeSpendRecord);
+//               },
+//             );
+//         }
+//
+//         return const Center(child: CircularProgressIndicator());
+//       }),
+// )
+
+// class _RecordList extends StatelessWidget {
+//   final List<FakeSpendRecord> records;
+//
+//   const _RecordList(this.records);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return ListView.builder(
+//       padding: const EdgeInsets.all(15.0),
+//       itemCount:10,
+//       itemBuilder: (context, index) {
+//         return _SingleRecord(data.docs[index].data() as FakeSpendRecord);
+//       },
+//     );
+//   }
+// }
+
+// class _SingleRecord extends StatelessWidget {
+//   final FakeSpendRecord record;
+//
+//   const _SingleRecord(this.record);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return
+//       Align(
+//         alignment: Alignment.topLeft,
+//         child: SizedBox(
+//           width: MediaQuery. of(context). size. width * 0.8,
+//           height: 20,
+//           child: Text("Store: ${record.store} with ${record.amount} at ${record.time}."),
+//         ),
+//       );
+//   }
+// }
