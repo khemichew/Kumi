@@ -19,7 +19,6 @@ class MyAccountPage extends StatelessWidget {
                     'My\naccount',
                     style: largeTitleStyle,
                   ),
-                  // Image(image: AssetImage('../asset/dingzhen_cute.jpeg'))
                   CircleAvatar(
                     backgroundImage: AssetImage('assets/dingzhen_cute.jpeg'),
                     radius: 60,

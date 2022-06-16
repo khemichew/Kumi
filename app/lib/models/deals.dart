@@ -5,7 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Deal {
   final String name;
   final String description;
-  final int retailerId;
+  final String retailerId;
   final num retailPrice;
   final num discountedPrice;
 
@@ -20,7 +20,7 @@ class Deal {
       : this(
             name: json['name']! as String,
             description: json['description']! as String,
-            retailerId: json['retailerId']! as int,
+            retailerId: json['retailerId']! as String,
             retailPrice: json['retailPrice']! as num,
             discountedPrice: json['discountedPrice']! as num);
 
