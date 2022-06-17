@@ -105,11 +105,11 @@ class _AnalyticsState extends State<Analytics> {
           return Column(mainAxisAlignment: MainAxisAlignment.start, children: [
             const SizedBox(
               width: 100,
-              height: 60,
+              height: 50,
             ),
             Container(
               padding:
-                  const EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
+                  const EdgeInsets.symmetric(vertical: 0.0, horizontal: 5.0),
               child: const Text(
                 "You have spent:",
                 style: largeTitleStyle,
@@ -117,12 +117,12 @@ class _AnalyticsState extends State<Analytics> {
             ),
             const SizedBox(
               width: 100,
-              height: 30,
+              height: 10,
             ),
             SpendAmt(data.docs.map((e) => e.data()).toList()),
             const SizedBox(
               width: 100,
-              height: 30,
+              height: 10,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -151,10 +151,10 @@ class _AnalyticsState extends State<Analytics> {
             ),
             const SizedBox(
               width: 100,
-              height: 30,
+              height: 10,
             ),
             Container(
-                height: 200,
+                height: 180,
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: BarChart(queryType == RecordQuery.year
                     ? monthlyData(data.docs.map((e) => e.data()).toList())
@@ -164,13 +164,16 @@ class _AnalyticsState extends State<Analytics> {
                             ? dailyData(data.docs.map((e) => e.data()).toList())
                             : yearlyData(
                                 data.docs.map((e) => e.data()).toList()))),
+            const SizedBox(
+              width: 100,
+              height: 10,
+            ),
             Container(
               width: 100,
               height: 30,
-              alignment: Alignment.bottomLeft,
+              alignment: Alignment.centerLeft,
               child: const Align(
-                alignment: Alignment.topLeft,
-                child: Text("History", style: ordinaryStyle),
+                child: Text("History", style: ordinaryStyle, textAlign: TextAlign.center,),
               ),
             ),
             SizedBox(
@@ -593,6 +596,8 @@ class SpendAmt extends StatelessWidget {
     return Text(
       formatCurrency.format(records.map((record) => record.amount).sum),
       style: hugeStyle,
+      textAlign: TextAlign.center,
+
     );
   }
 
