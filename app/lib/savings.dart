@@ -106,6 +106,7 @@ class ShoppingsChart extends StatefulWidget {
   const ShoppingsChart(this.data, {super.key});
 
   @override
+  // ignore: no_logic_in_create_state
   ShoppingsChartState createState() => ShoppingsChartState(data);
 }
 
