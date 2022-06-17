@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:app/style.dart';
 
 // import 'models/fake_spend_record.dart';
-import 'models/fake_spend_record.dart';
 import 'models/fake_user.dart';
 
 final recordEntries =

@@ -29,7 +29,7 @@ class FakeSpendRecord {
   }
 }
 
-final fakeSpendRecordEntries = FirebaseFirestore.instance
+final CollectionReference<FakeSpendRecord> fakeSpendRecordEntries = FirebaseFirestore.instance
     .collection('test-spend-record')
     .withConverter<FakeSpendRecord>(
         fromFirestore: (snapshots, _) =>
