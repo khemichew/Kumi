@@ -81,14 +81,10 @@ class SavingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.fromLTRB(15, 40, 15, 0),
+      margin: const EdgeInsets.fromLTRB(15, 50, 15, 0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          const SizedBox(
-            width: 100,
-            height: 50,
-          ),
           Container(
             padding:
                 const EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
@@ -127,7 +123,7 @@ class ShoppingsChartState extends State<ShoppingsChart> {
       children: [
         const SizedBox(
           width: 100,
-          height: 30,
+          height: 20,
         ),
         Container(
           height: 100,
@@ -147,7 +143,7 @@ class ShoppingsChartState extends State<ShoppingsChart> {
         ),
         const SizedBox(
           width: 100,
-          height: 30,
+          height: 20,
         ),
         SizedBox(
             width: MediaQuery.of(context).size.width * 5,
