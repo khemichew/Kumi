@@ -36,9 +36,10 @@ TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: Colors.white);
 
 // ********** Colors **********
 
-const skyBlue = Color.fromRGBO(173, 190, 216, 1);
-const champaignGold = Color.fromRGBO(255, 229, 205, 1);
+const skyBlue = Color.fromRGBO(173, 190, 216, 1.0);
+const champaignGold = Color.fromRGBO(255, 229, 205, 1.0);
 const mintGreen = Color.fromRGBO(53, 219, 169, 1.0);
+const honeyOrange = Color.fromRGBO(255, 191, 0, 0.5);
 
 
 // ********** Background **********
@@ -110,6 +111,14 @@ final ButtonStyle smallOptStyle = OutlinedButton.styleFrom(
 // ********** Border Radii **********
 
 var regularRadius = BorderRadius.circular(10.0);
+
+
+// ********** Border Radii **********
+
+const verticalTenInsets = EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0);
+const horizontalTenInsets = EdgeInsets.symmetric(vertical: 10.0, horizontal: 0.0);
+const allSidesTenInsets = EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0);
+
 
 
 // ********** Shadow **********
