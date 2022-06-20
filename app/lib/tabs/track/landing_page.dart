@@ -2,9 +2,9 @@ import 'package:app/models/fake_spend_record.dart';
 import 'package:app/config/style.dart';
 import 'package:app/tabs/track/add_button.dart';
 import 'package:app/tabs/track/button_generator.dart';
+import 'package:app/tabs/track/generate_chart.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -14,19 +14,6 @@ enum RecordQuery {
   year,
   month,
   week,
-}
-
-enum TimeInterval { week, month, year }
-
-@immutable
-class TotalRecord {
-  final num amount;
-  final int timeInterval;
-
-  const TotalRecord({
-    required this.amount,
-    required this.timeInterval,
-  });
 }
 
 extension on Query<FakeSpendRecord> {
@@ -74,7 +61,6 @@ class Analytics extends StatefulWidget {
 
 class _AnalyticsState extends State<Analytics> {
   RecordQuery queryType = RecordQuery.showDescendingData;
-  TimeInterval interval = TimeInterval.month;
 
   // Stream<QuerySnapshot<FakeSpendRecord>> queryStream = fakeSpendRecordEntries.snapshots();
 
@@ -102,21 +88,15 @@ class _AnalyticsState extends State<Analytics> {
 
           final data = snapshot.requireData;
 
-          final List<FakeSpendRecord> history = data.docs.map((e) => e.data()).toList();
+          final List<FakeSpendRecord> history =
+              data.docs.map((e) => e.data()).toList();
 
           return Column(mainAxisAlignment: MainAxisAlignment.start, children: [
             const SizedBox(
               width: 100,
               height: 50,
             ),
-            Container(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 0.0, horizontal: 5.0),
-              child: const Text(
-                "You have spent:",
-                style: largeTitleStyle,
-              ),
-            ),
+            const YouHaveSpent(),
             const SizedBox(
               width: 100,
               height: 10,
@@ -126,31 +106,7 @@ class _AnalyticsState extends State<Analytics> {
               width: 100,
               height: 10,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ButtonGenerator(
-                  text: "All",
-                  notifyParent: refresh,
-                  queryType: RecordQuery.all,
-                ),
-                ButtonGenerator(
-                  text: "This Year",
-                  notifyParent: refresh,
-                  queryType: RecordQuery.year,
-                ),
-                ButtonGenerator(
-                  text: "This Month",
-                  notifyParent: refresh,
-                  queryType: RecordQuery.month,
-                ),
-                ButtonGenerator(
-                  text: "This Week",
-                  notifyParent: refresh,
-                  queryType: RecordQuery.week,
-                ),
-              ],
-            ),
+            generateFilters(),
             const SizedBox(
               width: 100,
               height: 10,
@@ -158,14 +114,18 @@ class _AnalyticsState extends State<Analytics> {
             Container(
                 height: 180,
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: BarChart(queryType == RecordQuery.year
-                    ? monthlyData(data.docs.map((e) => e.data()).toList())
-                    : queryType == RecordQuery.month
-                        ? weeklyData(data.docs.map((e) => e.data()).toList())
-                        : queryType == RecordQuery.week
-                            ? dailyData(data.docs.map((e) => e.data()).toList())
-                            : yearlyData(
-                                data.docs.map((e) => e.data()).toList()))),
+                child: GenerateChart(data.docs.map((e) => e.data()).toList(), queryType).buildChart()
+
+                // BarChart(queryType == RecordQuery.year
+                //     ? monthlyData(data.docs.map((e) => e.data()).toList())
+                //     : queryType == RecordQuery.month
+                //         ? weeklyData(data.docs.map((e) => e.data()).toList())
+                //         : queryType == RecordQuery.week
+                //             ? dailyData(data.docs.map((e) => e.data()).toList())
+                //             : yearlyData(
+                //                 data.docs.map((e) => e.data()).toList())
+                // )
+            ),
             const SizedBox(
               width: 100,
               height: 10,
@@ -175,345 +135,84 @@ class _AnalyticsState extends State<Analytics> {
               height: 30,
               alignment: Alignment.centerLeft,
               child: const Align(
-                child: Text("History", style: ordinaryStyle, textAlign: TextAlign.center,),
+                child: Text(
+                  "History",
+                  style: ordinaryStyle,
+                  textAlign: TextAlign.center,
+                ),
               ),
             ),
-            SizedBox(
-                width: 270,
-                height: 100,
-                child: Table(
-                  border: TableBorder.all(),
-                  columnWidths: const <int, TableColumnWidth>{
-                    0: FlexColumnWidth(150),
-                    1: FlexColumnWidth(120),
-                    2: FixedColumnWidth(50),
-                  },
-                  defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                  children: <TableRow>[
-                    generateOneRecord(history[0]),
-                    generateOneRecord(history[1]),
-                    generateOneRecord(history[2]),
-                    generateOneRecord(history[3]),
-                    generateOneRecord(history[4]),
-                  ],
-                )),
-            Container(
-              alignment: Alignment.bottomRight,
-              child: FloatingActionButton(
-                onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return const AddingShopForm();
-                      });
-                },
-                backgroundColor: const Color.fromRGBO(53, 219, 169, 1.0),
-                child: const Icon(Icons.add),
-              ),
-            ),
+            generateHistory(history),
+            generateAddButton(context),
           ]);
         });
   }
 
-  BarChartData dailyData(List<FakeSpendRecord> data) {
-    final Map<int, List<FakeSpendRecord>> info = groupBy(
-        data.where((dataItem) =>
-            dataItem.time.month == DateTime.now().month &&
-            dataItem.time.day ~/ 7 == DateTime.now().day ~/ 7 &&
-            dataItem.time.year == DateTime.now().year), (FakeSpendRecord r) {
-      return r.time.weekday;
-    });
-    List<TotalRecord> list = [];
-    info.forEach((k, v) =>
-        list.add(TotalRecord(amount: groupTimeInterval(v), timeInterval: k)));
-    return BarChartData(
-      borderData: FlBorderData(
-          border: const Border(
-        top: BorderSide.none,
-        right: BorderSide.none,
-        left: BorderSide(width: 1),
-        bottom: BorderSide(width: 1),
-      )),
-      groupsSpace: 10,
-      barGroups: list
-          .map((dataItem) =>
-              BarChartGroupData(x: dataItem.timeInterval, barRods: [
-                BarChartRodData(
-                    y: dataItem.amount.toDouble(),
-                    width: 15,
-                    colors: [Colors.deepPurpleAccent]),
-              ]))
-          .toList(),
-      titlesData: FlTitlesData(
-          show: true,
-          rightTitles: SideTitles(showTitles: false),
-          topTitles: SideTitles(showTitles: false),
-          bottomTitles: SideTitles(
-            showTitles: true,
-            getTitles: dailyBottomTitles,
-            reservedSize: 42,
-          ),
-          leftTitles: SideTitles(
-            showTitles: true,
-            reservedSize: 35,
-            interval: 1,
-            getTitles: dailyLeftTitles,
-          )),
+  Container generateAddButton(BuildContext context) {
+    return Container(
+      alignment: Alignment.bottomRight,
+      child: FloatingActionButton(
+        onPressed: () {
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return const AddingShopForm();
+              });
+        },
+        backgroundColor: const Color.fromRGBO(53, 219, 169, 1.0),
+        child: const Icon(Icons.add),
+      ),
     );
   }
 
-  String dailyLeftTitles(double value) {
-    String ret = "";
-    if (value.toInt() % 10 == 0) {
-      ret = '£${value.toStringAsFixed(0)}';
-    }
-    return ret;
+  SizedBox generateHistory(List<FakeSpendRecord> history) {
+    return SizedBox(
+        width: 270,
+        height: 100,
+        child: Table(
+          border: TableBorder.all(),
+          columnWidths: const <int, TableColumnWidth>{
+            0: FlexColumnWidth(150),
+            1: FlexColumnWidth(120),
+            2: FixedColumnWidth(50),
+          },
+          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+          children: <TableRow>[
+            generateOneRecord(history[0]),
+            generateOneRecord(history[1]),
+            generateOneRecord(history[2]),
+            generateOneRecord(history[3]),
+            generateOneRecord(history[4]),
+          ],
+        ));
   }
 
-  String dailyBottomTitles(double value) {
-    String text;
-    switch (value.toInt()) {
-      case 1:
-        text = "Mon";
-        break;
-      case 2:
-        text = "Tue";
-        break;
-      case 3:
-        text = 'Wed';
-        break;
-      case 4:
-        text = 'Thu';
-        break;
-      case 5:
-        text = 'Fri';
-        break;
-      case 6:
-        text = 'Sat';
-        break;
-      case 7:
-        text = 'Sun';
-        break;
-      default:
-        text = '';
-        break;
-    }
-    return text;
-  }
-
-  BarChartData weeklyData(List<FakeSpendRecord> data) {
-    final Map<int, List<FakeSpendRecord>> info = groupBy(
-        data.where((dataItem) =>
-            dataItem.time.month == DateTime.now().month &&
-            dataItem.time.year == DateTime.now().year), (FakeSpendRecord r) {
-      return r.time.day ~/ 7;
-    });
-    List<TotalRecord> list = [];
-    info.forEach((k, v) =>
-        list.add(TotalRecord(amount: groupTimeInterval(v), timeInterval: k)));
-    return BarChartData(
-      borderData: FlBorderData(
-          border: const Border(
-        top: BorderSide.none,
-        right: BorderSide.none,
-        left: BorderSide(width: 1),
-        bottom: BorderSide(width: 1),
-      )),
-      groupsSpace: 10,
-      barGroups: list
-          .map((dataItem) =>
-              BarChartGroupData(x: dataItem.timeInterval, barRods: [
-                BarChartRodData(
-                    y: dataItem.amount.toDouble(),
-                    width: 15,
-                    colors: [Colors.amber]),
-              ]))
-          .toList(),
-      titlesData: FlTitlesData(
-          show: true,
-          rightTitles: SideTitles(showTitles: false),
-          topTitles: SideTitles(showTitles: false),
-          bottomTitles: SideTitles(
-            showTitles: true,
-            getTitles: weeklyBottomTitles,
-            reservedSize: 42,
-          ),
-          leftTitles: SideTitles(
-            showTitles: true,
-            reservedSize: 35,
-            interval: 1,
-            getTitles: weeklyLeftTitles,
-          )),
+  Row generateFilters() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        ButtonGenerator(
+          text: "All",
+          notifyParent: refresh,
+          queryType: RecordQuery.all,
+        ),
+        ButtonGenerator(
+          text: "This Year",
+          notifyParent: refresh,
+          queryType: RecordQuery.year,
+        ),
+        ButtonGenerator(
+          text: "This Month",
+          notifyParent: refresh,
+          queryType: RecordQuery.month,
+        ),
+        ButtonGenerator(
+          text: "This Week",
+          notifyParent: refresh,
+          queryType: RecordQuery.week,
+        ),
+      ],
     );
-  }
-
-  String weeklyLeftTitles(double value) {
-    String ret = "";
-    if (value.toInt() % 10 == 0) {
-      ret = '£${value.toStringAsFixed(0)}';
-    }
-    return ret;
-  }
-
-  String weeklyBottomTitles(double value) {
-    value = value + 1;
-    return 'Week ${value.toStringAsFixed(0)}';
-  }
-
-  BarChartData monthlyData(List<FakeSpendRecord> data) {
-    final Map<int, List<FakeSpendRecord>> info = groupBy(
-        data.where((dataItem) => dataItem.time.year == DateTime.now().year),
-        (FakeSpendRecord r) {
-      return r.time.month;
-    });
-    List<TotalRecord> list = [];
-    info.forEach((k, v) =>
-        list.add(TotalRecord(amount: groupTimeInterval(v), timeInterval: k)));
-    return BarChartData(
-      borderData: FlBorderData(
-          border: const Border(
-        top: BorderSide.none,
-        right: BorderSide.none,
-        left: BorderSide(width: 1),
-        bottom: BorderSide(width: 1),
-      )),
-      groupsSpace: 10,
-      barGroups: list
-          .map((dataItem) =>
-              BarChartGroupData(x: dataItem.timeInterval, barRods: [
-                BarChartRodData(
-                    y: dataItem.amount.toDouble(),
-                    width: 15,
-                    colors: [Colors.blue]),
-              ]))
-          .toList(),
-      titlesData: FlTitlesData(
-          show: true,
-          rightTitles: SideTitles(showTitles: false),
-          topTitles: SideTitles(showTitles: false),
-          bottomTitles: SideTitles(
-            showTitles: true,
-            getTitles: monthlyBottomTitles,
-            reservedSize: 20,
-          ),
-          leftTitles: SideTitles(
-            showTitles: true,
-            reservedSize: 35,
-            interval: 1,
-            getTitles: monthlyLeftTitles,
-          )),
-    );
-  }
-
-  String monthlyBottomTitles(double value) {
-    String text;
-    switch (value.toInt()) {
-      case 1:
-        text = "Jan";
-        break;
-      case 2:
-        text = "Feb";
-        break;
-      case 3:
-        text = 'Mar';
-        break;
-      case 4:
-        text = 'Apr';
-        break;
-      case 5:
-        text = 'May';
-        break;
-      case 6:
-        text = 'Jun';
-        break;
-      case 7:
-        text = 'Jul';
-        break;
-      case 8:
-        text = 'Aug';
-        break;
-      case 9:
-        text = 'Sep';
-        break;
-      case 10:
-        text = 'Oct';
-        break;
-      case 11:
-        text = 'Nov';
-        break;
-      case 12:
-        text = 'Dec';
-        break;
-      default:
-        text = '';
-        break;
-    }
-    return text;
-  }
-
-  String monthlyLeftTitles(double value) {
-    String ret = "";
-    if (value.toInt() % 20 == 0) {
-      ret = '£${value.toStringAsFixed(0)}';
-    }
-    return ret;
-  }
-
-  BarChartData yearlyData(List<FakeSpendRecord> data) {
-    final Map<int, List<FakeSpendRecord>> info =
-        groupBy(data, (FakeSpendRecord r) {
-      return r.time.year;
-    });
-    List<TotalRecord> list = [];
-    info.forEach((k, v) =>
-        list.add(TotalRecord(amount: groupTimeInterval(v), timeInterval: k)));
-    return BarChartData(
-      borderData: FlBorderData(
-          border: const Border(
-        top: BorderSide.none,
-        right: BorderSide.none,
-        left: BorderSide(width: 1),
-        bottom: BorderSide(width: 1),
-      )),
-      groupsSpace: 10,
-      barGroups: list
-          .map((dataItem) =>
-              BarChartGroupData(x: dataItem.timeInterval, barRods: [
-                BarChartRodData(
-                    y: dataItem.amount.toDouble(),
-                    width: 15,
-                    colors: [Colors.red]),
-              ]))
-          .toList(),
-      titlesData: FlTitlesData(
-          show: true,
-          rightTitles: SideTitles(showTitles: false),
-          topTitles: SideTitles(showTitles: false),
-          bottomTitles: SideTitles(
-            showTitles: true,
-            getTitles: (e) => "2022",
-            reservedSize: 42,
-          ),
-          leftTitles: SideTitles(
-            showTitles: true,
-            reservedSize: 35,
-            interval: 1,
-            getTitles: yearlyLeftTitles,
-          )),
-    );
-  }
-
-  String yearlyLeftTitles(double value) {
-    String ret = "";
-    if (value.toInt() % 100 == 0) {
-      ret = '£${value.toStringAsFixed(0)}';
-    }
-    return ret;
-  }
-
-  double groupTimeInterval(List<FakeSpendRecord> v) {
-    double total = v.map((e) => e.amount).sum.toDouble();
-    return total;
   }
 
   generateOneRecord(FakeSpendRecord record) {
@@ -560,6 +259,23 @@ class _AnalyticsState extends State<Analytics> {
   }
 }
 
+class YouHaveSpent extends StatelessWidget {
+  const YouHaveSpent({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 5.0),
+      child: const Text(
+        "You have spent:",
+        style: largeTitleStyle,
+      ),
+    );
+  }
+}
+
 class SpendAmt extends StatelessWidget {
   final List<FakeSpendRecord> records;
   final NumberFormat formatCurrency =
@@ -572,7 +288,6 @@ class SpendAmt extends StatelessWidget {
       formatCurrency.format(records.map((record) => record.amount).sum),
       style: hugeStyle,
       textAlign: TextAlign.center,
-
     );
   }
 
