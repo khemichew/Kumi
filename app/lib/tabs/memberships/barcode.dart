@@ -16,7 +16,7 @@ class MembershipBarcode extends StatelessWidget {
   Widget build(BuildContext context) {
     return Dialog(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
+        borderRadius: regularRadius,
       ),
       elevation: 0,
       backgroundColor: Colors.transparent,
@@ -37,7 +37,7 @@ class MembershipBarcode extends StatelessWidget {
             decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(10.0),
+                borderRadius: regularRadius,
                 boxShadow: defaultBoxShadow),
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -54,8 +54,7 @@ class MembershipBarcode extends StatelessWidget {
                       width: MediaQuery.of(context).size.width * 0.45,
                       decoration: BoxDecoration(
                         color: color,
-                        borderRadius:
-                        const BorderRadius.all(Radius.circular(10)),
+                        borderRadius: regularRadius,
                       ),
                       padding: const EdgeInsets.symmetric(
                           vertical: 5.0, horizontal: 10.0),
@@ -73,9 +72,9 @@ class MembershipBarcode extends StatelessWidget {
             onPressed: () {},
             child: Container(
               height: 50,
-              decoration: const BoxDecoration(
-                  color: Color.fromRGBO(53, 219, 169, 1.0),
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
+              decoration: BoxDecoration(
+                  color: const Color.fromRGBO(53, 219, 169, 1.0),
+                  borderRadius: regularRadius,
                   boxShadow: defaultBoxShadow),
               padding:
               const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
@@ -97,7 +96,7 @@ class MembershipBarcode extends StatelessWidget {
               decoration: BoxDecoration(
                   border: Border.all(color: Colors.black),
                   color: Colors.white,
-                  borderRadius: const BorderRadius.all(Radius.circular(10)),
+                  borderRadius: regularRadius,
                   boxShadow: defaultBoxShadow),
               padding:
               const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
