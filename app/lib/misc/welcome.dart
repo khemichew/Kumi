@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:app/memberships.dart';
-import 'package:app/style.dart';
+import 'package:app/tabs/memberships/landing_page.dart';
+import 'package:app/config/style.dart';
 import 'package:flutter/material.dart';
 
 class WelcomePage extends StatefulWidget {
