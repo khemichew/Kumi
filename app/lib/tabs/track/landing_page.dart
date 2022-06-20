@@ -1,6 +1,7 @@
 import 'package:app/models/fake_spend_record.dart';
 import 'package:app/config/style.dart';
 import 'package:app/tabs/track/add_button.dart';
+import 'package:app/tabs/track/button_generator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -555,33 +556,6 @@ class _AnalyticsState extends State<Analytics> {
                   ))),
         )
       ],
-    );
-  }
-}
-
-class ButtonGenerator extends StatelessWidget {
-  final String text;
-  final RecordQuery queryType;
-  final void Function(RecordQuery) notifyParent;
-
-  const ButtonGenerator(
-      {super.key,
-      required this.text,
-      required this.notifyParent,
-      required this.queryType});
-
-  @override
-  Widget build(BuildContext context) {
-    return TextButton(
-      style: outlineButtonStyle,
-      onPressed: () {
-        // print("Im pressed");
-        notifyParent(queryType);
-      },
-      child: Text(
-        text,
-        style: filterStyle,
-      ),
     );
   }
 }
