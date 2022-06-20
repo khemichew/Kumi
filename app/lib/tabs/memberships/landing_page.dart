@@ -44,41 +44,43 @@ class _MembershipPageHeadState extends State<MembershipPageHead> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-      Expanded(
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
-          child: const Text(
-            'My\nmemberships',
-            style: titleStyle,
-          ),
-        ),
-      ),
-      Expanded(
-        child: TextButton(
-          onPressed: scanBarcode,
+    return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
           child: Container(
-            height: 60,
-            decoration: BoxDecoration(
-                border: Border.all(color: Colors.black),
-                color: Colors.white38,
-                borderRadius: const BorderRadius.all(Radius.circular(10))),
-            padding:
-            const EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                Text("Add", style: ordinaryStyle),
-                Icon(
-                  Icons.add,
-                  color: Colors.black,
-                )
-              ],
+            padding: verticalTenInsets,
+            child: const Text(
+              'My\nmemberships',
+              style: titleStyle,
             ),
           ),
         ),
-      ),
-    ]);
+        Expanded(
+          child: TextButton(
+            onPressed: scanBarcode,
+            child: Container(
+              height: 60,
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black),
+                  color: Colors.white38,
+                  borderRadius: regularRadius
+              ),
+              padding: verticalTenInsets,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const [
+                  Text("Add", style: ordinaryStyle),
+                  Icon(
+                    Icons.add,
+                    color: Colors.black,
+                  )
+                ],
+              ),
+            ),
+          ),
+        ),
+      ]
+    );
   }
 }
 
@@ -142,7 +144,8 @@ class MembershipCard extends StatelessWidget {
             builder: (BuildContext context) {
               return MembershipBarcode(
                   storeName: retailer.name,
-                  color: const Color.fromRGBO(255, 191, 0, 0.5));
+                  color: honeyOrange
+              );
             });
       },
       child: Container(
@@ -151,8 +154,9 @@ class MembershipCard extends StatelessWidget {
         decoration: BoxDecoration(
             image: DecorationImage(
                 image: NetworkImage(retailer.imageUrl), fit: BoxFit.cover),
-            borderRadius: const BorderRadius.all(Radius.circular(10))),
-        padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+            borderRadius: regularRadius
+        ),
+        padding: allSidesTenInsets,
       ),
     );
   }

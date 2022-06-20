@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
+// ********** Text Styles **********
+
 const TextStyle titleStyle =
     TextStyle(fontSize: 23, fontWeight: FontWeight.w500, color: Colors.black);
 
@@ -19,24 +21,41 @@ const TextStyle ordinaryStyle =
 const TextStyle cardNameStyle =
 TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: Colors.black);
 
+const TextStyle smallStyle =
+TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Colors.black);
+
+const TextStyle hugeStyle =
+TextStyle(fontSize: 50, fontWeight: FontWeight.w500, color: Colors.black);
+
+const TextStyle filterStyle =
+TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: Colors.black);
+
+const TextStyle ordinaryWhiteStyle =
+TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: Colors.white);
+
+
+// ********** Colors **********
+
+const skyBlue = Color.fromRGBO(173, 190, 216, 1.0);
+const champaignGold = Color.fromRGBO(255, 229, 205, 1.0);
+const mintGreen = Color.fromRGBO(53, 219, 169, 1.0);
+const honeyOrange = Color.fromRGBO(255, 191, 0, 0.5);
+
+
+// ********** Background **********
+
 const BoxDecoration gradientBackground = BoxDecoration(
     gradient: LinearGradient(
   begin: Alignment.topRight,
   end: Alignment.bottomLeft,
   colors: [
-    Color.fromRGBO(173, 190, 216, 1),
-    Color.fromRGBO(255, 229, 205, 1),
+    skyBlue,
+    champaignGold,
   ],
 ));
 
-const TextStyle smallStyle =
-    TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Colors.black);
 
-const TextStyle hugeStyle =
-    TextStyle(fontSize: 50, fontWeight: FontWeight.w500, color: Colors.black);
-
-const TextStyle filterStyle =
-    TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: Colors.black);
+// ********** Button Styles **********
 
 final ButtonStyle flatButtonStyle = TextButton.styleFrom(
   primary: Colors.black87,
@@ -46,13 +65,6 @@ final ButtonStyle flatButtonStyle = TextButton.styleFrom(
     borderRadius: BorderRadius.all(Radius.circular(2.0)),
   ),
 );
-
-const TextStyle ordinaryWhiteStyle =
-    TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: Colors.white);
-
-const defaultBoxShadow = [
-  BoxShadow(color: Colors.black, offset: Offset(0, 5), blurRadius: 5),
-];
 
 final ButtonStyle outlineButtonStyle = OutlinedButton.styleFrom(
   primary: Colors.black87,
@@ -95,6 +107,29 @@ final ButtonStyle smallOptStyle = OutlinedButton.styleFrom(
     },
   ),
 );
+
+// ********** Border Radii **********
+
+var regularRadius = BorderRadius.circular(10.0);
+
+
+// ********** Border Radii **********
+
+const verticalTenInsets = EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0);
+const horizontalTenInsets = EdgeInsets.symmetric(vertical: 10.0, horizontal: 0.0);
+const allSidesTenInsets = EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0);
+
+
+
+// ********** Shadow **********
+
+const defaultBoxShadow = [
+  BoxShadow(color: Colors.black, offset: Offset(0, 5), blurRadius: 5),
+];
+
+
+// ********** Misc **********
+
 
 Future<String> loadAsset() async {
   return await rootBundle.loadString('assets/config.json');
