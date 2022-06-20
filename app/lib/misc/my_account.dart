@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:app/style.dart';
+import 'package:app/config/style.dart';
 
 // import 'models/fake_spend_record.dart';
-import 'models/fake_user.dart';
+import '../models/fake_user.dart';
 
 final recordEntries =
     FirebaseFirestore.instance.collection("test-spend-record");

@@ -1,5 +1,5 @@
 import 'package:app/models/deals.dart';
-import 'package:app/style.dart';
+import 'package:app/config/style.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -103,9 +103,9 @@ class _ExploreState extends State<Explore> {
           prefixIcon: const Icon(Icons.search),
           suffixIcon: PopupMenuButton<DealQuery>(
               onSelected: (value) => setState(() {
-                    queryType = value;
-                    updateQuery(queryText);
-                  }),
+                queryType = value;
+                updateQuery(queryText);
+              }),
               icon: const Icon(Icons.filter_alt_rounded),
               itemBuilder: (BuildContext context) {
                 return [
@@ -162,7 +162,7 @@ class _ExploreState extends State<Explore> {
 class _DealsItem extends StatelessWidget {
   final Deal deal;
   final NumberFormat formatCurrency =
-      NumberFormat.currency(locale: "en_GB", symbol: "£");
+  NumberFormat.currency(locale: "en_GB", symbol: "£");
 
   _DealsItem(this.deal);
 
@@ -183,14 +183,14 @@ class _DealsItem extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
               image: DecorationImage(
-            fit: BoxFit.fitWidth,
-            alignment: FractionalOffset.topCenter,
-            image: NetworkImage(deal.imageUrl),
-          )),
+                fit: BoxFit.fitWidth,
+                alignment: FractionalOffset.topCenter,
+                image: NetworkImage(deal.imageUrl),
+              )),
         ));
   }
 
-  // TODO: retrieve from database
+  // TUDOU: retrieve from database
   Widget get retailer {
     return Text(
       deal.retailerId,
@@ -263,45 +263,45 @@ class DealDialog extends StatelessWidget {
         ),
         content: SingleChildScrollView(
             child: Align(
-          alignment: Alignment.topLeft,
-          child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-            Align(
               alignment: Alignment.topLeft,
-              child: Text(
-                "Store: ${deal.retailerId}\n",
-                style: smallStyle,
-              ),
-            ),
-            Align(
-              alignment: Alignment.topLeft,
-              child: Text(
-                "Description: ${deal.description}\n",
-                style: smallStyle,
-              ),
-            ),
-            Align(
-              alignment: Alignment.topLeft,
-              child: Text(
-                "Original Price:  ${deal.retailPrice}\n",
-                style: smallStyle,
-              ),
-            ),
-            Align(
-              alignment: Alignment.topLeft,
-              child: Text(
-                "Current Price:  ${deal.discountedPrice}\n\n",
-                style: smallStyle,
-              ),
-            ),
-            Align(
-              alignment: Alignment.center,
-              child: Text(
-                "Discount:  ${percentOff(deal.retailPrice, deal.discountedPrice)}% OFF!!!",
-                style: emphStyle,
-              ),
-            ),
-          ]),
-        )));
+              child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    "Store: ${deal.retailerId}\n",
+                    style: smallStyle,
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    "Description: ${deal.description}\n",
+                    style: smallStyle,
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    "Original Price:  ${deal.retailPrice}\n",
+                    style: smallStyle,
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    "Current Price:  ${deal.discountedPrice}\n\n",
+                    style: smallStyle,
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    "Discount:  ${percentOff(deal.retailPrice, deal.discountedPrice)}% OFF!!!",
+                    style: emphStyle,
+                  ),
+                ),
+              ]),
+            )));
   }
 
   String percentOff(num original, num current) {

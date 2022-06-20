@@ -1,5 +1,5 @@
 import 'package:app/models/fake_spend_record.dart';
-import 'package:app/style.dart';
+import 'package:app/config/style.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:fl_chart/fl_chart.dart';
