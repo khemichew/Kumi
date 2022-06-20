@@ -34,6 +34,13 @@ const TextStyle ordinaryWhiteStyle =
 TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: Colors.white);
 
 
+// ********** Colors **********
+
+const skyBlue = Color.fromRGBO(173, 190, 216, 1);
+const champaignGold = Color.fromRGBO(255, 229, 205, 1);
+const mintGreen = Color.fromRGBO(53, 219, 169, 1.0);
+
+
 // ********** Background **********
 
 const BoxDecoration gradientBackground = BoxDecoration(
@@ -41,8 +48,8 @@ const BoxDecoration gradientBackground = BoxDecoration(
   begin: Alignment.topRight,
   end: Alignment.bottomLeft,
   colors: [
-    Color.fromRGBO(173, 190, 216, 1),
-    Color.fromRGBO(255, 229, 205, 1),
+    skyBlue,
+    champaignGold,
   ],
 ));
 

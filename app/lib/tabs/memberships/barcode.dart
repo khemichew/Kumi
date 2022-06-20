@@ -73,7 +73,7 @@ class MembershipBarcode extends StatelessWidget {
             child: Container(
               height: 50,
               decoration: BoxDecoration(
-                  color: const Color.fromRGBO(53, 219, 169, 1.0),
+                  color: mintGreen,
                   borderRadius: regularRadius,
                   boxShadow: defaultBoxShadow),
               padding:

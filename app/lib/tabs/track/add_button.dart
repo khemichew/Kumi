@@ -185,7 +185,7 @@ class AddShoppingState extends State<AddingShopForm> {
                     width: 500,
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.black),
-                      color: const Color.fromRGBO(53, 219, 169, 1.0),
+                      color: mintGreen,
                       borderRadius: const BorderRadius.all(Radius.circular(10)),
                     ),
                     padding: const EdgeInsets.symmetric(
