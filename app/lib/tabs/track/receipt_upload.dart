@@ -7,45 +7,44 @@ import 'package:flutter/material.dart';
 import '../../config/style.dart';
 
 
-
-class ImageUploads extends StatefulWidget {
-  const ImageUploads({Key? key}) : super(key: key);
-
-  @override
-  _ImageUploadsState createState() => _ImageUploadsState();
-}
-
-class _ImageUploadsState extends State<ImageUploads> {
+class ReceiptUpload {
   firebase_storage.FirebaseStorage storage =
       firebase_storage.FirebaseStorage.instance;
 
   File? _photo;
   final ImagePicker _picker = ImagePicker();
 
+  Future<String> getImageURL() async {
+    final fileName = basename(_photo!.path);
+    final destination = 'files/$fileName';
+    String url = await storage.ref(destination).getDownloadURL();
+    return url;
+  }
+
   Future getFromCamera() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.camera);
 
-    setState(() {
+    // setState(() {
       if (pickedFile != null) {
         _photo = File(pickedFile.path);
-        uploadFile();
+        // uploadFile();
       } else {
         print('No image selected.');
       }
-    });
+    // });
   }
 
   Future getFromGallery() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
 
-    setState(() {
+    // setState(() {
       if (pickedFile != null) {
         _photo = File(pickedFile.path);
-        uploadFile();
+        // uploadFile();
       } else {
         print('No image selected.');
       }
-    });
+    // });
   }
 
   Future uploadFile() async {
@@ -63,7 +62,7 @@ class _ImageUploadsState extends State<ImageUploads> {
     }
   }
 
-  @override
+  // @override
   Widget build(BuildContext context) {
     return TextButton(
         onPressed: () {

@@ -17,6 +17,8 @@ class AddShoppingState extends State<AddingShopForm> {
   final amountController = TextEditingController();
   final dateController = TextEditingController();
 
+  ReceiptUpload receiptUpload = ReceiptUpload();
+
   String dropdownvalue = 'Tesco';
 
   var items = [
@@ -50,10 +52,12 @@ class AddShoppingState extends State<AddingShopForm> {
   }
 
   Future<void> addShopping(String store, String amount, String date) {
+    // receiptUpload.uploadFile();
     return FirebaseFirestore.instance.collection("test-spend-record").add({
       'store': store,
       'amount': amount,
-      'time': Timestamp.fromDate(DateTime.parse(date))
+      'time': Timestamp.fromDate(DateTime.parse(date)),
+      // 'receipt-image': receiptUpload.getImageURL(),
     });
   }
 
@@ -175,7 +179,7 @@ class AddShoppingState extends State<AddingShopForm> {
             const SizedBox(
               height: 10,
             ),
-            const ImageUploads(),
+            // receiptUpload.build(context),
             const SizedBox(
               height: 10,
             ),
