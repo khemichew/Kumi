@@ -1,18 +1,27 @@
-import 'package:app/tabs/explore/landing_page.dart';
-import 'package:app/tabs/track/landing_page.dart';
+import 'package:app/tabs/login/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'config/firebase_options.dart';
-import 'package:app/tabs/memberships/landing_page.dart';
-// import 'package:app/savings.dart';
-import 'package:app/misc/my_account.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import 'package:app/tabs/memberships/landing_page.dart';
+import 'package:app/misc/my_account.dart';
+import 'package:app/tabs/explore/landing_page.dart';
+import 'package:app/tabs/track/landing_page.dart';
+import 'package:app/tabs/login/login_page.dart';
+
+import 'config/fire_auth.dart';
+import 'config/firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  // Auth emulator
+  // await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
+
   runApp(const MyApp());
 }
 
@@ -63,7 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
     const MembershipPage(),
     const Explore(),
     const Track(),
-    const MyAccountPage(),
+    LoginPage(),
   ];
 
   void _onItemTapped(int index) {
