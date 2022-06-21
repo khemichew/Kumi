@@ -1,6 +1,11 @@
+import 'dart:io';
 import 'package:app/models/fake_spend_record.dart';
 import 'package:app/style.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:path/path.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:image_picker/image_picker.dart';
 import 'package:collection/collection.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -13,8 +18,6 @@ enum RecordQuery {
   month,
   week,
 }
-
-enum TimeInterval { week, month, year }
 
 @immutable
 class TotalRecord {
@@ -72,7 +75,6 @@ class Analytics extends StatefulWidget {
 
 class _AnalyticsState extends State<Analytics> {
   RecordQuery queryType = RecordQuery.showDescendingData;
-  TimeInterval interval = TimeInterval.month;
 
   // Stream<QuerySnapshot<FakeSpendRecord>> queryStream = fakeSpendRecordEntries.snapshots();
 
@@ -100,7 +102,8 @@ class _AnalyticsState extends State<Analytics> {
 
           final data = snapshot.requireData;
 
-          final List<FakeSpendRecord> history = data.docs.map((e) => e.data()).toList();
+          final List<FakeSpendRecord> history =
+              data.docs.map((e) => e.data()).toList();
 
           return Column(mainAxisAlignment: MainAxisAlignment.start, children: [
             const SizedBox(
@@ -173,7 +176,11 @@ class _AnalyticsState extends State<Analytics> {
               height: 30,
               alignment: Alignment.centerLeft,
               child: const Align(
-                child: Text("History", style: ordinaryStyle, textAlign: TextAlign.center,),
+                child: Text(
+                  "History",
+                  style: ordinaryStyle,
+                  textAlign: TextAlign.center,
+                ),
               ),
             ),
             SizedBox(
@@ -221,9 +228,7 @@ class _AnalyticsState extends State<Analytics> {
             dataItem.time.year == DateTime.now().year), (FakeSpendRecord r) {
       return r.time.weekday;
     });
-    List<TotalRecord> list = [];
-    info.forEach((k, v) =>
-        list.add(TotalRecord(amount: groupTimeInterval(v), timeInterval: k)));
+    List<TotalRecord> list = groupTimeInterval(info);
     return BarChartData(
       borderData: FlBorderData(
           border: const Border(
@@ -306,9 +311,7 @@ class _AnalyticsState extends State<Analytics> {
             dataItem.time.year == DateTime.now().year), (FakeSpendRecord r) {
       return r.time.day ~/ 7;
     });
-    List<TotalRecord> list = [];
-    info.forEach((k, v) =>
-        list.add(TotalRecord(amount: groupTimeInterval(v), timeInterval: k)));
+    List<TotalRecord> list = groupTimeInterval(info);
     return BarChartData(
       borderData: FlBorderData(
           border: const Border(
@@ -364,9 +367,7 @@ class _AnalyticsState extends State<Analytics> {
         (FakeSpendRecord r) {
       return r.time.month;
     });
-    List<TotalRecord> list = [];
-    info.forEach((k, v) =>
-        list.add(TotalRecord(amount: groupTimeInterval(v), timeInterval: k)));
+    List<TotalRecord> list = groupTimeInterval(info);
     return BarChartData(
       borderData: FlBorderData(
           border: const Border(
@@ -462,9 +463,7 @@ class _AnalyticsState extends State<Analytics> {
         groupBy(data, (FakeSpendRecord r) {
       return r.time.year;
     });
-    List<TotalRecord> list = [];
-    info.forEach((k, v) =>
-        list.add(TotalRecord(amount: groupTimeInterval(v), timeInterval: k)));
+    List<TotalRecord> list = groupTimeInterval(info);
     return BarChartData(
       borderData: FlBorderData(
           border: const Border(
@@ -509,9 +508,11 @@ class _AnalyticsState extends State<Analytics> {
     return ret;
   }
 
-  double groupTimeInterval(List<FakeSpendRecord> v) {
-    double total = v.map((e) => e.amount).sum.toDouble();
-    return total;
+  List<TotalRecord> groupTimeInterval(Map<int, List<FakeSpendRecord>> info) {
+    List<TotalRecord> list = [];
+    info.forEach((k, v) => list.add(TotalRecord(
+        amount: v.map((e) => e.amount).sum.toDouble(), timeInterval: k)));
+    return list;
   }
 
   generateOneRecord(FakeSpendRecord record) {
@@ -597,7 +598,6 @@ class SpendAmt extends StatelessWidget {
       formatCurrency.format(records.map((record) => record.amount).sum),
       style: hugeStyle,
       textAlign: TextAlign.center,
-
     );
   }
 
@@ -689,7 +689,7 @@ class AddShoppingState extends State<AddingShopForm> {
 
   contentBox(context) {
     return Container(
-        height: 250,
+        height: 500,
         margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 0.0),
         padding: const EdgeInsets.all(15.0),
         decoration: BoxDecoration(
@@ -788,6 +788,10 @@ class AddShoppingState extends State<AddingShopForm> {
             const SizedBox(
               height: 10,
             ),
+            const ImageUploads(),
+            const SizedBox(
+              height: 10,
+            ),
             TextButton(
                 onPressed: () {
                   addShopping(storeController.text, amountController.text,
@@ -811,5 +815,148 @@ class AddShoppingState extends State<AddingShopForm> {
                     )))
           ],
         ));
+  }
+}
+
+class ImageUploads extends StatefulWidget {
+  const ImageUploads({Key? key}) : super(key: key);
+
+  @override
+  _ImageUploadsState createState() => _ImageUploadsState();
+}
+
+class _ImageUploadsState extends State<ImageUploads> {
+  firebase_storage.FirebaseStorage storage =
+      firebase_storage.FirebaseStorage.instance;
+
+  File? _photo;
+  final ImagePicker _picker = ImagePicker();
+
+  Future getFromCamera() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.camera);
+
+    setState(() {
+      if (pickedFile != null) {
+        _photo = File(pickedFile.path);
+        uploadFile();
+      } else {
+        print('No image selected.');
+      }
+    });
+  }
+
+  Future getFromGallery() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      if (pickedFile != null) {
+        _photo = File(pickedFile.path);
+        uploadFile();
+      } else {
+        print('No image selected.');
+      }
+    });
+  }
+
+  Future uploadFile() async {
+    if (_photo == null) return;
+    final fileName = basename(_photo!.path);
+    final destination = 'files/$fileName';
+
+    try {
+      final ref = firebase_storage.FirebaseStorage.instance
+          .ref(destination)
+          .child('file/');
+      await ref.putFile(_photo!);
+    } catch (e) {
+      print('error occurred');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+        onPressed: () {
+          imagePicker(context);
+        },
+        child: Container(
+            height: 40,
+            width: 500,
+            color: Colors.grey,
+            child: const Text(
+              "Upload receipt",
+              style: ordinaryStyle,
+              textAlign: TextAlign.center,
+            )));
+    //   Scaffold(
+    //   appBar: AppBar(),
+    //   body: Column(
+    //     children: <Widget>[
+    //       SizedBox(
+    //         height: 32,
+    //       ),
+    //       Center(
+    //         child: GestureDetector(
+    //           onTap: () {
+    //             imagePicker(context);
+    //           },
+    //           child: CircleAvatar(
+    //             radius: 55,
+    //             backgroundColor: Color(0xffFDCF09),
+    //             child: _photo != null
+    //                 ? ClipRRect(
+    //               borderRadius: BorderRadius.circular(50),
+    //               child: Image.file(
+    //                 _photo!,
+    //                 width: 100,
+    //                 height: 100,
+    //                 fit: BoxFit.fitHeight,
+    //               ),
+    //             )
+    //                 : Container(
+    //               decoration: BoxDecoration(
+    //                   color: Colors.grey[200],
+    //                   borderRadius: BorderRadius.circular(50)),
+    //               width: 100,
+    //               height: 100,
+    //               child: Icon(
+    //                 Icons.camera_alt,
+    //                 color: Colors.grey[800],
+    //               ),
+    //             ),
+    //           ),
+    //         ),
+    //       )
+    //     ],
+    //   ),
+    // );
+  }
+
+  void imagePicker(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            child: Wrap(
+              children: <Widget>[
+                ListTile(
+                    leading: Icon(Icons.photo_library),
+                    title: Text('Gallery'),
+                    onTap: () {
+                      getFromGallery();
+                      Navigator.of(context).pop();
+                    }),
+                ListTile(
+                  leading: const Icon(Icons.photo_camera),
+                  title: const Text('Camera'),
+                  onTap: () {
+                    getFromCamera();
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ),
+          );
+        });
   }
 }
