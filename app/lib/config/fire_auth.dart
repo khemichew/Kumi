@@ -9,24 +9,25 @@ class FireAuth {
   }) async {
     FirebaseAuth auth = FirebaseAuth.instance;
     User? user;
-    try {
-      UserCredential userCredential = await auth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      user = userCredential.user;
-      await user!.updateProfile(displayName: name);
-      await user.reload();
-      user = auth.currentUser;
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
-      } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
-      }
-    } catch (e) {
-      print(e);
-    }
+    // try {
+    UserCredential userCredential = await auth.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+    user = userCredential.user;
+    await user!.updateDisplayName(name);
+    // await user!.updatePhotoURL(photoURL);
+    await user.reload();
+    user = auth.currentUser;
+    // } on FirebaseAuthException catch (e) {
+    //   // if (e.code == 'weak-password') {
+    //   //   print('The password provided is too weak.');
+    //   // } else if (e.code == 'email-already-in-use') {
+    //   //   print('The account already exists for that email.');
+    //   // }
+    // } catch (e) {
+    //   // print(e);
+    // }
     return user;
   }
 
@@ -38,21 +39,21 @@ class FireAuth {
     FirebaseAuth auth = FirebaseAuth.instance;
     User? user;
 
-    try {
+    // try {
       UserCredential userCredential = await auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
       user = userCredential.user;
-    } on FirebaseAuthException catch (e) {
-      print(e);
-
-      if (e.code == 'user-not-found') {
-        print('No user found for that email.');
-      } else if (e.code == 'wrong-password') {
-        print('Wrong password provided.');
-      }
-    }
+    // } on FirebaseAuthException catch (e) {
+    //   print(e);
+    //
+    //   if (e.code == 'user-not-found') {
+    //     print('No user found for that email.');
+    //   } else if (e.code == 'wrong-password') {
+    //     print('Wrong password provided.');
+    //   }
+    // }
 
     return user;
   }
@@ -69,9 +70,6 @@ class FireAuth {
 
 class Validator {
   static String? validateName({required String name}) {
-    if (name == null) {
-      return null;
-    }
     if (name.isEmpty) {
       return 'Name can\'t be empty';
     }
@@ -80,9 +78,6 @@ class Validator {
   }
 
   static String? validateEmail({required String email}) {
-    if (email == null) {
-      return null;
-    }
     RegExp emailRegExp = RegExp(
         r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$");
 
@@ -96,9 +91,6 @@ class Validator {
   }
 
   static String? validatePassword({required String password}) {
-    if (password == null) {
-      return null;
-    }
     if (password.isEmpty) {
       return 'Password can\'t be empty';
     } else if (password.length < 6) {

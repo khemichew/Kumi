@@ -2,19 +2,18 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'package:app/config/style.dart';
 import 'package:app/config/fire_auth.dart';
-import 'package:app/tabs/login/profile.dart';
 import 'package:app/tabs/login/register.dart';
-
-final FirebaseAuth _auth = FirebaseAuth.instance;
+import 'package:app/main.dart';
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({Key? key}) : super(key: key);
+
   @override
-  _LoginPageState createState() => _LoginPageState();
+  LoginPageState createState() => LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
 
   final _emailTextController = TextEditingController();
@@ -25,17 +24,17 @@ class _LoginPageState extends State<LoginPage> {
 
   bool _isProcessing = false;
 
+  User? user;
+
   Future<FirebaseApp> _initializeFirebase() async {
     FirebaseApp firebaseApp = await Firebase.initializeApp();
 
-    User? user = FirebaseAuth.instance.currentUser;
+    user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => ProfilePage(
-            user: user,
-          ),
+          builder: (context) => const MyHomePage(),
         ),
       );
     }
@@ -51,9 +50,6 @@ class _LoginPageState extends State<LoginPage> {
         _focusPassword.unfocus();
       },
       child: Scaffold(
-        appBar: AppBar(
-          title: Text('Firebase Authentication'),
-        ),
         body: FutureBuilder(
           future: _initializeFirebase(),
           builder: (context, snapshot) {
@@ -78,13 +74,13 @@ class _LoginPageState extends State<LoginPage> {
                             controller: _emailTextController,
                             focusNode: _focusEmail,
                             validator: (value) => Validator.validateEmail(
-                              email: value as String,
+                              email: value!,
                             ),
                             decoration: InputDecoration(
                               hintText: "Email",
                               errorBorder: UnderlineInputBorder(
                                 borderRadius: BorderRadius.circular(6.0),
-                                borderSide: BorderSide(
+                                borderSide: const BorderSide(
                                   color: Colors.red,
                                 ),
                               ),
@@ -96,13 +92,13 @@ class _LoginPageState extends State<LoginPage> {
                             focusNode: _focusPassword,
                             obscureText: true,
                             validator: (value) => Validator.validatePassword(
-                              password: value as String,
+                              password: value!,
                             ),
                             decoration: InputDecoration(
                               hintText: "Password",
                               errorBorder: UnderlineInputBorder(
                                 borderRadius: BorderRadius.circular(6.0),
-                                borderSide: BorderSide(
+                                borderSide: const BorderSide(
                                   color: Colors.red,
                                 ),
                               ),
@@ -144,7 +140,7 @@ class _LoginPageState extends State<LoginPage> {
                                             .pushReplacement(
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                ProfilePage(user: user),
+                                                MyHomePage(),
                                           ),
                                         );
                                       } else {
