@@ -6,7 +6,7 @@ class CachedEntries<T> extends ChangeNotifier {
 
   CollectionReference<T> databaseInstance;
   final Duration _cacheValidDuration = validity;
-  final DateTime _lastFetchTime = DateTime.fromMillisecondsSinceEpoch(0);
+  DateTime _lastFetchTime = DateTime.fromMillisecondsSinceEpoch(0);
   Map<String, T> _records = {};
 
   CachedEntries({required this.databaseInstance});
@@ -14,6 +14,7 @@ class CachedEntries<T> extends ChangeNotifier {
   Future<void> _updateEntries() async {
     final snapshot = await databaseInstance.get();
     _records = { for (var v in snapshot.docs) v.id : v.data() };
+    _lastFetchTime = DateTime.now();
     notifyListeners();
   }
 

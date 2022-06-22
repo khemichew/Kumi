@@ -8,7 +8,7 @@ import 'package:app/misc/my_account.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:app/models/cached_entries.dart';
-import 'package:app/models/retailers.dart';
+import 'package:app/models/card_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,8 +16,8 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(ChangeNotifierProvider<CachedEntries<Retailer>>(
-      create: (_) => CachedEntries<Retailer>(databaseInstance: retailerEntries),
+  runApp(ChangeNotifierProvider<CachedEntries<CardOption>>(
+      create: (_) => CachedEntries<CardOption>(databaseInstance: cardOptions),
       child: const MyApp()));
 }
 
