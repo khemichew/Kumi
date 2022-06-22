@@ -27,7 +27,7 @@ class ReceiptUpload {
   }
 
   Future getFromCamera() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.camera);
+    final pickedFile = await _picker.pickImage(source: ImageSource.camera, imageQuality: 10);
 
     // setState(() {
       if (pickedFile != null) {
@@ -40,7 +40,7 @@ class ReceiptUpload {
   }
 
   Future getFromGallery() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery, imageQuality: 10);
 
     // setState(() {
       if (pickedFile != null) {
@@ -98,14 +98,14 @@ class ReceiptUpload {
                     title: const Text('Gallery'),
                     onTap: () {
                       getFromGallery();
-                      Navigator.of(context).pop();
+                      // Navigator.of(context).pop();
                     }),
                 ListTile(
                   leading: const Icon(Icons.photo_camera),
                   title: const Text('Camera'),
                   onTap: () {
                     getFromCamera();
-                    Navigator.of(context).pop();
+                    // Navigator.of(context).pop();
                   },
                 ),
               ],

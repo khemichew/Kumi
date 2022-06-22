@@ -1,6 +1,4 @@
 import 'package:app/config/style.dart';
-import 'package:app/main.dart';
-import 'package:app/tabs/login/login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:app/config/fire_auth.dart';
@@ -110,26 +108,21 @@ class RegisterPageState extends State<RegisterPage> {
                                       _passwordTextController.text,
                                     );
 
-                                    setState(() {
-                                      _isProcessing = false;
-                                    });
-
-                                      if (user != null) {
-                                      // ignore: use_build_context_synchronously
-                                      Navigator.of(context)
-                                          .pushAndRemoveUntil(
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              const MyHomePage(),
-                                        ),
-                                        ModalRoute.withName('/'),
-                                      );
+                                    if (!mounted) {
+                                      setState(() {
+                                        _isProcessing = false;
+                                      });
+                                      return;
                                     }
-                                  } else {
-                                    setState(() {
-                                      _isProcessing = false;
-                                    });
+
+                                    if (user != null) {
+                                      Navigator.of(context).pop();
+                                    }
                                   }
+
+                                  setState(() {
+                                    _isProcessing = false;
+                                  });
                                 },
                                 style: ElevatedButton.styleFrom(
                                   primary: Colors.blueAccent,
@@ -151,12 +144,7 @@ class RegisterPageState extends State<RegisterPage> {
                               width: double.infinity,
                               child: ElevatedButton(
                                 onPressed: () {
-                                  Navigator.of(context).pushReplacement(
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                      const LoginPage(),
-                                    ),
-                                  );
+                                  Navigator.of(context).pop();
                                 },
                                 style: ElevatedButton.styleFrom(
                                   primary: Colors.indigoAccent,
