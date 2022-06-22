@@ -40,7 +40,6 @@ class GenerateChart {
     final Map<int, List<FakeSpendRecord>> info = groupBy(
         data.where((dataItem) =>
         dataItem.time.month == DateTime.now().month &&
-            dataItem.time.day ~/ 7 == DateTime.now().day ~/ 7 &&
             dataItem.time.year == DateTime.now().year), (FakeSpendRecord r) {
       return r.time.weekday;
     });
