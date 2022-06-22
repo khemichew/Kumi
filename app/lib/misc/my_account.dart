@@ -27,7 +27,7 @@ class MyAccountPage extends StatelessWidget {
             radius: 60,
           )
         ]),
-        const SizedBox(height: 30),
+        standardSpacing,
         Align(
             alignment: Alignment.topLeft,
             child: StreamBuilder<QuerySnapshot>(
@@ -52,7 +52,7 @@ class MyAccountPage extends StatelessWidget {
 
                   return const Center(child: CircularProgressIndicator());
                 })),
-        const SizedBox(height: 50),
+        standardSpacing,
         Container(
             height: 80,
             decoration: BoxDecoration(

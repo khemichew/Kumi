@@ -1,3 +1,4 @@
+import 'package:app/config/style.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -54,18 +55,20 @@ class LoginPageState extends State<LoginPage> {
           future: _initializeFirebase(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
-              return Padding(
+              return Container(
                 padding: const EdgeInsets.only(left: 24.0, right: 24.0),
+                decoration: pageDecoration,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 24.0),
+                    const Align(
+                      alignment: Alignment.centerLeft,
                       child: Text(
                         'Login',
-                        style: Theme.of(context).textTheme.headline1,
+                        style: largeTitleStyle,
                       ),
                     ),
+                    quadSpacing,
                     Form(
                       key: _formKey,
                       child: Column(
@@ -86,7 +89,7 @@ class LoginPageState extends State<LoginPage> {
                               ),
                             ),
                           ),
-                          SizedBox(height: 8.0),
+                          quadSpacing,
                           TextFormField(
                             controller: _passwordTextController,
                             focusNode: _focusPassword,
@@ -104,12 +107,12 @@ class LoginPageState extends State<LoginPage> {
                               ),
                             ),
                           ),
-                          SizedBox(height: 24.0),
+                          halfSpacing,
                           _isProcessing
                               ? CircularProgressIndicator()
                               : Row(
                             mainAxisAlignment:
-                            MainAxisAlignment.spaceBetween,
+                            MainAxisAlignment.center,
                             children: [
                               Expanded(
                                 child: ElevatedButton(
@@ -148,13 +151,20 @@ class LoginPageState extends State<LoginPage> {
                                       }
                                     }
                                   },
-                                  child: Text(
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Colors.blueAccent,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: regularRadius,
+                                    ),
+                                    padding: allSidesTenInsets,
+                                  ),
+                                  child: const Text(
                                     'Sign In',
-                                    style: TextStyle(color: Colors.white),
+                                    style: ordinaryWhiteStyle,
                                   ),
                                 ),
                               ),
-                              SizedBox(width: 24.0),
+                              halfSpacing,
                               Expanded(
                                 child: ElevatedButton(
                                   onPressed: () {
@@ -165,9 +175,16 @@ class LoginPageState extends State<LoginPage> {
                                       ),
                                     );
                                   },
-                                  child: Text(
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Colors.indigoAccent,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: regularRadius,
+                                    ),
+                                    padding: allSidesTenInsets,
+                                  ),
+                                  child: const Text(
                                     'Register',
-                                    style: TextStyle(color: Colors.white),
+                                    style: ordinaryWhiteStyle,
                                   ),
                                 ),
                               ),
@@ -181,7 +198,7 @@ class LoginPageState extends State<LoginPage> {
               );
             }
 
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           },

@@ -1,3 +1,4 @@
+import 'package:app/config/style.dart';
 import 'package:app/tabs/login/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -116,8 +117,8 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
         currentIndex: _selectedIndex,
-        backgroundColor: const Color.fromRGBO(255, 229, 205, 1),
-        selectedItemColor: const Color.fromRGBO(51, 85, 135, 1.0),
+        backgroundColor: champaignGold,
+        selectedItemColor: navyBlue,
         onTap: _onItemTapped,
         type: BottomNavigationBarType.fixed,
       ),
@@ -134,15 +135,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return Center(
       child: Container(
-        decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topRight,
-              end: Alignment.bottomLeft,
-              colors: [
-                Color.fromRGBO(173, 190, 216, 1),
-                Color.fromRGBO(255, 229, 205, 1),
-              ],
-            )),
+        decoration: pageDecoration,
         child: Center(
           child: widgetOptions.elementAt(_selectedIndex),
         ),
