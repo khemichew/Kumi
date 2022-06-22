@@ -114,7 +114,7 @@ class RegisterPageState extends State<RegisterPage> {
                                       _isProcessing = false;
                                     });
 
-                                    if (user != null) {
+                                      if (user != null) {
                                       // ignore: use_build_context_synchronously
                                       Navigator.of(context)
                                           .pushAndRemoveUntil(
@@ -146,12 +146,12 @@ class RegisterPageState extends State<RegisterPage> {
                             ),
                       quadSpacing,
                       _isProcessing
-                          ? const CircularProgressIndicator()
+                          ? quadSpacing
                           : SizedBox(
                               width: double.infinity,
                               child: ElevatedButton(
                                 onPressed: () {
-                                  Navigator.of(context).push(
+                                  Navigator.of(context).pushReplacement(
                                     MaterialPageRoute(
                                       builder: (context) =>
                                       const LoginPage(),

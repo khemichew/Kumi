@@ -1,8 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import 'package:app/tabs/login/login_page.dart';
-// import 'package:app/tabs/login/register.dart';
 import 'package:app/config/fire_auth.dart';
 import 'package:app/config/style.dart';
 
@@ -198,12 +196,6 @@ class ProfilePageState extends State<ProfilePage> {
                       setState(() {
                         _isSigningOut = false;
                       });
-                      // ignore: use_build_context_synchronously
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (context) => const LoginPage(),
-                        ),
-                      );
                     },
                     style: ElevatedButton.styleFrom(
                       primary: Colors.redAccent,

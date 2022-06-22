@@ -15,9 +15,9 @@ import 'config/firebase_options.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // FirebaseApp firebaseApp = await Firebase.initializeApp(
-  //   options: DefaultFirebaseOptions.currentPlatform,
-  // );
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   runApp(const MyApp());
 }
@@ -63,27 +63,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
-  User? user;
-
-  Future<FirebaseApp> _initializeFirebase() async {
-
-    FirebaseApp firebaseApp = await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-
-    user = FirebaseAuth.instance.currentUser;
-
-    if (user == null) {
-      // ignore: use_build_context_synchronously
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => const LoginPage(),
-        ),
-      );
-    }
-
-    return firebaseApp;
-  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -93,7 +72,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -101,72 +79,60 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
 
-    return FutureBuilder(
-        future: _initializeFirebase(),
-        builder: (BuildContext contexts, AsyncSnapshot<FirebaseApp> snapshot) {
+    return StreamBuilder<User?>(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return homeBuilder(user: snapshot.requireData);
+        } else {
+          return const LoginPage();
+        }
+      }
+    );
+  }
 
-          // user = FirebaseAuth.instance.currentUser;
+  Widget homeBuilder({User? user}) {
+    final List<Widget> widgetOptions = <Widget>[
+      const MembershipPage(),
+      const Explore(),
+      const Track(),
+      ProfilePage(user: user!),
+    ];
 
-          if (user == null) {
-            return Scaffold(
-              body: Center(
-                child: Container(
-                  decoration: pageDecoration,
-                  child: Center( child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      CircularProgressIndicator(),
-                      Text('Connecting to our server...', style: ordinaryStyle,),
-                    ]
-                  )),
-                )
-              ),
-            );
-          }
-
-          final List<Widget> widgetOptions = <Widget>[
-            const MembershipPage(),
-            const Explore(),
-            const Track(),
-            ProfilePage(user: user!),
-          ];
-
-          return Scaffold(
-            body: Center(
-              child: Container(
-                decoration: pageDecoration,
-                child: Center(
-                  child: widgetOptions.elementAt(_selectedIndex),
-                ),
-              ),
-            ),
-            bottomNavigationBar: BottomNavigationBar(
-              items: const <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.credit_card),
-                  label: 'Memberships',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.search),
-                  label: 'Explore',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.currency_pound_outlined),
-                  label: 'Track',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.person_outline),
-                  label: 'My account',
-                ),
-              ],
-              currentIndex: _selectedIndex,
-              backgroundColor: champaignGold,
-              selectedItemColor: navyBlue,
-              onTap: _onItemTapped,
-              type: BottomNavigationBarType.fixed,
-            ),
-          );
-        },
-      );
+    return Scaffold(
+      body: Center(
+        child: Container(
+          decoration: pageDecoration,
+          child: Center(
+            child: widgetOptions.elementAt(_selectedIndex),
+          ),
+        ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.credit_card),
+            label: 'Memberships',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: 'Explore',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.currency_pound_outlined),
+            label: 'Track',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_outline),
+            label: 'My account',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        backgroundColor: champaignGold,
+        selectedItemColor: navyBlue,
+        onTap: _onItemTapped,
+        type: BottomNavigationBarType.fixed,
+      ),
+    );
   }
 }
