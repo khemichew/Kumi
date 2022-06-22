@@ -15,9 +15,9 @@ class AddMembershipDialog extends StatefulWidget {
 
 class _AddMembershipDialogState extends State<AddMembershipDialog> {
   static const String failState = "FAIL";
-  String _scanBarcode = failState;
+  late String _scanBarcode;
 
-  Future<void> scanBarcode(ScanMode mode) async {
+  Future<String> scanBarcode(ScanMode mode) async {
     String result;
     try {
       result = await FlutterBarcodeScanner.scanBarcode(
@@ -26,11 +26,7 @@ class _AddMembershipDialogState extends State<AddMembershipDialog> {
       result = failState;
     }
 
-    if (!mounted) return;
-
-    setState(() {
-      _scanBarcode = result;
-    });
+    return result;
   }
 
   List<Widget> generateCardOptions(Map<String, CardOption> cards) {
@@ -39,7 +35,7 @@ class _AddMembershipDialogState extends State<AddMembershipDialog> {
       final card = entry.value;
       return SimpleDialogOption(
           child: Text(card.name),
-        onPressed: () {
+        onPressed: () async {
             ScanMode mode;
             if (card.type == CardType.qr) {
               mode = ScanMode.QR;
@@ -48,7 +44,7 @@ class _AddMembershipDialogState extends State<AddMembershipDialog> {
             }
 
             // Retrieve barcode
-            scanBarcode(mode);
+            _scanBarcode = await scanBarcode(mode);
 
             // Add entry to database
             if (_scanBarcode != failState) {
@@ -57,6 +53,7 @@ class _AddMembershipDialogState extends State<AddMembershipDialog> {
             }
 
             // Close options list
+            if (!mounted) return;
             Navigator.pop(context);
         },
       );
