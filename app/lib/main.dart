@@ -4,16 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'config/firebase_options.dart';
 import 'package:app/tabs/memberships/landing_page.dart';
-// import 'package:app/savings.dart';
 import 'package:app/misc/my_account.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:provider/provider.dart';
+import 'package:app/models/cached_entries.dart';
+import 'package:app/models/retailers.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+
+  runApp(ChangeNotifierProvider<CachedEntries<Retailer>>(
+      create: (_) => CachedEntries<Retailer>(databaseInstance: retailerEntries),
+      child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -72,6 +77,51 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  Widget get navBar {
+    return BottomNavigationBar(
+      items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: Icon(Icons.credit_card),
+          label: 'Memberships',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.search),
+          label: 'Explore',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.currency_pound_outlined),
+          label: 'Track',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.person_outline),
+          label: 'My account',
+        ),
+      ],
+      currentIndex: _selectedIndex,
+      backgroundColor: const Color.fromRGBO(255, 229, 205, 1),
+      selectedItemColor: const Color.fromRGBO(51, 85, 135, 1.0),
+      onTap: _onItemTapped,
+      type: BottomNavigationBarType.fixed,
+    );
+  }
+
+  Widget get body {
+    return Container(
+      decoration: const BoxDecoration(
+          gradient: LinearGradient(
+        begin: Alignment.topRight,
+        end: Alignment.bottomLeft,
+        colors: [
+          Color.fromRGBO(173, 190, 216, 1),
+          Color.fromRGBO(255, 229, 205, 1),
+        ],
+      )),
+      child: Center(
+        child: _widgetOptions.elementAt(_selectedIndex),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -80,48 +130,6 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
-    return Scaffold(
-      body: Center(
-        child: Container(
-          decoration: const BoxDecoration(
-              gradient: LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            colors: [
-              Color.fromRGBO(173, 190, 216, 1),
-              Color.fromRGBO(255, 229, 205, 1),
-            ],
-          )),
-          child: Center(
-            child: _widgetOptions.elementAt(_selectedIndex),
-          ),
-        ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.credit_card),
-            label: 'Memberships',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Explore',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.currency_pound_outlined),
-            label: 'Track',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
-            label: 'My account',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        backgroundColor: const Color.fromRGBO(255, 229, 205, 1),
-        selectedItemColor: const Color.fromRGBO(51, 85, 135, 1.0),
-        onTap: _onItemTapped,
-        type: BottomNavigationBarType.fixed,
-      ),
-    );
+    return Scaffold(body: body, bottomNavigationBar: navBar);
   }
 }

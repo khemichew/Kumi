@@ -159,7 +159,7 @@ class _AnalyticsState extends State<Analytics> {
                 return const AddingShopForm();
               });
         },
-        backgroundColor: const Color.fromRGBO(53, 219, 169, 1.0),
+        backgroundColor: mintGreen,
         child: const Icon(Icons.add),
       ),
     );

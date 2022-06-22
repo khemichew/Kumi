@@ -8,8 +8,6 @@ class MembershipBarcode extends StatelessWidget {
 
   final String storeName;
   final Color color;
-
-  // Create a DataMatrix barcode
   final dm = Barcode.dataMatrix();
 
   @override

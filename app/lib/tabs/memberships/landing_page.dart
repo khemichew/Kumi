@@ -1,89 +1,46 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:app/config/style.dart';
-import 'package:app/tabs/memberships/barcode.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
-import '../../models/retailers.dart';
+import 'package:app/tabs/memberships/barcode_list.dart';
+import 'package:app/models/retailers.dart';
+import 'package:app/tabs/memberships/add_entry.dart';
 
 class MembershipPage extends StatelessWidget {
   const MembershipPage({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.fromLTRB(15, 50, 15, 0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: const [MembershipPageHead(), Flexible(child: MembershipList())],
-      ),
+  AppBar get titleBar {
+    return AppBar(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      title: const Text("My memberships", style: titleStyle),
     );
   }
-}
 
-class MembershipPageHead extends StatefulWidget {
-  const MembershipPageHead({Key? key}) : super(key: key);
-
-  @override
-  State<MembershipPageHead> createState() => _MembershipPageHeadState();
-}
-
-class _MembershipPageHeadState extends State<MembershipPageHead> {
-  // String _scanBarcode = "Unknown";
-
-  Future<void> scanBarcode() async {
-    await FlutterBarcodeScanner.scanBarcode(
-        '#ff6666', 'Cancel', true, ScanMode.BARCODE
+  dynamic addButton(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () => {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return const AddMembershipDialog();
+            })
+      },
+      backgroundColor: mintGreen,
+      child: const Icon(Icons.add),
     );
-    // print("$barcode");
-    // TODO: add entry to database
-
-    // setState(() {
-    //   _scanBarcode = barcode;
-    // });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          child: Container(
-            padding: verticalTenInsets,
-            child: const Text(
-              'My\nmemberships',
-              style: titleStyle,
-            ),
-          ),
-        ),
-        Expanded(
-          child: TextButton(
-            onPressed: scanBarcode,
-            child: Container(
-              height: 60,
-              decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black),
-                  color: Colors.white38,
-                  borderRadius: regularRadius
-              ),
-              padding: verticalTenInsets,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Text("Add", style: ordinaryStyle),
-                  Icon(
-                    Icons.add,
-                    color: Colors.black,
-                  )
-                ],
-              ),
-            ),
-          ),
-        ),
-      ]
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      backgroundColor: Colors.transparent,
+      appBar: titleBar,
+      body: const MembershipList(),
+      floatingActionButton: addButton(context),
     );
   }
 }
-
 
 class MembershipList extends StatefulWidget {
   const MembershipList({Key? key}) : super(key: key);
@@ -108,14 +65,16 @@ class _MembershipListState extends State<MembershipList> {
 
           final data = snapshot.requireData;
 
-          return Flexible(
-              child: GridView.count(
-                  crossAxisCount: 2,
-                  children: List.generate(data.size, (index) {
-                    final docRef = data.docs[index];
-                    return Center(
-                        child: MembershipCard(docRef.data(), docRef.reference));
-                  })));
+          return GridView.count(
+              crossAxisCount: 2,
+              children: List.generate(
+                data.size,
+                (index) {
+                  final docRef = data.docs[index];
+                  return Center(
+                      child: MembershipCard(docRef.data(), docRef.reference));
+                },
+              ));
         });
   }
 }
@@ -127,14 +86,6 @@ class MembershipCard extends StatelessWidget {
   const MembershipCard(this.retailer, this.reference, {Key? key})
       : super(key: key);
 
-  Widget get title {
-    return Text(retailer.name,
-        style: ordinaryStyle,
-        overflow: TextOverflow.fade,
-        maxLines: 2,
-        softWrap: false);
-  }
-
   @override
   Widget build(BuildContext context) {
     return TextButton(
@@ -143,9 +94,7 @@ class MembershipCard extends StatelessWidget {
             context: context,
             builder: (BuildContext context) {
               return MembershipBarcode(
-                  storeName: retailer.name,
-                  color: honeyOrange
-              );
+                  storeName: retailer.name, color: honeyOrange);
             });
       },
       child: Container(
@@ -154,8 +103,8 @@ class MembershipCard extends StatelessWidget {
         decoration: BoxDecoration(
             image: DecorationImage(
                 image: NetworkImage(retailer.imageUrl), fit: BoxFit.cover),
-            borderRadius: regularRadius
-        ),
+            borderRadius: regularRadius,
+            border: Border.all(color: Colors.black)),
         padding: allSidesTenInsets,
       ),
     );
