@@ -54,14 +54,14 @@ class ProfilePageState extends State<ProfilePage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Text(
+              children: [
+                const Text(
                   "Name",
                   style: emphStyle,
                 ),
                 Text(
-                  'Jim Brown',
-                  // '${_currentUser.displayName}',
+                  // 'Jim Brown',
+                  '${_currentUser.displayName}',
                   style: ordinaryStyle,
                 ),
               ]

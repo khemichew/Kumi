@@ -112,8 +112,7 @@ class LoginPageState extends State<LoginPage> {
                           _isProcessing
                               ? const CircularProgressIndicator()
                               : Row(
-                            mainAxisAlignment:
-                            MainAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Expanded(
                                 child: ElevatedButton(
