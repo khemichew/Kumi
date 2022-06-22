@@ -31,22 +31,24 @@ class MembershipBarcode extends StatelessWidget {
     }
   }
 
-  Widget get navigateToExplorePageButton {
+  Widget buttonTemplate(String title, VoidCallback onClickBehaviour, Color background) {
     return TextButton(
-      onPressed: () {},
+      onPressed: () {
+        onClickBehaviour();
+      },
       child: Container(
         height: 50,
         decoration: BoxDecoration(
             border: Border.all(color: Colors.black),
-            color: mintGreen,
+            color: background,
             borderRadius: regularRadius,
             boxShadow: defaultBoxShadow),
         padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
         child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              Text('Store details', style: ordinaryStyle),
-              Icon(
+            children: [
+              Text(title, style: ordinaryStyle),
+              const Icon(
                 Icons.chevron_right,
                 color: Colors.black,
               )
@@ -95,7 +97,8 @@ class MembershipBarcode extends StatelessWidget {
                       )),
                 ]),
           ),
-          navigateToExplorePageButton
+          buttonTemplate("Store details", () {}, Colors.teal[200]!),
+          buttonTemplate("Remove card", () {}, Colors.red[100]!)
         ],
       ),
     );
