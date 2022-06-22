@@ -1,5 +1,6 @@
 import 'package:app/models/fake_spend_record.dart';
 import 'package:app/config/style.dart';
+import 'package:app/tabs/track/budget.dart';
 import 'package:app/tabs/track/add_button.dart';
 import 'package:app/tabs/track/button_generator.dart';
 import 'package:app/tabs/track/generate_chart.dart';
@@ -37,8 +38,8 @@ extension on Query<FakeSpendRecord> {
 
       case RecordQuery.week:
         return where("time",
-            isGreaterThan: (Timestamp.fromDate(
-                DateTime.now().subtract(Duration(days: DateTime.now().weekday)))));
+            isGreaterThan: (Timestamp.fromDate(DateTime.now()
+                .subtract(Duration(days: DateTime.now().weekday)))));
     }
   }
 }
@@ -114,7 +115,9 @@ class _AnalyticsState extends State<Analytics> {
             Container(
                 height: 180,
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: GenerateChart(data.docs.map((e) => e.data()).toList(), queryType).buildChart()
+                child: GenerateChart(
+                        data.docs.map((e) => e.data()).toList(), queryType)
+                    .buildChart()
 
                 // BarChart(queryType == RecordQuery.year
                 //     ? monthlyData(data.docs.map((e) => e.data()).toList())
@@ -125,27 +128,57 @@ class _AnalyticsState extends State<Analytics> {
                 //             : yearlyData(
                 //                 data.docs.map((e) => e.data()).toList())
                 // )
-            ),
-            const SizedBox(
-              width: 100,
-              height: 10,
-            ),
-            Container(
-              width: 100,
-              height: 30,
-              alignment: Alignment.centerLeft,
-              child: const Align(
-                child: Text(
-                  "History",
-                  style: ordinaryStyle,
-                  textAlign: TextAlign.center,
                 ),
-              ),
-            ),
-            generateHistory(history),
-            generateAddButton(context),
+            Container(
+                padding: const EdgeInsets.symmetric(horizontal: 25),
+                child: showBudgetButton(context)),
+
+
+            // Container(
+            //   width: 100,
+            //   height: 30,
+            //   alignment: Alignment.centerLeft,
+            //   child: const Align(
+            //     child: Text(
+            //       "History",
+            //       style: ordinaryStyle,
+            //       textAlign: TextAlign.center,
+            //     ),
+            //   ),
+            // ),
+            // generateHistory(history),
+            // generateAddButton(context),
           ]);
         });
+  }
+
+  Container showBudgetButton(BuildContext context) {
+    return Container(
+        alignment: Alignment.topLeft,
+        child: TextButton(
+          onPressed: () {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return const BudgetView();
+                });
+          },
+          child: Container(
+              height: 40,
+              width: 150,
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.black),
+                color: Colors.transparent,
+                borderRadius: const BorderRadius.all(Radius.circular(10)),
+              ),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 6.0, horizontal: 0.0),
+              child: const Text(
+                "View My Budget",
+                style: ordinaryStyle,
+                textAlign: TextAlign.center,
+              )),
+        ));
   }
 
   Container generateAddButton(BuildContext context) {
@@ -177,11 +210,10 @@ class _AnalyticsState extends State<Analytics> {
             2: FixedColumnWidth(50),
           },
           defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-          children:
-            generateRows(history)
-            // generateOneRecord(history[0]),
-            // generateOneRecord(history[1]),
-            // generateOneRecord(history[2]),
+          children: generateRows(history)
+          // generateOneRecord(history[0]),
+          // generateOneRecord(history[1]),
+          // generateOneRecord(history[2]),
           ,
         ));
   }
