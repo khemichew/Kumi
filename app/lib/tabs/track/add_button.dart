@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:app/config/style.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'receipt_upload.dart';
 
 class AddingShopForm extends StatefulWidget {
   const AddingShopForm({super.key});
@@ -15,6 +16,12 @@ class AddShoppingState extends State<AddingShopForm> {
   final storeController = TextEditingController();
   final amountController = TextEditingController();
   final dateController = TextEditingController();
+
+  String defaultStore = 'Tesco';
+  String defaultAmount = '0';
+  String defaultDate = DateTime.now().toString();
+
+  ReceiptUpload receiptUpload = ReceiptUpload();
 
   String dropdownvalue = 'Tesco';
 
@@ -38,6 +45,8 @@ class AddShoppingState extends State<AddingShopForm> {
 
   @override
   Widget build(BuildContext context) {
+    storeController.text = 'Tesco';
+    dateController.text = DateTime.now().toString();
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
@@ -48,12 +57,19 @@ class AddShoppingState extends State<AddingShopForm> {
     );
   }
 
-  Future<void> addShopping(String store, String amount, String date) {
-    return FirebaseFirestore.instance.collection("test-spend-record").add({
+  Future<void> addShopping(String store, String amount, String date) async {
+    await receiptUpload.uploadFile();
+    Map<String, dynamic> data = receiptUpload.getImageURL() == "hello" ? {
       'store': store,
       'amount': amount,
       'time': Timestamp.fromDate(DateTime.parse(date))
-    });
+    } : {
+      'store': store,
+      'amount': amount,
+      'time': Timestamp.fromDate(DateTime.parse(date)),
+      'receipt-image': receiptUpload.getImageURL(),
+    };
+    FirebaseFirestore.instance.collection("test-spend-record").add(data);
   }
 
   Future<void> _selectDate(
@@ -75,7 +91,7 @@ class AddShoppingState extends State<AddingShopForm> {
 
   contentBox(context) {
     return Container(
-        height: 250,
+        height: 400,
         margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 0.0),
         padding: const EdgeInsets.all(15.0),
         decoration: BoxDecoration(
@@ -174,10 +190,17 @@ class AddShoppingState extends State<AddingShopForm> {
             const SizedBox(
               height: 10,
             ),
+            receiptUpload.build(context),
+            const SizedBox(
+              height: 10,
+            ),
+
             TextButton(
                 onPressed: () {
-                  addShopping(storeController.text, amountController.text,
-                      dateController.text);
+                  if (double.tryParse(amountController.text) != null) {
+                    addShopping(storeController.text, amountController.text,
+                        dateController.text);
+                  }
                   Navigator.pop(context);
                 },
                 child: Container(
