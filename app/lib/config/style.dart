@@ -151,6 +151,13 @@ const quadSpacing = SizedBox(height: 12, width: 12);
 
 // ********** Misc **********
 
+final errorBorder = UnderlineInputBorder(
+  borderRadius: BorderRadius.circular(6.0),
+  borderSide: const BorderSide(
+    color: Colors.red,
+  ),
+);
+
 Future<String> loadAsset() async {
   return await rootBundle.loadString('assets/config.json');
 }

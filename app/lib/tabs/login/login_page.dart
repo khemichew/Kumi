@@ -111,86 +111,85 @@ class LoginPageState extends State<LoginPage> {
                           halfSpacing,
                           _isProcessing
                               ? const CircularProgressIndicator()
-                              : Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: ElevatedButton(
-                                  onPressed: () async {
-                                    _focusEmail.unfocus();
-                                    _focusPassword.unfocus();
+                              : SizedBox(
+                                  width: double.infinity,
+                                  child: ElevatedButton(
+                                    onPressed: () async {
+                                      _focusEmail.unfocus();
+                                      _focusPassword.unfocus();
 
-                                    if (_formKey.currentState!
-                                        .validate()) {
-                                      setState(() {
-                                        _isProcessing = true;
-                                      });
+                                      if (_formKey.currentState!
+                                          .validate()) {
+                                        setState(() {
+                                          _isProcessing = true;
+                                        });
 
-                                      User? user = await FireAuth
-                                          .signInUsingEmailPassword(
-                                        email: _emailTextController.text,
-                                        password:
-                                        _passwordTextController.text,
-                                        context: context
-                                      );
-
-                                      setState(() {
-                                        _isProcessing = false;
-                                      });
-
-                                      if (user != null) {
-                                        // ignore: use_build_context_synchronously
-                                        Navigator.of(context)
-                                            .pushReplacement(
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const MyHomePage(),
-                                          ),
+                                        User? user = await FireAuth
+                                            .signInUsingEmailPassword(
+                                            email: _emailTextController.text,
+                                            password:
+                                            _passwordTextController.text,
+                                            context: context
                                         );
-                                      // } else {
-                                      //   print("login failed");
+
+                                        setState(() {
+                                          _isProcessing = false;
+                                        });
+
+                                        if (user != null) {
+                                          // ignore: use_build_context_synchronously
+                                          Navigator.of(context)
+                                              .pushReplacement(
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                              const MyHomePage(),
+                                            ),
+                                          );
+                                          // } else {
+                                          //   print("login failed");
+                                        }
                                       }
-                                    }
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    primary: Colors.blueAccent,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: regularRadius,
-                                    ),
-                                    padding: allSidesTenInsets,
-                                  ),
-                                  child: const Text(
-                                    'Sign In',
-                                    style: ordinaryWhiteStyle,
-                                  ),
-                                ),
-                              ),
-                              halfSpacing,
-                              Expanded(
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const RegisterPage(),
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      primary: Colors.indigoAccent,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: regularRadius,
                                       ),
-                                    );
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    primary: Colors.indigoAccent,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: regularRadius,
+                                      padding: allSidesTenInsets,
                                     ),
-                                    padding: allSidesTenInsets,
-                                  ),
-                                  child: const Text(
-                                    'Register',
-                                    style: ordinaryWhiteStyle,
+                                    child: const Text(
+                                      'Sign In',
+                                      style: ordinaryWhiteStyle,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          )
+                          quadSpacing,
+                          _isProcessing
+                              ? quadSpacing
+                              : SizedBox(
+                                  width: double.infinity,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const RegisterPage(),
+                                        ),
+                                      );
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      primary: Colors.deepOrangeAccent,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: regularRadius,
+                                      ),
+                                      padding: allSidesTenInsets,
+                                    ),
+                                    child: const Text(
+                                      'Register',
+                                      style: ordinaryWhiteStyle,
+                                    ),
+                                  ),
+                                ),
                         ],
                       ),
                     )

@@ -91,7 +91,7 @@ class ProfilePageState extends State<ProfilePage> {
               ? quadSpacing
               : Text(
                   'Email not verified',
-                  style: smallStyle .copyWith(color: Colors.red),
+                  style: smallStyle.copyWith(color: Colors.red),
                 ),
           ),
           halfSpacing,
@@ -102,35 +102,56 @@ class ProfilePageState extends State<ProfilePage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      ElevatedButton(
-                        onPressed: () async {
-                          setState(() {
-                            _isSendingVerification = true;
-                          });
-                          await _currentUser.sendEmailVerification();
-                          setState(() {
-                            _isSendingVerification = false;
-                          });
-                        },
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.blueAccent,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: regularRadius,
-                          ),
-                          padding: allSidesTenInsets,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Verify email',
-                              style: ordinaryStyle.copyWith(color: Colors.white),
+                      _currentUser.emailVerified
+                        ? ElevatedButton(
+                            onPressed: null,
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.blueAccent,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: regularRadius,
+                              ),
+                              padding: allSidesTenInsets,
                             ),
-                            halfSpacing,
-                            const Icon(Icons.email_outlined)
-                          ]
-                        )
-                      ),
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Verify email',
+                                    style: ordinaryStyle.copyWith(color: Colors.black45),
+                                  ),
+                                  halfSpacing,
+                                  const Icon(Icons.email_outlined)
+                                ]
+                            ))
+                        : ElevatedButton(
+                            onPressed: () async {
+                              setState(() {
+                                _isSendingVerification = true;
+                              });
+                              await _currentUser.sendEmailVerification();
+                              setState(() {
+                                _isSendingVerification = false;
+                              });
+                            },
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.blueAccent,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: regularRadius,
+                              ),
+                              padding: allSidesTenInsets,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Verify email',
+                                  style: ordinaryStyle.copyWith(color: Colors.white),
+                                ),
+                                halfSpacing,
+                                const Icon(Icons.email_outlined)
+                              ]
+                            )
+                          ),
                       ElevatedButton(
                         onPressed: () async {
                           User? user = await FireAuth.refreshUser(_currentUser);

@@ -61,12 +61,7 @@ class RegisterPageState extends State<RegisterPage> {
                         ),
                         decoration: InputDecoration(
                           hintText: "Name",
-                          errorBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(6.0),
-                            borderSide: BorderSide(
-                              color: Colors.red,
-                            ),
-                          ),
+                          errorBorder: errorBorder,
                         ),
                       ),
                       quadSpacing,
@@ -78,12 +73,7 @@ class RegisterPageState extends State<RegisterPage> {
                         ),
                         decoration: InputDecoration(
                           hintText: "Email",
-                          errorBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(6.0),
-                            borderSide: BorderSide(
-                              color: Colors.red,
-                            ),
-                          ),
+                          errorBorder: errorBorder,
                         ),
                       ),
                       quadSpacing,
@@ -96,12 +86,7 @@ class RegisterPageState extends State<RegisterPage> {
                         ),
                         decoration: InputDecoration(
                           hintText: "Password",
-                          errorBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(6.0),
-                            borderSide: BorderSide(
-                              color: Colors.red,
-                            ),
-                          ),
+                          errorBorder: errorBorder,
                         ),
                       ),
                       halfSpacing,
@@ -147,7 +132,7 @@ class RegisterPageState extends State<RegisterPage> {
                                   }
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  primary: Colors.indigoAccent,
+                                  primary: Colors.blueAccent,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: regularRadius,
                                   ),
@@ -160,30 +145,32 @@ class RegisterPageState extends State<RegisterPage> {
                               ),
                             ),
                       quadSpacing,
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                const LoginPage(),
+                      _isProcessing
+                          ? const CircularProgressIndicator()
+                          : SizedBox(
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                      const LoginPage(),
+                                    ),
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  primary: Colors.indigoAccent,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: regularRadius,
+                                  ),
+                                  padding: allSidesTenInsets,
+                                ),
+                                child: const Text(
+                                  'Back to login',
+                                  style: ordinaryWhiteStyle,
+                                ),
                               ),
-                            );
-                          },
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.blueAccent,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: regularRadius,
                             ),
-                            padding: allSidesTenInsets,
-                          ),
-                          child: const Text(
-                            'Back to login',
-                            style: ordinaryWhiteStyle,
-                          ),
-                        ),
-                      ),
                     ],
                   ),
                 )
