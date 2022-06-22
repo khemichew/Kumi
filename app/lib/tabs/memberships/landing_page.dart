@@ -55,7 +55,7 @@ class _MembershipListState extends State<MembershipList> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot<CardEntry>>(
-        stream: cardEntries.orderBy('name').snapshots(),
+        stream: cardEntries.snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return const Text("Something went wrong");
