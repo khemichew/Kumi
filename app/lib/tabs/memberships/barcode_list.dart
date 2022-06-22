@@ -1,14 +1,15 @@
+import 'package:app/models/card_options.dart';
 import 'package:flutter/material.dart';
 import 'package:app/config/style.dart';
 import 'package:barcode_widget/barcode_widget.dart';
 
 class MembershipBarcode extends StatelessWidget {
-  MembershipBarcode({Key? key, required this.storeName, required this.color})
+  const MembershipBarcode(
+      {Key? key, required this.store, required this.barcode})
       : super(key: key);
 
-  final String storeName;
-  final Color color;
-  final dm = Barcode.dataMatrix();
+  final CardOption store;
+  final String barcode;
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +20,38 @@ class MembershipBarcode extends StatelessWidget {
       elevation: 0,
       backgroundColor: Colors.transparent,
       child: contentBox(context),
+    );
+  }
+
+  Widget get displayCode {
+    if (store.type == CardType.qr) {
+      return BarcodeWidget(barcode: Barcode.qrCode(), data: barcode);
+    } else { // barcode
+      return BarcodeWidget(barcode: Barcode.gs128(), data: barcode);
+    }
+  }
+
+  Widget get navigateToExplorePageButton {
+    return TextButton(
+      onPressed: () {},
+      child: Container(
+        height: 50,
+        decoration: BoxDecoration(
+            border: Border.all(color: Colors.black),
+            color: mintGreen,
+            borderRadius: regularRadius,
+            boxShadow: defaultBoxShadow),
+        padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+        child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: const [
+              Text('Store details', style: ordinaryStyle),
+              Icon(
+                Icons.chevron_right,
+                color: Colors.black,
+              )
+            ]),
+      ),
     );
   }
 
@@ -42,16 +75,12 @@ class MembershipBarcode extends StatelessWidget {
                 children: [
                   SizedBox(
                       width: MediaQuery.of(context).size.width * 0.67,
-                      child: BarcodeWidget(
-                        // Nectar - Khemi
-                        barcode: Barcode.gs128(),
-                        data: '${appIdMap['nectar']!}1234567890',
-                      )),
+                      child: displayCode),
                   Container(
-                    //width: double.maxFinite,
+                      //width: double.maxFinite,
                       width: MediaQuery.of(context).size.width * 0.45,
                       decoration: BoxDecoration(
-                        color: color,
+                        color: honeyOrange,
                         borderRadius: regularRadius,
                       ),
                       padding: const EdgeInsets.symmetric(
@@ -59,56 +88,14 @@ class MembershipBarcode extends StatelessWidget {
                       child: FittedBox(
                         fit: BoxFit.scaleDown,
                         child: Text(
-                          '$storeName barcode',
+                          store.name,
                           style: ordinaryStyle,
                           textAlign: TextAlign.center,
                         ),
                       )),
                 ]),
           ),
-          TextButton(
-            onPressed: () {},
-            child: Container(
-              height: 50,
-              decoration: BoxDecoration(
-                  color: mintGreen,
-                  borderRadius: regularRadius,
-                  boxShadow: defaultBoxShadow),
-              padding:
-              const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
-                    Text('Deals', style: ordinaryWhiteStyle),
-                    Icon(
-                      Icons.chevron_right,
-                      color: Colors.white,
-                    )
-                  ]),
-            ),
-          ),
-          TextButton(
-            onPressed: () {},
-            child: Container(
-              height: 50,
-              decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black),
-                  color: Colors.white,
-                  borderRadius: regularRadius,
-                  boxShadow: defaultBoxShadow),
-              padding:
-              const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
-                    Text('Store details', style: ordinaryStyle),
-                    Icon(
-                      Icons.chevron_right,
-                      color: Colors.black,
-                    )
-                  ]),
-            ),
-          ),
+          navigateToExplorePageButton
         ],
       ),
     );

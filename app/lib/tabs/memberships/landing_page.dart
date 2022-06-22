@@ -109,8 +109,8 @@ class MembershipCard extends StatelessWidget {
                   context: context,
                   builder: (BuildContext context) {
                     return MembershipBarcode(
-                        storeName: cardOption?.name ?? "Store",
-                        color: honeyOrange);
+                        store: cardOption!,
+                        barcode: cardEntry.barcode);
                   },
                 );
               },
