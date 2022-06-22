@@ -33,6 +33,7 @@ class LoginPageState extends State<LoginPage> {
     user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
+      // ignore: use_build_context_synchronously
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (context) => const MyHomePage(),
@@ -139,6 +140,7 @@ class LoginPageState extends State<LoginPage> {
                                       });
 
                                       if (user != null) {
+                                        // ignore: use_build_context_synchronously
                                         Navigator.of(context)
                                             .pushReplacement(
                                           MaterialPageRoute(
