@@ -109,7 +109,7 @@ class LoginPageState extends State<LoginPage> {
                           ),
                           halfSpacing,
                           _isProcessing
-                              ? CircularProgressIndicator()
+                              ? const CircularProgressIndicator()
                               : Row(
                             mainAxisAlignment:
                             MainAxisAlignment.center,
@@ -143,11 +143,11 @@ class LoginPageState extends State<LoginPage> {
                                             .pushReplacement(
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                MyHomePage(),
+                                                const MyHomePage(),
                                           ),
                                         );
-                                      } else {
-                                        print("login failed");
+                                      // } else {
+                                      //   print("login failed");
                                       }
                                     }
                                   },
@@ -171,7 +171,7 @@ class LoginPageState extends State<LoginPage> {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                            RegisterPage(),
+                                            const RegisterPage(),
                                       ),
                                     );
                                   },
