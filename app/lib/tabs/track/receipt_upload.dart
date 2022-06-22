@@ -29,7 +29,7 @@ class ReceiptUpload {
         _photo = File(pickedFile.path);
         // uploadFile();
       } else {
-        print('No image selected.');
+        // print('No image selected.');
       }
     // });
   }
@@ -42,7 +42,7 @@ class ReceiptUpload {
         _photo = File(pickedFile.path);
         // uploadFile();
       } else {
-        print('No image selected.');
+        // print('No image selected.');
       }
     // });
   }
@@ -58,7 +58,7 @@ class ReceiptUpload {
           .child('file/');
       await ref.putFile(_photo!);
     } catch (e) {
-      print('error occurred');
+      // print('error occurred');
     }
   }
 
@@ -88,8 +88,8 @@ class ReceiptUpload {
             child: Wrap(
               children: <Widget>[
                 ListTile(
-                    leading: Icon(Icons.photo_library),
-                    title: Text('Gallery'),
+                    leading: const Icon(Icons.photo_library),
+                    title: const Text('Gallery'),
                     onTap: () {
                       getFromGallery();
                       Navigator.of(context).pop();

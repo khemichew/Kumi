@@ -38,7 +38,7 @@ extension on Query<FakeSpendRecord> {
       case RecordQuery.week:
         return where("time",
             isGreaterThan: (Timestamp.fromDate(
-                DateTime.now().subtract(const Duration(days: 7)))));
+                DateTime.now().subtract(Duration(days: DateTime.now().weekday)))));
     }
   }
 }
@@ -177,14 +177,21 @@ class _AnalyticsState extends State<Analytics> {
             2: FixedColumnWidth(50),
           },
           defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-          children: <TableRow>[
-            generateOneRecord(history[0]),
-            generateOneRecord(history[1]),
-            generateOneRecord(history[2]),
-            generateOneRecord(history[3]),
-            generateOneRecord(history[4]),
-          ],
+          children:
+            generateRows(history)
+            // generateOneRecord(history[0]),
+            // generateOneRecord(history[1]),
+            // generateOneRecord(history[2]),
+          ,
         ));
+  }
+
+  List<TableRow> generateRows(List<FakeSpendRecord> history) {
+    List<TableRow> rows = [];
+    for (var i = 0; i < history.length; i++) {
+      rows.add(generateOneRecord(history[i]));
+    }
+    return rows;
   }
 
   Row generateFilters() {
