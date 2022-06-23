@@ -17,7 +17,6 @@ class AddShoppingState extends State<AddingShopForm> {
   final amountController = TextEditingController();
   final dateController = TextEditingController();
 
-  String defaultStore = 'Tesco';
   String defaultAmount = '0';
   String defaultDate = DateTime.now().toString();
 

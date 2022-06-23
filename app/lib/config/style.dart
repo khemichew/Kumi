@@ -33,6 +33,9 @@ TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: Colors.black);
 const TextStyle ordinaryWhiteStyle =
 TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: Colors.white);
 
+const TextStyle recordAmountStyle =
+TextStyle(fontSize: 22, fontWeight: FontWeight.w500, color: Colors.white);
+
 
 // ********** Colors **********
 

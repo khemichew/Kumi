@@ -17,8 +17,12 @@ class Record extends StatelessWidget {
 //        backgroundColor: Colors.transparent,
         backgroundColor: const Color(0x44000000),
         elevation: 0,
-        title: const Text("Records", style: titleStyle,),
-      ),      body: Container(
+        title: const Text(
+          "Records",
+          style: titleStyle,
+        ),
+      ),
+      body: Container(
         margin: const EdgeInsets.fromLTRB(15, 10, 15, 0),
         child: const Expanded(child: RecordList()),
       ),
@@ -82,7 +86,7 @@ class _RecordListState extends State<RecordList> {
                     const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
                 child: Container(
                     decoration: const BoxDecoration(
-                        color: Color.fromRGBO(64, 75, 96, .9)),
+                        color: Color.fromRGBO(64, 75, 96, .8)),
                     child: ListTile(
                       contentPadding: const EdgeInsets.symmetric(
                           horizontal: 20.0, vertical: 10.0),
@@ -93,7 +97,9 @@ class _RecordListState extends State<RecordList> {
                                 right: BorderSide(
                                     width: 1.0, color: Colors.white24))),
                         child: Text(
-                            "£${history[index].amount.toStringAsFixed(0)}"),
+                          "£${history[index].amount.toStringAsFixed(2)}",
+                          style: recordAmountStyle,
+                        ),
                       ),
                       title: Text(
                         DateFormat('yyyy-MM-dd').format(history[index].time),
