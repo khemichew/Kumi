@@ -29,6 +29,10 @@ class BudgetViewState extends State<BudgetView> {
   late String monthlyID;
   late String weeklyID;
 
+  String yearlyBudget() {
+    return yearlyController.text;
+  }
+
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
@@ -112,7 +116,7 @@ class BudgetViewState extends State<BudgetView> {
 
   Widget showBudget(List<FakeBudget> budgets, String range,
       TextEditingController controller) {
-    FakeBudget budget = budgets.where((e) => e.range == range).first;
+    // FakeBudget budget = budgets.where((e) => e.range == range).first;
     return Align(
       alignment: Alignment.topLeft,
       child: Row(

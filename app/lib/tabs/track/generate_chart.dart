@@ -25,15 +25,18 @@ class GenerateChart {
 
   GenerateChart(this.records, this.queryType);
 
-  BarChart buildChart() {
-    return BarChart(queryType == RecordQuery.year
-        ? monthlyData(records)
-        : queryType == RecordQuery.month
-        ? weeklyData(records)
-        : queryType == RecordQuery.week
-        ? dailyData(records)
-        : yearlyData(records)
-    );
+  Widget buildChart() {
+    return Container(
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+        child: BarChart(queryType == RecordQuery.year
+            ? monthlyData(records)
+            : queryType == RecordQuery.month
+            ? weeklyData(records)
+            : queryType == RecordQuery.week
+            ? dailyData(records)
+            : yearlyData(records)
+        ),
+      );
   }
 
   BarChartData dailyData(List<FakeSpendRecord> data) {
