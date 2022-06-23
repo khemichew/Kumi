@@ -69,8 +69,8 @@ class _MembershipListState extends State<MembershipList> {
 
           if (data.size == 0) {
             return const Center(
-              child: Text("Keep all the store cards you use every day, all in one place.")
-            );
+                child: Text(
+                    "Keep all the store cards you use every day, all in one place."));
           }
 
           return GridView.count(
@@ -110,6 +110,7 @@ class MembershipCard extends StatelessWidget {
                   builder: (BuildContext context) {
                     return MembershipBarcode(
                         store: cardOption!,
+                        storeDocId: reference,
                         barcode: cardEntry.barcode);
                   },
                 );
