@@ -41,9 +41,7 @@ class MembershipBarcode extends StatelessWidget {
   Widget buttonTemplate(
       String title, VoidCallback onClickBehaviour, Color background) {
     return TextButton(
-      onPressed: () {
-        onClickBehaviour();
-      },
+      onPressed: onClickBehaviour,
       child: Container(
         height: 50,
         decoration: BoxDecoration(

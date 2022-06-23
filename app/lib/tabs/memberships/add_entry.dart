@@ -14,8 +14,8 @@ class AddMembershipDialog extends StatefulWidget {
 }
 
 class _AddMembershipDialogState extends State<AddMembershipDialog> {
-  static const String failState = "FAIL";
-  late String _scanBarcode;
+  static const String failState = "-1";
+  String _scanBarcode = failState;
 
   Future<String> scanBarcode(ScanMode mode) async {
     String result;
@@ -46,6 +46,9 @@ class _AddMembershipDialogState extends State<AddMembershipDialog> {
             // Retrieve barcode
             _scanBarcode = await scanBarcode(mode);
 
+            // Close options list if no code is scanned
+            if (!mounted) return;
+
             // Add entry to database
             if (_scanBarcode != failState) {
               CardEntry cardEntry = CardEntry(cardOptionId: id, barcode: _scanBarcode);
@@ -53,7 +56,6 @@ class _AddMembershipDialogState extends State<AddMembershipDialog> {
             }
 
             // Close options list
-            if (!mounted) return;
             Navigator.pop(context);
         },
       );
