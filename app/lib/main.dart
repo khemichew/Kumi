@@ -91,7 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.currency_pound_outlined),
-          label: 'Track',
+          label: 'Analyse',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.list_alt),

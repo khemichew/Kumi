@@ -1,5 +1,6 @@
 import 'package:app/models/cached_entries.dart';
 import 'package:app/models/card_entries.dart';
+import 'package:app/tabs/login/profile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:app/config/style.dart';
@@ -11,7 +12,7 @@ import 'package:provider/provider.dart';
 class MembershipPage extends StatelessWidget {
   const MembershipPage({Key? key}) : super(key: key);
 
-  AppBar get titleBar {
+  AppBar getTitleBar(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.transparent,
       elevation: 0,
@@ -26,7 +27,13 @@ class MembershipPage extends StatelessWidget {
           margin: const EdgeInsets.only(right: 20.0),
           padding: allSidesTenInsets,
           child: GestureDetector(
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => ProfilePage(),
+                  ),
+                );
+              },
             child: const Icon(Icons.person_outline),
           )
         ),
@@ -52,7 +59,7 @@ class MembershipPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
-      appBar: titleBar,
+      appBar: getTitleBar(context),
       body: const MembershipList(),
       floatingActionButton: addButton(context),
     );
