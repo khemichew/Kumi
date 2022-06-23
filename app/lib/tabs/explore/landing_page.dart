@@ -143,7 +143,7 @@ class _ExploreState extends State<Explore> {
               }
 
               if (!snapshot.hasData) {
-                return const Center(child: Text("No entries found"));
+                return const Center(child: Text("Loading..."));
               }
 
               final data = snapshot.requireData;
