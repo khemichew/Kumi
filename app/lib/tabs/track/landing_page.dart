@@ -1,5 +1,7 @@
+import 'package:app/models/fake_budget.dart';
 import 'package:app/models/fake_spend_record.dart';
 import 'package:app/config/style.dart';
+import 'package:app/tabs/track/budget.dart';
 import 'package:app/tabs/track/add_button.dart';
 import 'package:app/tabs/track/button_generator.dart';
 import 'package:app/tabs/track/generate_chart.dart';
@@ -7,6 +9,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 enum RecordQuery {
   showDescendingData,
@@ -37,8 +40,8 @@ extension on Query<FakeSpendRecord> {
 
       case RecordQuery.week:
         return where("time",
-            isGreaterThan: (Timestamp.fromDate(
-                DateTime.now().subtract(Duration(days: DateTime.now().weekday)))));
+            isGreaterThan: (Timestamp.fromDate(DateTime.now()
+                .subtract(Duration(days: DateTime.now().weekday)))));
     }
   }
 }
@@ -88,64 +91,70 @@ class _AnalyticsState extends State<Analytics> {
 
           final data = snapshot.requireData;
 
-          final List<FakeSpendRecord> history =
-              data.docs.map((e) => e.data()).toList();
+          // final List<FakeSpendRecord> history =
+          //     data.docs.map((e) => e.data()).toList();
 
-          return Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-            const SizedBox(
-              width: 100,
-              height: 50,
-            ),
-            const YouHaveSpent(),
-            const SizedBox(
-              width: 100,
-              height: 10,
-            ),
-            SpendAmt(data.docs.map((e) => e.data()).toList()),
-            const SizedBox(
-              width: 100,
-              height: 10,
-            ),
-            generateFilters(),
-            const SizedBox(
-              width: 100,
-              height: 10,
-            ),
-            Container(
-                height: 180,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: GenerateChart(data.docs.map((e) => e.data()).toList(), queryType).buildChart()
-
-                // BarChart(queryType == RecordQuery.year
-                //     ? monthlyData(data.docs.map((e) => e.data()).toList())
-                //     : queryType == RecordQuery.month
-                //         ? weeklyData(data.docs.map((e) => e.data()).toList())
-                //         : queryType == RecordQuery.week
-                //             ? dailyData(data.docs.map((e) => e.data()).toList())
-                //             : yearlyData(
-                //                 data.docs.map((e) => e.data()).toList())
-                // )
-            ),
-            const SizedBox(
-              width: 100,
-              height: 10,
-            ),
-            Container(
-              width: 100,
-              height: 30,
-              alignment: Alignment.centerLeft,
-              child: const Align(
-                child: Text(
-                  "History",
-                  style: ordinaryStyle,
-                  textAlign: TextAlign.center,
+          return Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                const SizedBox(
+                  height: 60,
                 ),
-              ),
-            ),
-            generateHistory(history),
-            generateAddButton(context),
-          ]);
+                const Flexible(
+                  flex: 1,
+                  child: YouHaveSpent(),
+                ),
+                Flexible(
+                  flex: 5,
+                  child: SpendGraph(
+                      data.docs.map((e) => e.data()).toList(), queryType),
+                ),
+                Flexible(
+                    flex: 1,
+                    //padding: const EdgeInsets.symmetric(horizontal: 25),
+                    child: showBudgetButton(context)),
+                Flexible(
+                    flex: 4,
+                    // padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: GenerateChart(
+                            data.docs.map((e) => e.data()).toList(), queryType)
+                        .buildChart()),
+                Flexible(flex: 1, child: generateFilters()),
+                const SizedBox(
+                  height: 10,
+                ),
+              ]);
         });
+  }
+
+  Container showBudgetButton(BuildContext context) {
+    return Container(
+        alignment: Alignment.center,
+        child: TextButton(
+          onPressed: () {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return const BudgetView();
+                });
+          },
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 10),
+              height: 40,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.black),
+                color: Colors.transparent,
+                borderRadius: const BorderRadius.all(Radius.circular(10)),
+              ),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 6.0, horizontal: 0.0),
+              child: const Text(
+                "Budget Settings",
+                style: ordinaryStyle,
+                textAlign: TextAlign.center,
+              )),
+        ));
   }
 
   Container generateAddButton(BuildContext context) {
@@ -177,11 +186,10 @@ class _AnalyticsState extends State<Analytics> {
             2: FixedColumnWidth(50),
           },
           defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-          children:
-            generateRows(history)
-            // generateOneRecord(history[0]),
-            // generateOneRecord(history[1]),
-            // generateOneRecord(history[2]),
+          children: generateRows(history)
+          // generateOneRecord(history[0]),
+          // generateOneRecord(history[1]),
+          // generateOneRecord(history[2]),
           ,
         ));
   }
@@ -196,7 +204,7 @@ class _AnalyticsState extends State<Analytics> {
 
   Row generateFilters() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         ButtonGenerator(
           text: "All",
@@ -309,6 +317,133 @@ class SpendAmt extends StatelessWidget {
           border: Border.all(color: Colors.black, width: 2),
           borderRadius: const BorderRadius.all(Radius.circular(20))),
       child: Align(alignment: Alignment.center, child: expenseSummary),
+    );
+  }
+}
+
+class SpendGraph extends StatelessWidget {
+  final List<FakeSpendRecord> records;
+  final NumberFormat formatCurrency =
+      NumberFormat.currency(locale: "en_GB", symbol: "£");
+  final RecordQuery queryType;
+
+  SpendGraph(this.records, this.queryType, {Key? key}) : super(key: key);
+
+  Future<double> getYearly() async {
+    var snapshot = await fakeBudgetEntries
+        .where('uuid', isEqualTo: "123456")
+        .where("range", isEqualTo: "yearly")
+        .get();
+    return snapshot.docs.first.data().amount.toDouble();
+  }
+
+  Future<double> getMonthly() async {
+    var snapshot = await fakeBudgetEntries
+        .where('uuid', isEqualTo: "123456")
+        .where("range", isEqualTo: "monthly")
+        .get();
+    return snapshot.docs.first.data().amount.toDouble();
+  }
+
+  Future<double> getWeekly() async {
+    var snapshot = await fakeBudgetEntries
+        .where('uuid', isEqualTo: "123456")
+        .where("range", isEqualTo: "weekly")
+        .get();
+    return snapshot.docs.first.data().amount.toDouble();
+  }
+
+  Future<double> getBudget() {
+    if (queryType == RecordQuery.month) {
+      return getMonthly();
+    }
+    if (queryType == RecordQuery.week) {
+      return getWeekly();
+    }
+    return getYearly();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final double amt = records.map((record) => record.amount).sum.toDouble();
+    final String strAmt = formatCurrency.format(amt);
+    double budget = 100;
+
+    return FutureBuilder(
+        future: getBudget(),
+        builder: (context, snapshot) {
+
+        if (snapshot.data != null) {
+          budget = snapshot.data as double;
+
+          return SizedBox(
+              width: 370,
+              height: 280,
+              child: SfRadialGauge(
+                enableLoadingAnimation: true,
+                axes: <RadialAxis>[
+                  RadialAxis(
+                      showLabels: false,
+                      showTicks: false,
+                      radiusFactor: 0.8,
+                      maximum: budget,
+                      axisLineStyle: const AxisLineStyle(
+                          cornerStyle: CornerStyle.startCurve, thickness: 5),
+                      annotations: <GaugeAnnotation>[
+                        GaugeAnnotation(
+                            angle: 90,
+                            widget: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Text(strAmt,
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontStyle: FontStyle.italic,
+                                        fontSize: 50)),
+                              ],
+                            )),
+                        const GaugeAnnotation(
+                          angle: 124,
+                          positionFactor: 1.1,
+                          widget: Text('0', style: TextStyle(fontSize: 20)),
+                        ),
+                        GaugeAnnotation(
+                          angle: 54,
+                          positionFactor: 1.1,
+                          widget: Text('$budget',
+                              style: const TextStyle(fontSize: 20)),
+                        ),
+                      ],
+                      pointers: <GaugePointer>[
+                        RangePointer(
+                          value: amt,
+                          width: 18,
+                          pointerOffset: -6,
+                          cornerStyle: CornerStyle.bothCurve,
+                          color: const Color(0xFFF67280),
+                          gradient: const SweepGradient(colors: <Color>[
+                            Color(0xFFFF7676),
+                            Color(0xFFF54EA2)
+                          ], stops: <double>[
+                            0.25,
+                            0.75
+                          ]),
+                        ),
+                        // MarkerPointer(
+                        //   value: amt - 6 / amt / (snapshot.data as double),
+                        //   color: Colors.white,
+                        //   markerType: MarkerType.circle,
+                        // ),
+                      ]),
+                ],
+              )
+          );
+        } else {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        }
     );
   }
 }

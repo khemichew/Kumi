@@ -49,6 +49,7 @@ dependencies:
   firebase_core: ^1.17.1
   cloud_firestore: ^3.1.17
   intl: ^0.17.0
+  syncfusion_flutter_gauges: ^20.1.61
   firebase_auth: ^3.3.20
 
 dev_dependencies:
