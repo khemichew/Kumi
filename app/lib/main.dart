@@ -1,6 +1,7 @@
 import 'package:app/config/style.dart';
 import 'package:app/models/card_options.dart';
 import 'package:app/tabs/login/profile.dart';
+import 'package:app/tabs/records/landing_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -92,8 +93,12 @@ class _MyHomePageState extends State<MyHomePage> {
           label: 'Track',
         ),
         BottomNavigationBarItem(
+          icon: Icon(Icons.list_alt),
+          label: 'Record',
+        ),
+        BottomNavigationBarItem(
           icon: Icon(Icons.person_outline),
-          label: 'My account',
+          label: 'Account',
         ),
       ],
       currentIndex: _selectedIndex,
@@ -130,6 +135,7 @@ class _MyHomePageState extends State<MyHomePage> {
       const MembershipPage(),
       const Explore(),
       const Track(),
+      const Record(),
       ProfilePage(user: user!),
     ];
 
