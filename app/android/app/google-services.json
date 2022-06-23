@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "326664895837",
+    "firebase_url": "https://drp27-e4b6f-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "drp27-e4b6f",
+    "storage_bucket": "drp27-e4b6f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:326664895837:android:77802407d219d76f34fcb4",
+        "android_client_info": {
+          "package_name": "com.example.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "326664895837-2sq4lrn68otj6k88bk3t4f92h1ts47n3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTjs6nPWmrx0IjObnJUmL0l0N6ln-FXD0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "326664895837-2sq4lrn68otj6k88bk3t4f92h1ts47n3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "326664895837-0qp5b4geu8fbb0squfn3b4lvhlsuudom.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.drp27.drp27"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

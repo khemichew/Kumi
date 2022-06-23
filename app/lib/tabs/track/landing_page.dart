@@ -1,6 +1,6 @@
 import 'package:app/models/fake_spend_record.dart';
 import 'package:app/config/style.dart';
-import 'package:app/tabs/track/add_button.dart';
+import 'package:app/tabs/records/add_button.dart';
 import 'package:app/tabs/track/button_generator.dart';
 import 'package:app/tabs/track/generate_chart.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

@@ -1,6 +1,6 @@
 import 'package:app/models/fake_spend_record.dart';
 import 'package:app/config/style.dart';
-import 'package:app/tabs/track/add_button.dart';
+import 'package:app/tabs/records/add_button.dart';
 import 'package:app/tabs/track/button_generator.dart';
 import 'package:app/tabs/track/landing_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -13,7 +13,7 @@ class Record extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RecordList();
+    return const RecordList();
   }
 }
 
@@ -52,34 +52,36 @@ class _RecordListState extends State<RecordList> {
               return Card(
                 elevation: 8.0,
                 margin:
-                    new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+                    const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
                 child: Container(
                     decoration:
-                        BoxDecoration(color: Color.fromRGBO(64, 75, 96, .9)),
+                        const BoxDecoration(color: Color.fromRGBO(64, 75, 96, .9)),
                     child: ListTile(
-                      contentPadding: EdgeInsets.symmetric(
+                      contentPadding: const EdgeInsets.symmetric(
                           horizontal: 20.0, vertical: 10.0),
                       leading: Container(
-                        padding: EdgeInsets.only(right: 12.0),
-                        decoration: new BoxDecoration(
-                            border: new Border(
-                                right: new BorderSide(
+                        padding: const EdgeInsets.only(right: 12.0),
+                        decoration: const BoxDecoration(
+                            border: Border(
+                                right: BorderSide(
                                     width: 1.0, color: Colors.white24))),
                         child: Text(
                             "£${history[index].amount.toStringAsFixed(0)}"),
                       ),
                       title: Text(
                         DateFormat('yyyy-MM-dd').format(history[index].time),
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: Colors.white, fontWeight: FontWeight.bold),
                       ),
                       subtitle: Text(history[index].store,
-                          style: TextStyle(color: Colors.white)),
+                          style: const TextStyle(color: Colors.white)),
                       trailing: history[index].url == ""
-                          ? Text("")
-                          : Icon(Icons.keyboard_arrow_right,
+                          ? const Text("")
+                          : const Icon(Icons.keyboard_arrow_right,
                               color: Colors.white, size: 30.0),
-                      onTap: () {if (history[index].url != "")  ReceiptImage().build(context, history[index].url);
+                      onTap: () {if (history[index].url != "") {
+                        showDialog(context: context, builder: (_) => ReceiptImage().build(context, history[index].url));
+                      }
                       },
                     )),
               );
