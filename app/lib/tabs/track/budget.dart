@@ -51,7 +51,7 @@ class BudgetViewState extends State<BudgetView> {
         elevation: 0,
         backgroundColor: Colors.transparent,
         child: Container(
-          height: 250,
+          height: 230,
           margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 0.0),
           padding: const EdgeInsets.all(15.0),
           decoration: BoxDecoration(
@@ -101,8 +101,8 @@ class BudgetViewState extends State<BudgetView> {
                 return Align(
                   alignment: Alignment.topLeft,
                   child: Wrap(
-                      spacing: 20,
-                      runSpacing: 15,
+                      spacing: 10,
+                      runSpacing: 10,
                       children: [
                         showBudget(budgets, "yearly", yearlyController),
                         showBudget(budgets, "monthly", monthlyController),
@@ -117,29 +117,27 @@ class BudgetViewState extends State<BudgetView> {
   Widget showBudget(List<FakeBudget> budgets, String range,
       TextEditingController controller) {
     // FakeBudget budget = budgets.where((e) => e.range == range).first;
-    return Align(
-      alignment: Alignment.topLeft,
-      child: Row(
-          // padding: const EdgeInsets.all(5.0),
-          children: [
-            Text(
-              "${range.toTitleCase()} budget:  ",
-              style: emphStyle,
-            ),
-            SizedBox(
-              width: 80,
-              height: 40,
-              child: TextFormField(
-                style: emphStyle,
-                decoration: const InputDecoration(
-                  contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                  border: OutlineInputBorder(),
-                ),
-                controller: controller,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            "${range.toTitleCase()} budget:",
+            style: ordinaryStyle,
+          ),
+          SizedBox(
+            width: 100,
+            height: 40,
+            child: TextFormField(
+              style: ordinaryStyle,
+              textAlign: TextAlign.end,
+              decoration: const InputDecoration(
+                contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                border: OutlineInputBorder(),
               ),
-            )
-          ]),
-    );
+              controller: controller,
+            ),
+          )
+        ]);
   }
 
   Widget showUpdateBudget() {
@@ -150,15 +148,14 @@ class BudgetViewState extends State<BudgetView> {
               Navigator.pop(context);
             },
             child: Container(
-                height: 40,
-                width: 100,
+                width: double.infinity,
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.black),
                   color: mintGreen,
                   borderRadius: const BorderRadius.all(Radius.circular(10)),
                 ),
                 padding: const EdgeInsets.symmetric(
-                    vertical: 7.0, horizontal: 10.0),
+                    vertical: 5.0, horizontal: 5.0),
                 child: const Text(
                   "Update",
                   style: ordinaryStyle,
