@@ -128,6 +128,10 @@ const defaultBoxShadow = [
   BoxShadow(color: Colors.black, offset: Offset(0, 5), blurRadius: 5),
 ];
 
+const lightBoxShadow = [
+  BoxShadow(color: Colors.black38, offset: Offset(0, 1), blurRadius: 5),
+];
+
 
 // ********** Page Decoration **********
 
@@ -150,6 +154,13 @@ const quadSpacing = SizedBox(height: 12, width: 12);
 
 
 // ********** Misc **********
+
+final errorBorder = UnderlineInputBorder(
+  borderRadius: BorderRadius.circular(6.0),
+  borderSide: const BorderSide(
+    color: Colors.red,
+  ),
+);
 
 Future<String> loadAsset() async {
   return await rootBundle.loadString('assets/config.json');

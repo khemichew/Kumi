@@ -217,8 +217,11 @@ class AddShoppingState extends State<AddingShopForm> {
                       "Submit",
                       style: ordinaryStyle,
                       textAlign: TextAlign.center,
-                    )))
+                    )
+                )
+            )
           ],
-        ));
+        )
+    );
   }
 }

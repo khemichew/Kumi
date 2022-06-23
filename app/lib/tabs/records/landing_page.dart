@@ -65,7 +65,7 @@ class _RecordListState extends State<RecordList> {
           }
 
           if (!snapshot.hasData) {
-            return const Center(child: Text("No entries found"));
+            return const Center(child: Text("Loading..."));
           }
 
           final data = snapshot.requireData;
