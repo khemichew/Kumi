@@ -1,5 +1,4 @@
 import 'package:app/config/style.dart';
-import 'package:app/tabs/login/profile.dart';
 import 'package:app/tabs/explore/landing_page.dart';
 import 'package:app/tabs/track/landing_page.dart';
 import 'package:flutter/material.dart';
