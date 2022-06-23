@@ -1,8 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import 'package:app/tabs/login/login_page.dart';
-// import 'package:app/tabs/login/register.dart';
 import 'package:app/config/fire_auth.dart';
 import 'package:app/config/style.dart';
 
@@ -54,14 +52,14 @@ class ProfilePageState extends State<ProfilePage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Text(
+              children: [
+                const Text(
                   "Name",
                   style: emphStyle,
                 ),
                 Text(
-                  'Jim Brown',
-                  // '${_currentUser.displayName}',
+                  // 'Jim Brown',
+                  '${_currentUser.displayName}',
                   style: ordinaryStyle,
                 ),
               ]
@@ -91,7 +89,7 @@ class ProfilePageState extends State<ProfilePage> {
               ? quadSpacing
               : Text(
                   'Email not verified',
-                  style: smallStyle .copyWith(color: Colors.red),
+                  style: smallStyle.copyWith(color: Colors.red),
                 ),
           ),
           halfSpacing,
@@ -102,35 +100,56 @@ class ProfilePageState extends State<ProfilePage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      ElevatedButton(
-                        onPressed: () async {
-                          setState(() {
-                            _isSendingVerification = true;
-                          });
-                          await _currentUser.sendEmailVerification();
-                          setState(() {
-                            _isSendingVerification = false;
-                          });
-                        },
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.blueAccent,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: regularRadius,
-                          ),
-                          padding: allSidesTenInsets,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Verify email',
-                              style: ordinaryStyle.copyWith(color: Colors.white),
+                      _currentUser.emailVerified
+                        ? ElevatedButton(
+                            onPressed: null,
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.blueAccent,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: regularRadius,
+                              ),
+                              padding: allSidesTenInsets,
                             ),
-                            halfSpacing,
-                            const Icon(Icons.email_outlined)
-                          ]
-                        )
-                      ),
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Verify email',
+                                    style: ordinaryStyle.copyWith(color: Colors.black45),
+                                  ),
+                                  halfSpacing,
+                                  const Icon(Icons.email_outlined)
+                                ]
+                            ))
+                        : ElevatedButton(
+                            onPressed: () async {
+                              setState(() {
+                                _isSendingVerification = true;
+                              });
+                              await _currentUser.sendEmailVerification();
+                              setState(() {
+                                _isSendingVerification = false;
+                              });
+                            },
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.blueAccent,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: regularRadius,
+                              ),
+                              padding: allSidesTenInsets,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Verify email',
+                                  style: ordinaryStyle.copyWith(color: Colors.white),
+                                ),
+                                halfSpacing,
+                                const Icon(Icons.email_outlined)
+                              ]
+                            )
+                          ),
                       ElevatedButton(
                         onPressed: () async {
                           User? user = await FireAuth.refreshUser(_currentUser);
@@ -177,12 +196,6 @@ class ProfilePageState extends State<ProfilePage> {
                       setState(() {
                         _isSigningOut = false;
                       });
-                      // ignore: use_build_context_synchronously
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (context) => const LoginPage(),
-                        ),
-                      );
                     },
                     style: ElevatedButton.styleFrom(
                       primary: Colors.redAccent,
