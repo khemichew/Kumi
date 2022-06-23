@@ -40,6 +40,7 @@ const skyBlue = Color.fromRGBO(173, 190, 216, 1.0);
 const champaignGold = Color.fromRGBO(255, 229, 205, 1.0);
 const mintGreen = Color.fromRGBO(53, 219, 169, 1.0);
 const honeyOrange = Color.fromRGBO(255, 191, 0, 0.5);
+const navyBlue = Color.fromRGBO(51, 85, 135, 1.0);
 
 
 // ********** Background **********
@@ -128,8 +129,34 @@ const defaultBoxShadow = [
 ];
 
 
+// ********** Page Decoration **********
+
+const pageDecoration = BoxDecoration(
+    gradient: LinearGradient(
+      begin: Alignment.topRight,
+      end: Alignment.bottomLeft,
+      colors: [
+        skyBlue,
+        champaignGold,
+      ],
+    ));
+
+
+// ********** Spacing **********
+
+const standardSpacing = SizedBox(height: 50, width: 50);
+const halfSpacing = SizedBox(height: 25, width: 25);
+const quadSpacing = SizedBox(height: 12, width: 12);
+
+
 // ********** Misc **********
 
+final errorBorder = UnderlineInputBorder(
+  borderRadius: BorderRadius.circular(6.0),
+  borderSide: const BorderSide(
+    color: Colors.red,
+  ),
+);
 
 Future<String> loadAsset() async {
   return await rootBundle.loadString('assets/config.json');
