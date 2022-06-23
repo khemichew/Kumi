@@ -128,6 +128,10 @@ const defaultBoxShadow = [
   BoxShadow(color: Colors.black, offset: Offset(0, 5), blurRadius: 5),
 ];
 
+const lightBoxShadow = [
+  BoxShadow(color: Colors.black38, offset: Offset(0, 1), blurRadius: 5),
+];
+
 
 // ********** Page Decoration **********
 

@@ -133,7 +133,7 @@ class LoginPageState extends State<LoginPage> {
                                 );
                               },
                               style: ElevatedButton.styleFrom(
-                                primary: Colors.deepOrangeAccent,
+                                primary: Colors.indigoAccent,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: regularRadius,
                                 ),
