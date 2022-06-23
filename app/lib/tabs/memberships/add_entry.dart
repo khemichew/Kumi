@@ -29,34 +29,47 @@ class _AddMembershipDialogState extends State<AddMembershipDialog> {
     return result;
   }
 
+  Widget cardOptionDescription(CardOption card) {
+    return Row(children: [
+      ClipRRect(
+          borderRadius: BorderRadius.circular(15.0),
+          child: Image.network(card.imageUrl,
+              height: 45.0,
+              width: 80.0)),
+      const SizedBox(width: 10),
+      Text(card.name)
+    ]);
+  }
+
   List<Widget> generateCardOptions(Map<String, CardOption> cards) {
     return cards.entries.map((entry) {
       final id = entry.key;
       final card = entry.value;
       return SimpleDialogOption(
-          child: Text(card.name),
+        child: cardOptionDescription(card),
         onPressed: () async {
-            ScanMode mode;
-            if (card.type == CardType.qr) {
-              mode = ScanMode.QR;
-            } else {
-              mode = ScanMode.BARCODE;
-            }
+          ScanMode mode;
+          if (card.type == CardType.qr) {
+            mode = ScanMode.QR;
+          } else {
+            mode = ScanMode.BARCODE;
+          }
 
-            // Retrieve barcode
-            _scanBarcode = await scanBarcode(mode);
+          // Retrieve barcode
+          _scanBarcode = await scanBarcode(mode);
 
-            // Close options list if no code is scanned
-            if (!mounted) return;
+          // Close options list if no code is scanned
+          if (!mounted) return;
 
-            // Add entry to database
-            if (_scanBarcode != failState) {
-              CardEntry cardEntry = CardEntry(cardOptionId: id, barcode: _scanBarcode);
-              cardEntries.add(cardEntry);
-            }
+          // Add entry to database
+          if (_scanBarcode != failState) {
+            CardEntry cardEntry =
+                CardEntry(cardOptionId: id, barcode: _scanBarcode);
+            cardEntries.add(cardEntry);
+          }
 
-            // Close options list
-            Navigator.pop(context);
+          // Close options list
+          Navigator.pop(context);
         },
       );
     }).toList();
@@ -79,7 +92,7 @@ class _AddMembershipDialogState extends State<AddMembershipDialog> {
               return const AlertDialog(title: Text("No available options!"));
             }
 
-          // Return list of card options
+            // Return list of card options
             final cardOptions = snapshot.requireData;
 
             return SimpleDialog(
