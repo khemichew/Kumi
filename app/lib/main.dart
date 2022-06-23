@@ -1,3 +1,5 @@
+import 'package:app/tabs/explore/landing_page.dart';
+import 'package:app/tabs/track/landing_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -15,7 +17,6 @@ import 'package:app/models/card_options.dart';
 import 'package:app/tabs/memberships/landing_page.dart';
 import 'package:app/tabs/records/landing_page.dart';
 import 'package:app/tabs/login/login_page.dart';
-import 'package:app/tabs/records/landing_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
