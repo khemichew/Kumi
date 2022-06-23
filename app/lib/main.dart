@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'config/firebase_options.dart';
 import 'package:app/tabs/memberships/landing_page.dart';
+import 'package:app/tabs/records/landing_page.dart';
 // import 'package:app/savings.dart';
 import 'package:app/misc/my_account.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -63,7 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
     const MembershipPage(),
     const Explore(),
     const Track(),
-    const MyAccountPage(),
+    const Record(),
   ];
 
   void _onItemTapped(int index) {
