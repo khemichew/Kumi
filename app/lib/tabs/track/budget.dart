@@ -99,7 +99,7 @@ class BudgetViewState extends State<BudgetView> {
                     .toString();
 
                 return Align(
-                  alignment: Alignment.topLeft,
+                  alignment: Alignment.center,
                   child: Wrap(
                       spacing: 10,
                       runSpacing: 10,
@@ -152,7 +152,7 @@ class BudgetViewState extends State<BudgetView> {
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.black),
                   color: mintGreen,
-                  borderRadius: const BorderRadius.all(Radius.circular(10)),
+                  borderRadius: regularRadius,
                 ),
                 padding: const EdgeInsets.symmetric(
                     vertical: 5.0, horizontal: 5.0),

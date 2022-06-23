@@ -99,7 +99,7 @@ class AddShoppingState extends State<AddingShopForm> {
             borderRadius: BorderRadius.circular(10.0),
             boxShadow: defaultBoxShadow),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
