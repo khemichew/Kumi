@@ -1,15 +1,47 @@
 import 'package:app/models/fake_spend_record.dart';
+import 'package:app/config/style.dart';
+import 'package:app/tabs/records/add_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'add_button.dart';
 
 class Record extends StatelessWidget {
   const Record({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const RecordList();
+    // return RecordList();
+    return Scaffold(
+      appBar: AppBar(
+//        backgroundColor: Colors.transparent,
+        backgroundColor: const Color(0x44000000),
+        elevation: 0,
+        title: const Text("Records", style: titleStyle,),
+      ),      body: Container(
+        margin: const EdgeInsets.fromLTRB(15, 10, 15, 0),
+        child: const Expanded(child: RecordList()),
+      ),
+      floatingActionButton: generateAddButton(context),
+    );
   }
+}
+
+Container generateAddButton(BuildContext context) {
+  return Container(
+    alignment: Alignment.bottomRight,
+    child: FloatingActionButton(
+      onPressed: () {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return const AddingShopForm();
+            });
+      },
+      backgroundColor: const Color.fromRGBO(53, 219, 169, 1.0),
+      child: const Icon(Icons.add),
+    ),
+  );
 }
 
 class RecordList extends StatefulWidget {
@@ -49,8 +81,8 @@ class _RecordListState extends State<RecordList> {
                 margin:
                     const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
                 child: Container(
-                    decoration:
-                        const BoxDecoration(color: Color.fromRGBO(64, 75, 96, .9)),
+                    decoration: const BoxDecoration(
+                        color: Color.fromRGBO(64, 75, 96, .9)),
                     child: ListTile(
                       contentPadding: const EdgeInsets.symmetric(
                           horizontal: 20.0, vertical: 10.0),
@@ -74,7 +106,13 @@ class _RecordListState extends State<RecordList> {
                           ? const Text("")
                           : const Icon(Icons.keyboard_arrow_right,
                               color: Colors.white, size: 30.0),
-                      onTap: () {if (history[index].url != "")  ReceiptImage().build(context, history[index].url);
+                      onTap: () {
+                        if (history[index].url != "") {
+                          showDialog(
+                              context: context,
+                              builder: (_) => ReceiptImage()
+                                  .build(context, history[index].url));
+                        }
                       },
                     )),
               );

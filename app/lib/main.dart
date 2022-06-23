@@ -13,8 +13,7 @@ import 'package:app/models/cached_entries.dart';
 import 'package:app/models/card_options.dart';
 
 import 'package:app/tabs/memberships/landing_page.dart';
-import 'package:app/tabs/explore/landing_page.dart';
-import 'package:app/tabs/track/landing_page.dart';
+import 'package:app/tabs/records/landing_page.dart';
 import 'package:app/tabs/login/login_page.dart';
 import 'package:app/tabs/records/landing_page.dart';
 

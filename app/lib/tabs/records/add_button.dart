@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:app/config/style.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'receipt_upload.dart';
+import '../track/receipt_upload.dart';
 
 class AddingShopForm extends StatefulWidget {
   const AddingShopForm({super.key});
