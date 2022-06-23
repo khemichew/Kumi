@@ -16,6 +16,21 @@ class MembershipPage extends StatelessWidget {
       backgroundColor: Colors.transparent,
       elevation: 0,
       title: const Text("Memberships", style: titleStyle),
+      actions: <Widget>[
+        Container(
+          decoration: const BoxDecoration(
+            color: mintGreen,
+            shape: BoxShape.circle,
+            boxShadow: lightBoxShadow
+          ),
+          margin: const EdgeInsets.only(right: 20.0),
+          padding: allSidesTenInsets,
+          child: GestureDetector(
+            onTap: () {},
+            child: const Icon(Icons.person_outline),
+          )
+        ),
+      ]
     );
   }
 

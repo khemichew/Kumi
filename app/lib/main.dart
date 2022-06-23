@@ -1,21 +1,22 @@
-import 'package:app/config/style.dart';
-import 'package:app/models/card_options.dart';
-import 'package:app/tabs/login/profile.dart';
-import 'package:app/tabs/records/landing_page.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import 'package:provider/provider.dart';
+
+import 'package:app/config/firebase_options.dart';
+import 'package:app/config/style.dart';
+
+import 'package:app/models/cached_entries.dart';
+import 'package:app/models/card_options.dart';
 
 import 'package:app/tabs/memberships/landing_page.dart';
 import 'package:app/tabs/explore/landing_page.dart';
 import 'package:app/tabs/track/landing_page.dart';
 import 'package:app/tabs/login/login_page.dart';
-import 'package:provider/provider.dart';
-
-import 'package:app/config/firebase_options.dart';
-
-import 'package:app/models/cached_entries.dart';
+import 'package:app/tabs/records/landing_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -96,10 +97,6 @@ class _MyHomePageState extends State<MyHomePage> {
           icon: Icon(Icons.list_alt),
           label: 'Record',
         ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.person_outline),
-          label: 'Account',
-        ),
       ],
       currentIndex: _selectedIndex,
       backgroundColor: champaignGold,
@@ -136,7 +133,7 @@ class _MyHomePageState extends State<MyHomePage> {
       const Explore(),
       const Track(),
       const Record(),
-      ProfilePage(user: user!),
+      // ProfilePage(user: user!),
     ];
 
     return Scaffold(
