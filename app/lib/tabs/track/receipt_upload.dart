@@ -13,12 +13,17 @@ class ReceiptUpload {
 
   File? _photo;
   final ImagePicker _picker = ImagePicker();
+  String thisUrl = "hello";
 
-  Future<String> getImageURL() async {
+  String getImageURL() {
+    return thisUrl;
+  }
+
+  Future<void> setImageURL() async {
+    if (_photo == null) return;
     final fileName = basename(_photo!.path);
     final destination = 'files/$fileName';
-    String url = await storage.ref(destination).getDownloadURL();
-    return url;
+    thisUrl = await storage.ref(destination).child('file/').getDownloadURL();
   }
 
   Future getFromCamera() async {
@@ -57,6 +62,7 @@ class ReceiptUpload {
           .ref(destination)
           .child('file/');
       await ref.putFile(_photo!);
+      await setImageURL();
     } catch (e) {
       // print('error occurred');
     }
