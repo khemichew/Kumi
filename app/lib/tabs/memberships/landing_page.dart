@@ -15,7 +15,7 @@ class MembershipPage extends StatelessWidget {
     return AppBar(
       backgroundColor: Colors.transparent,
       elevation: 0,
-      title: const Text("Cards", style: titleStyle),
+      title: const Text("Memberships", style: titleStyle),
     );
   }
 
@@ -102,7 +102,12 @@ class MembershipCard extends StatelessWidget {
       return FutureBuilder<Map<String, CardOption>>(
           future: entries.getAllRecords(),
           builder: (context, snapshot) {
+            if (!snapshot.hasData || snapshot.hasError) {
+              return const CircularProgressIndicator();
+            }
+
             final cardOption = snapshot.requireData[cardEntry.cardOptionId];
+
             return TextButton(
               onPressed: () {
                 showDialog(

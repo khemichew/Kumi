@@ -104,23 +104,6 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  // Widget get body {
-  //   return Container(
-  //     decoration: const BoxDecoration(
-  //         gradient: LinearGradient(
-  //       begin: Alignment.topRight,
-  //       end: Alignment.bottomLeft,
-  //       colors: [
-  //         Color.fromRGBO(173, 190, 216, 1),
-  //         Color.fromRGBO(255, 229, 205, 1),
-  //       ],
-  //     )),
-  //     child: Center(
-  //       child: _widgetOptions.elementAt(_selectedIndex),
-  //     ),
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
