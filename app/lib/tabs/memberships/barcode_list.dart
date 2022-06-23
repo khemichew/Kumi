@@ -131,7 +131,7 @@ class MembershipBarcode extends StatelessWidget {
                       )),
                 ]),
           ),
-          buttonTemplate("Store details", () {}, Colors.teal[200]!),
+          // buttonTemplate("Store details", () {}, Colors.teal[200]!),
           buttonTemplate("Remove card", () {
             removeCardEntry(context);
           }, Colors.red[100]!)
