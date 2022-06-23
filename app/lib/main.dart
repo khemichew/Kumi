@@ -19,7 +19,9 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider<CachedEntries<CardOption>>(
+      create: (_) => CachedEntries<CardOption>(databaseInstance: cardOptions),
+      child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -68,6 +70,51 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  Widget get navBar {
+    return BottomNavigationBar(
+      items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: Icon(Icons.credit_card),
+          label: 'Memberships',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.search),
+          label: 'Explore',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.currency_pound_outlined),
+          label: 'Track',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.person_outline),
+          label: 'My account',
+        ),
+      ],
+      currentIndex: _selectedIndex,
+      backgroundColor: const Color.fromRGBO(255, 229, 205, 1),
+      selectedItemColor: const Color.fromRGBO(51, 85, 135, 1.0),
+      onTap: _onItemTapped,
+      type: BottomNavigationBarType.fixed,
+    );
+  }
+
+  Widget get body {
+    return Container(
+      decoration: const BoxDecoration(
+          gradient: LinearGradient(
+        begin: Alignment.topRight,
+        end: Alignment.bottomLeft,
+        colors: [
+          Color.fromRGBO(173, 190, 216, 1),
+          Color.fromRGBO(255, 229, 205, 1),
+        ],
+      )),
+      child: Center(
+        child: _widgetOptions.elementAt(_selectedIndex),
+      ),
+    );
   }
 
   @override

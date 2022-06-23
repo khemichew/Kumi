@@ -1,89 +1,48 @@
+import 'package:app/models/cached_entries.dart';
+import 'package:app/models/card_entries.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:app/config/style.dart';
-import 'package:app/tabs/memberships/barcode.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
-import '../../models/retailers.dart';
+import 'package:app/tabs/memberships/barcode_list.dart';
+import 'package:app/models/card_options.dart';
+import 'package:app/tabs/memberships/add_entry.dart';
+import 'package:provider/provider.dart';
 
 class MembershipPage extends StatelessWidget {
   const MembershipPage({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.fromLTRB(15, 50, 15, 0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: const [MembershipPageHead(), Flexible(child: MembershipList())],
-      ),
+  AppBar get titleBar {
+    return AppBar(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      title: const Text("Cards", style: titleStyle),
     );
   }
-}
 
-class MembershipPageHead extends StatefulWidget {
-  const MembershipPageHead({Key? key}) : super(key: key);
-
-  @override
-  State<MembershipPageHead> createState() => _MembershipPageHeadState();
-}
-
-class _MembershipPageHeadState extends State<MembershipPageHead> {
-  // String _scanBarcode = "Unknown";
-
-  Future<void> scanBarcode() async {
-    await FlutterBarcodeScanner.scanBarcode(
-        '#ff6666', 'Cancel', true, ScanMode.BARCODE
+  dynamic addButton(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () => {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return const AddMembershipDialog();
+            })
+      },
+      backgroundColor: mintGreen,
+      child: const Icon(Icons.add),
     );
-    // print("$barcode");
-    // TODO: add entry to database
-
-    // setState(() {
-    //   _scanBarcode = barcode;
-    // });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          child: Container(
-            padding: verticalTenInsets,
-            child: const Text(
-              'My\nmemberships',
-              style: titleStyle,
-            ),
-          ),
-        ),
-        Expanded(
-          child: TextButton(
-            onPressed: scanBarcode,
-            child: Container(
-              height: 60,
-              decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black),
-                  color: Colors.white38,
-                  borderRadius: regularRadius
-              ),
-              padding: verticalTenInsets,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Text("Add", style: ordinaryStyle),
-                  Icon(
-                    Icons.add,
-                    color: Colors.black,
-                  )
-                ],
-              ),
-            ),
-          ),
-        ),
-      ]
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      appBar: titleBar,
+      body: const MembershipList(),
+      floatingActionButton: addButton(context),
     );
   }
 }
-
 
 class MembershipList extends StatefulWidget {
   const MembershipList({Key? key}) : super(key: key);
@@ -95,8 +54,8 @@ class MembershipList extends StatefulWidget {
 class _MembershipListState extends State<MembershipList> {
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot<Retailer>>(
-        stream: retailerEntries.orderBy('name').snapshots(),
+    return StreamBuilder<QuerySnapshot<CardEntry>>(
+        stream: cardEntries.snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return const Text("Something went wrong");
@@ -108,56 +67,67 @@ class _MembershipListState extends State<MembershipList> {
 
           final data = snapshot.requireData;
 
-          return Flexible(
-              child: GridView.count(
-                  crossAxisCount: 2,
-                  children: List.generate(data.size, (index) {
-                    final docRef = data.docs[index];
-                    return Center(
-                        child: MembershipCard(docRef.data(), docRef.reference));
-                  })));
+          if (data.size == 0) {
+            return const Center(
+                child: Text(
+                    "Keep all the store cards you use every day, all in one place."));
+          }
+
+          return GridView.count(
+              childAspectRatio: 3 / 2,
+              crossAxisCount: 2,
+              children: List.generate(
+                data.size,
+                (index) {
+                  final docRef = data.docs[index];
+                  return Center(
+                      child: MembershipCard(docRef.data(), docRef.reference));
+                },
+              ));
         });
   }
 }
 
 class MembershipCard extends StatelessWidget {
-  final Retailer retailer;
-  final DocumentReference<Retailer> reference;
+  final CardEntry cardEntry;
+  final DocumentReference<CardEntry> reference;
 
-  const MembershipCard(this.retailer, this.reference, {Key? key})
+  const MembershipCard(this.cardEntry, this.reference, {Key? key})
       : super(key: key);
-
-  Widget get title {
-    return Text(retailer.name,
-        style: ordinaryStyle,
-        overflow: TextOverflow.fade,
-        maxLines: 2,
-        softWrap: false);
-  }
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: () {
-        showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return MembershipBarcode(
-                  storeName: retailer.name,
-                  color: honeyOrange
-              );
-            });
-      },
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        height: 100,
-        decoration: BoxDecoration(
-            image: DecorationImage(
-                image: NetworkImage(retailer.imageUrl), fit: BoxFit.cover),
-            borderRadius: regularRadius
-        ),
-        padding: allSidesTenInsets,
-      ),
-    );
+    return Consumer<CachedEntries<CardOption>>(
+        builder: (context, entries, child) {
+      return FutureBuilder<Map<String, CardOption>>(
+          future: entries.getAllRecords(),
+          builder: (context, snapshot) {
+            final cardOption = snapshot.requireData[cardEntry.cardOptionId];
+            return TextButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return MembershipBarcode(
+                        store: cardOption!,
+                        storeDocId: reference,
+                        barcode: cardEntry.barcode);
+                  },
+                );
+              },
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: 100,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: NetworkImage(cardOption!.imageUrl),
+                        fit: BoxFit.cover),
+                    borderRadius: regularRadius,
+                    border: Border.all(color: Colors.black)),
+                padding: allSidesTenInsets,
+              ),
+            );
+          });
+    });
   }
 }
