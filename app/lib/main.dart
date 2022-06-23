@@ -1,4 +1,5 @@
 import 'package:app/config/style.dart';
+import 'package:app/models/card_options.dart';
 import 'package:app/tabs/login/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -9,8 +10,11 @@ import 'package:app/tabs/memberships/landing_page.dart';
 import 'package:app/tabs/explore/landing_page.dart';
 import 'package:app/tabs/track/landing_page.dart';
 import 'package:app/tabs/login/login_page.dart';
+import 'package:provider/provider.dart';
 
-import 'config/firebase_options.dart';
+import 'package:app/config/firebase_options.dart';
+
+import 'package:app/models/cached_entries.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -93,29 +97,29 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ],
       currentIndex: _selectedIndex,
-      backgroundColor: const Color.fromRGBO(255, 229, 205, 1),
-      selectedItemColor: const Color.fromRGBO(51, 85, 135, 1.0),
+      backgroundColor: champaignGold,
+      selectedItemColor: navyBlue,
       onTap: _onItemTapped,
       type: BottomNavigationBarType.fixed,
     );
   }
 
-  Widget get body {
-    return Container(
-      decoration: const BoxDecoration(
-          gradient: LinearGradient(
-        begin: Alignment.topRight,
-        end: Alignment.bottomLeft,
-        colors: [
-          Color.fromRGBO(173, 190, 216, 1),
-          Color.fromRGBO(255, 229, 205, 1),
-        ],
-      )),
-      child: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
-      ),
-    );
-  }
+  // Widget get body {
+  //   return Container(
+  //     decoration: const BoxDecoration(
+  //         gradient: LinearGradient(
+  //       begin: Alignment.topRight,
+  //       end: Alignment.bottomLeft,
+  //       colors: [
+  //         Color.fromRGBO(173, 190, 216, 1),
+  //         Color.fromRGBO(255, 229, 205, 1),
+  //       ],
+  //     )),
+  //     child: Center(
+  //       child: _widgetOptions.elementAt(_selectedIndex),
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -155,31 +159,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.credit_card),
-            label: 'Memberships',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Explore',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.currency_pound_outlined),
-            label: 'Track',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
-            label: 'My account',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        backgroundColor: champaignGold,
-        selectedItemColor: navyBlue,
-        onTap: _onItemTapped,
-        type: BottomNavigationBarType.fixed,
-      ),
+      bottomNavigationBar: navBar
     );
   }
 }
