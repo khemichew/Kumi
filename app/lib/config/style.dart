@@ -46,19 +46,6 @@ const honeyOrange = Color.fromRGBO(255, 191, 0, 0.5);
 const navyBlue = Color.fromRGBO(51, 85, 135, 1.0);
 
 
-// ********** Background **********
-
-const BoxDecoration gradientBackground = BoxDecoration(
-    gradient: LinearGradient(
-  begin: Alignment.topRight,
-  end: Alignment.bottomLeft,
-  colors: [
-    skyBlue,
-    champaignGold,
-  ],
-));
-
-
 // ********** Button Styles **********
 
 final ButtonStyle flatButtonStyle = TextButton.styleFrom(
@@ -146,7 +133,8 @@ const pageDecoration = BoxDecoration(
         skyBlue,
         champaignGold,
       ],
-    ));
+    )
+);
 
 
 // ********** Spacing **********

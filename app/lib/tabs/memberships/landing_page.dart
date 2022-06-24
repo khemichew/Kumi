@@ -20,7 +20,7 @@ class MembershipPage extends StatelessWidget {
       actions: <Widget>[
         Container(
           decoration: const BoxDecoration(
-            color: mintGreen,
+            color: Colors.indigoAccent,
             shape: BoxShape.circle,
             boxShadow: lightBoxShadow
           ),
