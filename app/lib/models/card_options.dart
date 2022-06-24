@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-enum CardType { barcode, qr }
+enum CardType { barcode, qr, aztec }
 
 @immutable
 class CardOption {

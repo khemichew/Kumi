@@ -31,7 +31,11 @@ class MembershipBarcode extends StatelessWidget {
 
   Widget get displayCode {
     if (store.type == CardType.qr) {
+      // QR code
       return BarcodeWidget(barcode: Barcode.qrCode(), data: barcode);
+    } else if (store.type == CardType.aztec) {
+      // Aztec
+      return BarcodeWidget(barcode: Barcode.aztec(), data: barcode);
     } else {
       // barcode
       return BarcodeWidget(barcode: Barcode.gs128(), data: barcode);
