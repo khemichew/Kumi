@@ -1,3 +1,4 @@
+import 'package:app/config/style.dart';
 import 'package:app/models/deals.dart';
 import 'package:app/tabs/explore/deal_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -133,29 +134,49 @@ class _ExploreState extends State<Explore> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            backgroundColor: Colors.white, title: _searchBar(), elevation: 0),
-        body: StreamBuilder<QuerySnapshot<Deal>>(
-            stream: queryStream as Stream<QuerySnapshot<Deal>>,
-            builder:
-                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-              if (snapshot.hasError) {
-                return const Center(child: Text("Something went wrong"));
-              }
+            backgroundColor: skyBlue,
+            title: const Text(
+              'Explore deals',
+              style: titleStyle,
+            ),
+            elevation: 0
+        ),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Container(
+              margin: const EdgeInsets.only(top: 15, left: 10, right: 10),
+              child: _searchBar(),
+            ),
+            Expanded (
+              child: StreamBuilder<QuerySnapshot<Deal>>(
+                stream: queryStream as Stream<QuerySnapshot<Deal>>,
+                builder:
+                    (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.hasError) {
+                    return const Center(child: Text("Something went wrong"));
+                  }
 
-              if (!snapshot.hasData) {
-                return const Center(child: Text("Loading..."));
-              }
+                  if (!snapshot.hasData) {
+                    return const Center(child: Text("Loading..."));
+                  }
 
-              final data = snapshot.requireData;
+                  final data = snapshot.requireData;
 
-              return ListView.builder(
-                padding: const EdgeInsets.all(15.0),
-                itemCount: data.size,
-                itemBuilder: (context, index) {
-                  return _DealsItem(data.docs[index].data() as Deal);
-                },
-              );
-            }));
+                  return ListView.builder(
+                    padding: const EdgeInsets.all(15.0),
+                    itemCount: data.size,
+                    itemBuilder: (context, index) {
+                      return _DealsItem(data.docs[index].data() as Deal);
+                    },
+                  );
+                }
+              )
+            )
+          ]
+        )
+    );
   }
 }
 
