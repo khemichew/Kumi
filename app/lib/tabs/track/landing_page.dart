@@ -107,7 +107,7 @@ class _AnalyticsState extends State<Analytics> {
                   child: YouHaveSpent(),
                 ),
                 Flexible(
-                  flex: 6,
+                  flex: 5,
                   child: SpendGraph(
                       data.docs.map((e) => e.data()).toList(), queryType),
                 ),
@@ -116,7 +116,7 @@ class _AnalyticsState extends State<Analytics> {
                     //padding: const EdgeInsets.symmetric(horizontal: 25),
                     child: showBudgetButton(context)),
                 Flexible(
-                    flex: 5,
+                    flex: 4,
                     // padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: GenerateChart(
                             data.docs.map((e) => e.data()).toList(), queryType)
@@ -154,7 +154,7 @@ class _AnalyticsState extends State<Analytics> {
               textAlign: TextAlign.start,
             ),
             const Icon(
-              Icons.settings,
+              Icons.chevron_right,
               color: Colors.white
             ),
           ]
