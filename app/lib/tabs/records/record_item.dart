@@ -78,7 +78,7 @@ class RecordItem extends StatelessWidget {
       height: 50,
       width: 30,
       child: IconButton(
-        icon: const Icon(Icons.edit, color: Colors.white),
+        icon: Icon(Icons.edit, color: Colors.yellow.shade100),
         onPressed: () {
           updateRecordEntry(context);
         },
@@ -91,7 +91,7 @@ class RecordItem extends StatelessWidget {
       height: 50,
       width: 30,
       child: IconButton(
-        icon: const Icon(Icons.delete, color: Colors.redAccent),
+        icon: Icon(Icons.delete, color: Colors.red.shade300),
         onPressed: () {
           removeRecordEntry(context);
         },
@@ -102,8 +102,8 @@ class RecordItem extends StatelessWidget {
   // Provides indicator, edit and delete button
   Widget recordOperationsButtons(BuildContext context) {
     return Wrap(
-      // children: [viewImageIndicator, modifyRecordButton(context), deleteRecordButton(context)]);
-      children: [viewImageIndicator, deleteRecordButton(context)]);
+      children: [viewImageIndicator, modifyRecordButton(context), deleteRecordButton(context)]);
+      // children: [viewImageIndicator, deleteRecordButton(context)]);
   }
 
   @override
