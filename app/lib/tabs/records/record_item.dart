@@ -1,5 +1,6 @@
 import 'package:app/config/style.dart';
 import 'package:app/models/fake_spend_record.dart';
+import 'package:app/tabs/records/update_record.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -20,6 +21,15 @@ class RecordItem extends StatelessWidget {
             image: DecorationImage(
                 image: NetworkImage(record.url), fit: BoxFit.cover)),
       ),
+    );
+  }
+
+  void updateRecordEntry(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return UpdateRecord(record: record, recordDocRef: recordDocRef);
+      }
     );
   }
 
@@ -59,10 +69,12 @@ class RecordItem extends StatelessWidget {
             color: Colors.white);
   }
 
-  Widget get modifyRecordButton {
+  Widget modifyRecordButton(BuildContext context) {
     return IconButton(
       icon: const Icon(Icons.edit, color: Colors.white),
-      onPressed: () {},
+      onPressed: () {
+        updateRecordEntry(context);
+      },
     );
   }
 
@@ -78,7 +90,7 @@ class RecordItem extends StatelessWidget {
   // Provides indicator, edit and delete button
   Widget recordOperationsButtons(BuildContext context) {
     return Wrap(
-        children: [viewImageIndicator, modifyRecordButton, deleteRecordButton(context)]);
+        children: [viewImageIndicator, modifyRecordButton(context), deleteRecordButton(context)]);
   }
 
   @override
