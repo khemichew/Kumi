@@ -125,7 +125,7 @@ class BudgetViewState extends State<BudgetView> {
             style: ordinaryStyle,
           ),
           SizedBox(
-            width: 100,
+            width: 80,
             height: 40,
             child: TextFormField(
               style: ordinaryStyle,

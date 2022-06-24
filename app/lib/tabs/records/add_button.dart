@@ -91,7 +91,7 @@ class AddShoppingState extends State<AddingShopForm> {
   contentBox(context) {
     return Container(
         height: 300,
-        margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+        margin: const EdgeInsets.symmetric(vertical: 10.0),
         padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
         decoration: BoxDecoration(
             shape: BoxShape.rectangle,
@@ -144,15 +144,19 @@ class AddShoppingState extends State<AddingShopForm> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text("Amount:  £   ", style: ordinaryStyle),
-                SizedBox(
-                  width: 140,
+                const Text("Amount:", style: ordinaryStyle),
+                quadSpacing,
+                const Text(" £ ", style: ordinaryStyle),
+                Container(
+                  width: 120,
                   height: 40,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black, width: 1.0),
+                    color: Colors.white,
+                    borderRadius: regularRadius,
+                  ),
                   child: TextField(
                     style: smallStyle,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                    ),
                     controller: amountController,
                   ),
                 ),
@@ -170,12 +174,12 @@ class AddShoppingState extends State<AddingShopForm> {
                   style: ordinaryStyle,
                 ),
                 Container(
-                  width: 140,
+                  width: 120,
                   height: 40,
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.black),
                     color: Colors.white,
-                    borderRadius: const BorderRadius.all(Radius.circular(5)),
+                    borderRadius: regularRadius,
                   ),
                   child: TextButton(
                     onPressed: () {
