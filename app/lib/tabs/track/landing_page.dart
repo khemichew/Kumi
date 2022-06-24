@@ -98,64 +98,69 @@ class _AnalyticsState extends State<Analytics> {
           return Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                const SizedBox(
-                  height: 60,
+                const Flexible(
+                  flex: 1,
+                  child: halfSpacing,
                 ),
                 const Flexible(
                   flex: 1,
                   child: YouHaveSpent(),
                 ),
                 Flexible(
-                  flex: 5,
+                  flex: 6,
                   child: SpendGraph(
                       data.docs.map((e) => e.data()).toList(), queryType),
                 ),
                 Flexible(
-                    flex: 1,
+                    flex: 2,
                     //padding: const EdgeInsets.symmetric(horizontal: 25),
                     child: showBudgetButton(context)),
                 Flexible(
-                    flex: 4,
+                    flex: 5,
                     // padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: GenerateChart(
                             data.docs.map((e) => e.data()).toList(), queryType)
                         .buildChart()),
-                Flexible(flex: 1, child: generateFilters()),
-                const SizedBox(
-                  height: 10,
-                ),
+                Flexible(flex: 1, child: filters),
               ]);
         });
   }
 
-  Container showBudgetButton(BuildContext context) {
-    return Container(
-        alignment: Alignment.center,
-        child: TextButton(
-          onPressed: () {
-            showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return const BudgetView();
-                });
-          },
-          child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 10),
-              height: 40,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.black),
-                color: Colors.transparent,
-                borderRadius: const BorderRadius.all(Radius.circular(10)),
-              ),
-              padding:
-                  const EdgeInsets.symmetric(vertical: 6.0, horizontal: 0.0),
-              child: const Text(
-                "Budget Settings",
-                style: ordinaryStyle,
-                textAlign: TextAlign.center,
-              )),
-        ));
+  Widget showBudgetButton(BuildContext context) {
+    return TextButton(
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return const BudgetView();
+          });
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 20),
+        width: 200,
+        decoration: BoxDecoration(
+          // border: Border.all(color: Colors.black),
+          color: navyBlue,
+          borderRadius: regularRadius,
+        ),
+        padding:
+            const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+        child: Row (
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              "Budget settings",
+              style: ordinaryStyle.copyWith(color: Colors.white),
+              textAlign: TextAlign.start,
+            ),
+            const Icon(
+              Icons.settings,
+              color: Colors.white
+            ),
+          ]
+        )
+      ),
+    );
   }
 
   Container generateAddButton(BuildContext context) {
@@ -203,9 +208,8 @@ class _AnalyticsState extends State<Analytics> {
     return rows;
   }
 
-  Row generateFilters() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  Widget get filters => ButtonBar(
+    alignment: MainAxisAlignment.center,
       children: [
         ButtonGenerator(
           text: "All",
@@ -229,7 +233,6 @@ class _AnalyticsState extends State<Analytics> {
         ),
       ],
     );
-  }
 
   generateOneRecord(FakeSpendRecord record) {
     return TableRow(
@@ -377,67 +380,64 @@ class SpendGraph extends StatelessWidget {
         if (snapshot.data != null) {
           budget = snapshot.data as double;
 
-          return SizedBox(
-              width: 370,
-              height: 280,
-              child: SfRadialGauge(
-                enableLoadingAnimation: true,
-                axes: <RadialAxis>[
-                  RadialAxis(
-                      showLabels: false,
-                      showTicks: false,
-                      radiusFactor: 0.8,
-                      maximum: budget,
-                      axisLineStyle: const AxisLineStyle(
-                          cornerStyle: CornerStyle.startCurve, thickness: 5),
-                      annotations: <GaugeAnnotation>[
-                        GaugeAnnotation(
-                            angle: 90,
-                            widget: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                Text(strAmt,
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontStyle: FontStyle.italic,
-                                        fontSize: 50)),
-                              ],
-                            )),
-                        const GaugeAnnotation(
-                          angle: 124,
-                          positionFactor: 1.1,
-                          widget: Text('0', style: TextStyle(fontSize: 20)),
-                        ),
-                        GaugeAnnotation(
-                          angle: 54,
-                          positionFactor: 1.1,
-                          widget: Text('$budget',
-                              style: const TextStyle(fontSize: 20)),
-                        ),
-                      ],
-                      pointers: <GaugePointer>[
-                        RangePointer(
-                          value: amt,
-                          width: 18,
-                          pointerOffset: -6,
-                          cornerStyle: CornerStyle.bothCurve,
-                          color: const Color(0xFFF67280),
-                          gradient: const SweepGradient(colors: <Color>[
-                            Color(0xFFFF7676),
-                            Color(0xFFF54EA2)
-                          ], stops: <double>[
-                            0.25,
-                            0.75
-                          ]),
-                        ),
-                        // MarkerPointer(
-                        //   value: amt - 6 / amt / (snapshot.data as double),
-                        //   color: Colors.white,
-                        //   markerType: MarkerType.circle,
-                        // ),
+          return SfRadialGauge(
+            enableLoadingAnimation: true,
+            axes: <RadialAxis>[
+              RadialAxis(
+                  showLabels: false,
+                  showTicks: false,
+                  radiusFactor: 0.8,
+                  maximum: budget,
+                  axisLineStyle: const AxisLineStyle(
+                      cornerStyle: CornerStyle.startCurve, thickness: 5),
+                  annotations: <GaugeAnnotation>[
+                    GaugeAnnotation(
+                        angle: 90,
+                        widget: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Text(strAmt,
+                                style: largeTitleStyle.copyWith(
+                                  fontSize: 40,
+                                  fontWeight: FontWeight.w700
+                                )
+                            ),
+                          ],
+                        )),
+                    const GaugeAnnotation(
+                      angle: 124,
+                      positionFactor: 1.17,
+                      widget: Text('£0', style: TextStyle(fontSize: 20)),
+                    ),
+                    GaugeAnnotation(
+                      angle: 54,
+                      positionFactor: 1.17,
+                      widget: Text('£${budget.toStringAsFixed(0)}',
+                          style: const TextStyle(fontSize: 20)),
+                    ),
+                  ],
+                  pointers: <GaugePointer>[
+                    RangePointer(
+                      value: amt,
+                      width: 18,
+                      pointerOffset: -6,
+                      cornerStyle: CornerStyle.bothCurve,
+                      color: const Color(0xFFF67280),
+                      gradient: const SweepGradient(colors: <Color>[
+                        Color(0xFFFF7676),
+                        Color(0xFFF54EA2)
+                      ], stops: <double>[
+                        0.25,
+                        0.75
                       ]),
-                ],
-              )
+                    ),
+                    // MarkerPointer(
+                    //   value: amt - 6 / amt / (snapshot.data as double),
+                    //   color: Colors.white,
+                    //   markerType: MarkerType.circle,
+                    // ),
+                  ]),
+            ],
           );
         } else {
           return const Center(

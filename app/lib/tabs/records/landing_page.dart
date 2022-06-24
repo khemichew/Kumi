@@ -13,8 +13,9 @@ class Record extends StatelessWidget {
   Widget build(BuildContext context) {
     // return RecordList();
     return Scaffold(
+      // backgroundColor: skyBlue,
       appBar: AppBar(
-//        backgroundColor: Colors.transparent,
+       // backgroundColor: Colors.transparent,
         backgroundColor: skyBlue,
         elevation: 0,
         title: const Text(
@@ -42,8 +43,12 @@ Container generateAddButton(BuildContext context) {
               return const AddingShopForm();
             });
       },
-      backgroundColor: mintGreen,
-      child: const Icon(Icons.add),
+      backgroundColor: Colors.orangeAccent,
+      child: const Icon(
+        Icons.add,
+        color: Colors.white,
+        size: 40,
+      ),
     ),
   );
 }
