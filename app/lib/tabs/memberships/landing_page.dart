@@ -19,10 +19,13 @@ class MembershipPage extends StatelessWidget {
       title: const Text("Memberships", style: titleStyle),
       actions: <Widget>[
         Container(
-          decoration: const BoxDecoration(
-            color: mintGreen,
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: Colors.black,
+              width: 2.0
+            ),
+            color: Colors.transparent,
             shape: BoxShape.circle,
-            boxShadow: lightBoxShadow
           ),
           margin: const EdgeInsets.only(right: 20.0),
           padding: allSidesTenInsets,
@@ -34,7 +37,11 @@ class MembershipPage extends StatelessWidget {
                   ),
                 );
               },
-            child: const Icon(Icons.person_outline),
+            child: const Icon(
+              Icons.person,
+              color: Colors.black,
+              size: 25,
+            ),
           )
         ),
       ]
@@ -50,8 +57,12 @@ class MembershipPage extends StatelessWidget {
               return const AddMembershipDialog();
             })
       },
-      backgroundColor: mintGreen,
-      child: const Icon(Icons.add),
+      backgroundColor: Colors.white,
+      child: const Icon(
+        Icons.add,
+        color: Colors.black,
+        size: 40,
+      ),
     );
   }
 

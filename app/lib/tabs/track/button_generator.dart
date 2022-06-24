@@ -15,20 +15,21 @@ class ButtonGenerator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
+    return TextButton(
       onPressed: () {
         // print("Im pressed");
         notifyParent(queryType);
       },
       style: ElevatedButton.styleFrom(
-        primary: Colors.indigoAccent,
+        primary: honeyOrange,
         shape: const RoundedRectangleBorder(
+          side: BorderSide(color: navyBlue),
           borderRadius: BorderRadius.all(Radius.circular(10))
         )
       ),
       child: Text(
         text,
-        style: smallStyle.copyWith(color: Colors.white),
+        style: smallStyle.copyWith(color: Colors.black),
       ),
     );
   }

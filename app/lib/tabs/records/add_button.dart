@@ -90,16 +90,16 @@ class AddShoppingState extends State<AddingShopForm> {
 
   contentBox(context) {
     return Container(
-        height: 400,
-        margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 0.0),
-        padding: const EdgeInsets.all(15.0),
+        height: 300,
+        margin: const EdgeInsets.symmetric(vertical: 10.0),
+        padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
         decoration: BoxDecoration(
             shape: BoxShape.rectangle,
             color: Colors.white,
             borderRadius: BorderRadius.circular(10.0),
             boxShadow: defaultBoxShadow),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -142,17 +142,21 @@ class AddShoppingState extends State<AddingShopForm> {
               height: 10,
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text("Amount:  £ ", style: ordinaryStyle),
-                SizedBox(
+                const Text("Amount:", style: ordinaryStyle),
+                quadSpacing,
+                const Text(" £ ", style: ordinaryStyle),
+                Container(
                   width: 120,
                   height: 40,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black, width: 1.0),
+                    color: Colors.white,
+                    borderRadius: regularRadius,
+                  ),
                   child: TextField(
                     style: smallStyle,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                    ),
                     controller: amountController,
                   ),
                 ),
@@ -163,7 +167,7 @@ class AddShoppingState extends State<AddingShopForm> {
               height: 10,
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text(
                   "Date:",
@@ -175,7 +179,7 @@ class AddShoppingState extends State<AddingShopForm> {
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.black),
                     color: Colors.white,
-                    borderRadius: const BorderRadius.all(Radius.circular(5)),
+                    borderRadius: regularRadius,
                   ),
                   child: TextButton(
                     onPressed: () {
@@ -190,9 +194,6 @@ class AddShoppingState extends State<AddingShopForm> {
               height: 10,
             ),
             receiptUpload.build(context),
-            const SizedBox(
-              height: 10,
-            ),
 
             TextButton(
                 onPressed: () {
@@ -203,7 +204,6 @@ class AddShoppingState extends State<AddingShopForm> {
                   Navigator.pop(context);
                 },
                 child: Container(
-                    height: 40,
                     width: 500,
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.black),
@@ -211,7 +211,7 @@ class AddShoppingState extends State<AddingShopForm> {
                       borderRadius: const BorderRadius.all(Radius.circular(10)),
                     ),
                     padding: const EdgeInsets.symmetric(
-                        vertical: 10.0, horizontal: 10.0),
+                        vertical: 5.0, horizontal: 5.0),
                     child: const Text(
                       "Submit",
                       style: ordinaryStyle,

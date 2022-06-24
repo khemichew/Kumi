@@ -27,7 +27,7 @@ class GenerateChart {
 
   Widget buildChart() {
     return Container(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         child: BarChart(queryType == RecordQuery.year
             ? monthlyData(records)
             : queryType == RecordQuery.month
@@ -62,9 +62,9 @@ class GenerateChart {
           .map((dataItem) =>
           BarChartGroupData(x: dataItem.timeInterval, barRods: [
             BarChartRodData(
-                y: dataItem.amount.toDouble(),
+                y: double.parse(dataItem.amount.toDouble().toStringAsFixed(2)),
                 width: 15,
-                colors: [Colors.deepPurpleAccent]),
+                colors: [Colors.indigoAccent.shade100]),
           ]))
           .toList(),
       titlesData: FlTitlesData(
@@ -108,9 +108,9 @@ class GenerateChart {
           .map((dataItem) =>
           BarChartGroupData(x: dataItem.timeInterval, barRods: [
             BarChartRodData(
-                y: dataItem.amount.toDouble(),
+                y: double.parse(dataItem.amount.toDouble().toStringAsFixed(2)),
                 width: 15,
-                colors: [Colors.amber]),
+                colors: [Colors.purpleAccent]),
           ]))
           .toList(),
       titlesData: FlTitlesData(
@@ -153,9 +153,9 @@ class GenerateChart {
           .map((dataItem) =>
           BarChartGroupData(x: dataItem.timeInterval, barRods: [
             BarChartRodData(
-                y: dataItem.amount.toDouble(),
+                y: double.parse(dataItem.amount.toDouble().toStringAsFixed(2)),
                 width: 15,
-                colors: [Colors.blue]),
+                colors: [Colors.deepOrangeAccent]),
           ]))
           .toList(),
       titlesData: FlTitlesData(
@@ -197,7 +197,7 @@ class GenerateChart {
           .map((dataItem) =>
           BarChartGroupData(x: dataItem.timeInterval, barRods: [
             BarChartRodData(
-                y: dataItem.amount.toDouble(),
+                y: double.parse(dataItem.amount.toDouble().toStringAsFixed(2)),
                 width: 15,
                 colors: [Colors.red]),
           ]))

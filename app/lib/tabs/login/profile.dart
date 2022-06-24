@@ -34,7 +34,7 @@ class ProfilePageState extends State<ProfilePage> {
   AppBar getTitleBar(BuildContext context) {
     return AppBar(
         backgroundColor: skyBlue,
-        elevation: 10,
+        elevation: 0,
         title: const Text("My account", style: titleStyle),
         leading: GestureDetector(
             onTap: () {
@@ -161,7 +161,7 @@ class ProfilePageState extends State<ProfilePage> {
   );
 
   Widget get profile => Container(
-    decoration: pageDecoration,
+    // decoration: pageDecoration,
     padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 20),
     child: Column(
       mainAxisAlignment: MainAxisAlignment.start,
