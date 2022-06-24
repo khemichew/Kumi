@@ -110,7 +110,7 @@ class GenerateChart {
             BarChartRodData(
                 y: double.parse(dataItem.amount.toDouble().toStringAsFixed(2)),
                 width: 15,
-                colors: [Colors.purpleAccent]),
+                colors: [Colors.purpleAccent.shade100]),
           ]))
           .toList(),
       titlesData: FlTitlesData(
@@ -155,7 +155,7 @@ class GenerateChart {
             BarChartRodData(
                 y: double.parse(dataItem.amount.toDouble().toStringAsFixed(2)),
                 width: 15,
-                colors: [Colors.deepOrangeAccent]),
+                colors: [Colors.deepOrangeAccent.shade100]),
           ]))
           .toList(),
       titlesData: FlTitlesData(
@@ -199,7 +199,7 @@ class GenerateChart {
             BarChartRodData(
                 y: double.parse(dataItem.amount.toDouble().toStringAsFixed(2)),
                 width: 15,
-                colors: [Colors.red]),
+                colors: [Colors.red.shade300]),
           ]))
           .toList(),
       titlesData: FlTitlesData(

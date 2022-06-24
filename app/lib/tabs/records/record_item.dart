@@ -65,32 +65,45 @@ class RecordItem extends StatelessWidget {
   Widget get viewImageIndicator {
     return record.url == ""
         ? const Text("")
-        : const Icon(Icons.keyboard_arrow_right,
-            color: Colors.white);
+        : const SizedBox(
+          height: 50,
+          width: 30,
+          child: Icon(Icons.keyboard_arrow_right,
+            color: Colors.white)
+    );
   }
 
   Widget modifyRecordButton(BuildContext context) {
-    return IconButton(
-      icon: const Icon(Icons.edit, color: Colors.white),
-      onPressed: () {
-        updateRecordEntry(context);
-      },
+    return SizedBox(
+      height: 50,
+      width: 30,
+      child: IconButton(
+        icon: const Icon(Icons.edit, color: Colors.white),
+        onPressed: () {
+          updateRecordEntry(context);
+        },
+      )
     );
   }
 
   Widget deleteRecordButton(BuildContext context) {
-    return IconButton(
-      icon: const Icon(Icons.delete, color: Colors.redAccent),
-      onPressed: () {
-        removeRecordEntry(context);
-      },
+    return SizedBox(
+      height: 50,
+      width: 30,
+      child: IconButton(
+        icon: const Icon(Icons.delete, color: Colors.redAccent),
+        onPressed: () {
+          removeRecordEntry(context);
+        },
+      )
     );
   }
 
   // Provides indicator, edit and delete button
   Widget recordOperationsButtons(BuildContext context) {
     return Wrap(
-        children: [viewImageIndicator, modifyRecordButton(context), deleteRecordButton(context)]);
+      // children: [viewImageIndicator, modifyRecordButton(context), deleteRecordButton(context)]);
+      children: [viewImageIndicator, deleteRecordButton(context)]);
   }
 
   @override
@@ -99,12 +112,15 @@ class RecordItem extends StatelessWidget {
       elevation: 8.0,
       margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
       child: Container(
-          decoration:
-              const BoxDecoration(color: Color.fromRGBO(64, 75, 96, .8)),
+          decoration: BoxDecoration(
+            color: navyBlue,
+            borderRadius: regularRadius
+          ),
           child: ListTile(
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
             leading: Container(
+              width: 85,
               padding: const EdgeInsets.only(right: 12.0),
               decoration: const BoxDecoration(
                   border: Border(

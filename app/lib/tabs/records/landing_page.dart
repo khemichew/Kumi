@@ -25,7 +25,7 @@ class Record extends StatelessWidget {
       ),
       body: Container(
         margin: const EdgeInsets.fromLTRB(15, 10, 15, 0),
-        child: const Expanded(child: RecordList()),
+        child: const RecordList(),
       ),
       floatingActionButton: generateAddButton(context),
     );
@@ -84,52 +84,6 @@ class _RecordListState extends State<RecordList> {
             itemBuilder: (context, index) {
               final record = data.docs[index];
               return RecordItem(record: record.data(), recordDocRef: record.reference);
-              // return Card(
-              //   elevation: 8.0,
-              //   color: Colors.transparent,
-              //   margin:
-              //       const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
-              //   child: Container(
-              //       decoration: BoxDecoration(
-              //         color: navyBlue,
-              //         borderRadius: regularRadius
-              //       ),
-              //       child: ListTile(
-              //         contentPadding: const EdgeInsets.symmetric(
-              //             horizontal: 20.0, vertical: 10.0),
-              //         leading: Container(
-              //           width: 100,
-              //           padding: const EdgeInsets.only(right: 12.0),
-              //           decoration: const BoxDecoration(
-              //               border: Border(
-              //                   right: BorderSide(
-              //                       width: 1.0, color: Colors.white24))),
-              //           child: Text(
-              //             "£${history[index].amount.toStringAsFixed(2)}",
-              //             style: recordAmountStyle,
-              //           ),
-              //         ),
-              //         title: Text(
-              //           DateFormat('yyyy-MM-dd').format(history[index].time),
-              //           style: const TextStyle(
-              //               color: Colors.white, fontWeight: FontWeight.bold),
-              //         ),
-              //         subtitle: Text(history[index].store,
-              //             style: const TextStyle(color: Colors.white)),
-              //         trailing: history[index].url == ""
-              //             ? const Text("")
-              //             : const Icon(Icons.keyboard_arrow_right,
-              //                 color: Colors.white, size: 30.0),
-              //         onTap: () {
-              //           if (history[index].url != "") {
-              //             showDialog(
-              //                 context: context,
-              //                 builder: (_) => ReceiptImage()
-              //                     .build(context, history[index].url));
-              //           }
-              //         },
-              //       )),
-              // );
             },
           );
         });

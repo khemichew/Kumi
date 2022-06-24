@@ -149,7 +149,7 @@ class _AnalyticsState extends State<Analytics> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "Budget settings",
+              "Set budget",
               style: ordinaryStyle.copyWith(color: Colors.white),
               textAlign: TextAlign.start,
             ),
