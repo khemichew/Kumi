@@ -1,9 +1,9 @@
 import 'package:app/models/fake_spend_record.dart';
 import 'package:app/config/style.dart';
 import 'package:app/tabs/records/add_button.dart';
+import 'package:app/tabs/records/record_item.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'add_button.dart';
 
 class Record extends StatelessWidget {
@@ -74,70 +74,15 @@ class _RecordListState extends State<RecordList> {
 
           final data = snapshot.requireData;
 
-          final List<FakeSpendRecord> history =
-              data.docs.map((e) => e.data()).toList();
-
           return ListView.builder(
-            itemCount: history.length,
+            itemCount: data.docs.length,
             itemBuilder: (context, index) {
-              return Card(
-                elevation: 8.0,
-                margin:
-                    const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
-                child: Container(
-                    decoration: const BoxDecoration(
-                        color: Color.fromRGBO(64, 75, 96, .8)),
-                    child: ListTile(
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 10.0),
-                      leading: Container(
-                        padding: const EdgeInsets.only(right: 12.0),
-                        decoration: const BoxDecoration(
-                            border: Border(
-                                right: BorderSide(
-                                    width: 1.0, color: Colors.white24))),
-                        child: Text(
-                          "£${history[index].amount.toStringAsFixed(2)}",
-                          style: recordAmountStyle,
-                        ),
-                      ),
-                      title: Text(
-                        DateFormat('yyyy-MM-dd').format(history[index].time),
-                        style: const TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
-                      ),
-                      subtitle: Text(history[index].store,
-                          style: const TextStyle(color: Colors.white)),
-                      trailing: history[index].url == ""
-                          ? const Text("")
-                          : const Icon(Icons.keyboard_arrow_right,
-                              color: Colors.white, size: 30.0),
-                      onTap: () {
-                        if (history[index].url != "") {
-                          showDialog(
-                              context: context,
-                              builder: (_) => ReceiptImage()
-                                  .build(context, history[index].url));
-                        }
-                      },
-                    )),
-              );
+              final record = data.docs[index];
+              return RecordItem(record: record.data(), recordDocRef: record.reference);
             },
           );
         });
   }
 }
 
-class ReceiptImage {
-  Widget build(BuildContext context, String url) {
-    return Dialog(
-      child: Container(
-        width: 200,
-        height: 200,
-        decoration: BoxDecoration(
-            image:
-                DecorationImage(image: NetworkImage(url), fit: BoxFit.cover)),
-      ),
-    );
-  }
-}
+
