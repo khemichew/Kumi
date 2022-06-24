@@ -75,9 +75,14 @@ class ReceiptUpload {
           imagePicker(context);
         },
         child: Container(
-            height: 40,
             width: 500,
-            color: Colors.grey,
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.black),
+              color: Colors.transparent,
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
+            ),
+            padding: const EdgeInsets.symmetric(
+                vertical: 5.0, horizontal: 5.0),
             child: const Text(
               "Upload receipt",
               style: ordinaryStyle,

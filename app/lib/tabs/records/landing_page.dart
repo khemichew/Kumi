@@ -13,9 +13,10 @@ class Record extends StatelessWidget {
   Widget build(BuildContext context) {
     // return RecordList();
     return Scaffold(
+      // backgroundColor: skyBlue,
       appBar: AppBar(
-//        backgroundColor: Colors.transparent,
-        backgroundColor: const Color(0x44000000),
+       // backgroundColor: Colors.transparent,
+        backgroundColor: skyBlue,
         elevation: 0,
         title: const Text(
           "Records",
@@ -42,8 +43,12 @@ Container generateAddButton(BuildContext context) {
               return const AddingShopForm();
             });
       },
-      backgroundColor: const Color.fromRGBO(53, 219, 169, 1.0),
-      child: const Icon(Icons.add),
+      backgroundColor: Colors.orangeAccent,
+      child: const Icon(
+        Icons.add,
+        color: Colors.white,
+        size: 40,
+      ),
     ),
   );
 }
@@ -82,15 +87,19 @@ class _RecordListState extends State<RecordList> {
             itemBuilder: (context, index) {
               return Card(
                 elevation: 8.0,
+                color: Colors.transparent,
                 margin:
                     const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
                 child: Container(
-                    decoration: const BoxDecoration(
-                        color: Color.fromRGBO(64, 75, 96, .8)),
+                    decoration: BoxDecoration(
+                      color: navyBlue,
+                      borderRadius: regularRadius
+                    ),
                     child: ListTile(
                       contentPadding: const EdgeInsets.symmetric(
                           horizontal: 20.0, vertical: 10.0),
                       leading: Container(
+                        width: 100,
                         padding: const EdgeInsets.only(right: 12.0),
                         decoration: const BoxDecoration(
                             border: Border(
