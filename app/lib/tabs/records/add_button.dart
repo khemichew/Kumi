@@ -13,12 +13,9 @@ class AddingShopForm extends StatefulWidget {
 class AddShoppingState extends State<AddingShopForm> {
   DateTime selectedDate = DateTime.now();
 
-  final storeController = TextEditingController();
+  final storeController = TextEditingController(text: 'Tesco');
   final amountController = TextEditingController();
-  final dateController = TextEditingController();
-
-  String defaultAmount = '0';
-  String defaultDate = DateTime.now().toString();
+  final dateController = TextEditingController(text: DateTime.now().toString());
 
   ReceiptUpload receiptUpload = ReceiptUpload();
 
@@ -44,8 +41,6 @@ class AddShoppingState extends State<AddingShopForm> {
 
   @override
   Widget build(BuildContext context) {
-    storeController.text = 'Tesco';
-    dateController.text = DateTime.now().toString();
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
