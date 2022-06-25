@@ -47,6 +47,30 @@ extension on Query<FakeSpendRecord> {
   }
 }
 
+enum BudgetType {
+  year,
+  month,
+  week,
+}
+
+extension on Query<FakeBudget> {
+  Query<FakeBudget> queryBy(BudgetType query) {
+    switch (query) {
+      case BudgetType.year:
+        return where("uuid", isEqualTo: "123456")
+            .where("range", isEqualTo: "yearly");
+
+      case BudgetType.month:
+        return where("uuid", isEqualTo: "123456")
+            .where("range", isEqualTo: "monthly");
+
+      case BudgetType.week:
+        return where("uuid", isEqualTo: "123456")
+            .where("range", isEqualTo: "weekly");
+    }
+  }
+}
+
 class Track extends StatelessWidget {
   const Track({Key? key}) : super(key: key);
 
@@ -65,14 +89,14 @@ class Analytics extends StatefulWidget {
 
 class _AnalyticsState extends State<Analytics> {
   RecordQuery queryType = RecordQuery.showDescendingData;
+  BudgetType budgetType = BudgetType.year;
 
-  // Stream<QuerySnapshot<FakeSpendRecord>> queryStream = fakeSpendRecordEntries.snapshots();
-
-  dynamic refresh(RecordQuery newType) {
+  dynamic refresh(RecordQuery newType, BudgetType newBudget) {
     // update the query
     setState(() {
       // modify type via Extension
       queryType = newType;
+      budgetType = newBudget;
     });
   }
 
@@ -109,7 +133,7 @@ class _AnalyticsState extends State<Analytics> {
                 Flexible(
                   flex: 5,
                   child: SpendGraph(
-                      data.docs.map((e) => e.data()).toList(), queryType),
+                      data.docs.map((e) => e.data()).toList(), budgetType),
                 ),
                 Flexible(
                     flex: 2,
@@ -130,36 +154,29 @@ class _AnalyticsState extends State<Analytics> {
     return TextButton(
       onPressed: () {
         showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return const BudgetView();
-          });
+            context: context,
+            builder: (BuildContext context) {
+              return const BudgetView();
+            });
       },
       child: Container(
-        margin: const EdgeInsets.only(bottom: 20),
-        width: 200,
-        decoration: BoxDecoration(
-          // border: Border.all(color: Colors.black),
-          color: navyBlue,
-          borderRadius: regularRadius,
-        ),
-        padding:
-            const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-        child: Row (
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
+          margin: const EdgeInsets.only(bottom: 20),
+          width: 200,
+          decoration: BoxDecoration(
+            // border: Border.all(color: Colors.black),
+            color: navyBlue,
+            borderRadius: regularRadius,
+          ),
+          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+          child:
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Text(
               "Set budget",
               style: ordinaryStyle.copyWith(color: Colors.white),
               textAlign: TextAlign.start,
             ),
-            const Icon(
-              Icons.chevron_right,
-              color: Colors.white
-            ),
-          ]
-        )
-      ),
+            const Icon(Icons.chevron_right, color: Colors.white),
+          ])),
     );
   }
 
@@ -209,30 +226,34 @@ class _AnalyticsState extends State<Analytics> {
   }
 
   Widget get filters => ButtonBar(
-    alignment: MainAxisAlignment.center,
-      children: [
-        ButtonGenerator(
-          text: "All",
-          notifyParent: refresh,
-          queryType: RecordQuery.all,
-        ),
-        ButtonGenerator(
-          text: "This Year",
-          notifyParent: refresh,
-          queryType: RecordQuery.year,
-        ),
-        ButtonGenerator(
-          text: "This Month",
-          notifyParent: refresh,
-          queryType: RecordQuery.month,
-        ),
-        ButtonGenerator(
-          text: "This Week",
-          notifyParent: refresh,
-          queryType: RecordQuery.week,
-        ),
-      ],
-    );
+        alignment: MainAxisAlignment.center,
+        children: [
+          ButtonGenerator(
+            text: "All",
+            notifyParent: refresh,
+            queryType: RecordQuery.all,
+            budgetType: BudgetType.year,
+          ),
+          ButtonGenerator(
+            text: "This Year",
+            notifyParent: refresh,
+            queryType: RecordQuery.year,
+            budgetType: BudgetType.year,
+          ),
+          ButtonGenerator(
+            text: "This Month",
+            notifyParent: refresh,
+            queryType: RecordQuery.month,
+            budgetType: BudgetType.month,
+          ),
+          ButtonGenerator(
+            text: "This Week",
+            notifyParent: refresh,
+            queryType: RecordQuery.week,
+            budgetType: BudgetType.week,
+          ),
+        ],
+      );
 
   generateOneRecord(FakeSpendRecord record) {
     return TableRow(
@@ -329,56 +350,29 @@ class SpendGraph extends StatelessWidget {
   final List<FakeSpendRecord> records;
   final NumberFormat formatCurrency =
       NumberFormat.currency(locale: "en_GB", symbol: "£");
-  final RecordQuery queryType;
+  final BudgetType budgetType;
 
-  SpendGraph(this.records, this.queryType, {Key? key}) : super(key: key);
-
-  Future<double> getYearly() async {
-    var snapshot = await fakeBudgetEntries
-        .where('uuid', isEqualTo: "123456")
-        .where("range", isEqualTo: "yearly")
-        .get();
-    return snapshot.docs.first.data().amount.toDouble();
-  }
-
-  Future<double> getMonthly() async {
-    var snapshot = await fakeBudgetEntries
-        .where('uuid', isEqualTo: "123456")
-        .where("range", isEqualTo: "monthly")
-        .get();
-    return snapshot.docs.first.data().amount.toDouble();
-  }
-
-  Future<double> getWeekly() async {
-    var snapshot = await fakeBudgetEntries
-        .where('uuid', isEqualTo: "123456")
-        .where("range", isEqualTo: "weekly")
-        .get();
-    return snapshot.docs.first.data().amount.toDouble();
-  }
-
-  Future<double> getBudget() {
-    if (queryType == RecordQuery.month) {
-      return getMonthly();
-    }
-    if (queryType == RecordQuery.week) {
-      return getWeekly();
-    }
-    return getYearly();
-  }
+  SpendGraph(this.records, this.budgetType, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final double amt = records.map((record) => record.amount).sum.toDouble();
     final String strAmt = formatCurrency.format(amt);
-    double budget = 100;
 
-    return FutureBuilder(
-        future: getBudget(),
+    return StreamBuilder(
+        stream: fakeBudgetEntries.queryBy(budgetType).snapshots(),
         builder: (context, snapshot) {
 
-        if (snapshot.data != null) {
-          budget = snapshot.data as double;
+          if (snapshot.hasError) {
+            return const Center(child: Text("Something went wrong"));
+          }
+
+          if (!snapshot.hasData) {
+            return const Center(child: Text("Loading..."));
+          }
+
+          final data = snapshot.requireData as QuerySnapshot<FakeBudget>;
+          final double budget = data.docs.first.data().amount.toDouble();
 
           return SfRadialGauge(
             enableLoadingAnimation: true,
@@ -398,10 +392,7 @@ class SpendGraph extends StatelessWidget {
                           children: <Widget>[
                             Text(strAmt,
                                 style: largeTitleStyle.copyWith(
-                                  fontSize: 40,
-                                  fontWeight: FontWeight.w700
-                                )
-                            ),
+                                    fontSize: 40, fontWeight: FontWeight.w700)),
                           ],
                         )),
                     const GaugeAnnotation(
@@ -423,13 +414,9 @@ class SpendGraph extends StatelessWidget {
                       pointerOffset: -6,
                       cornerStyle: CornerStyle.bothCurve,
                       color: const Color(0xFFF67280),
-                      gradient: const SweepGradient(colors: <Color>[
-                        Color(0xFFFF7676),
-                        Color(0xFFF54EA2)
-                      ], stops: <double>[
-                        0.25,
-                        0.75
-                      ]),
+                      gradient: const SweepGradient(
+                          colors: <Color>[Color(0xFFFF7676), Color(0xFFF54EA2)],
+                          stops: <double>[0.25, 0.75]),
                     ),
                     // MarkerPointer(
                     //   value: amt - 6 / amt / (snapshot.data as double),
@@ -439,12 +426,6 @@ class SpendGraph extends StatelessWidget {
                   ]),
             ],
           );
-        } else {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-        }
-    );
+        });
   }
 }

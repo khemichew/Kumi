@@ -5,20 +5,22 @@ import '../../config/style.dart';
 class ButtonGenerator extends StatelessWidget {
   final String text;
   final RecordQuery queryType;
-  final void Function(RecordQuery) notifyParent;
+  final BudgetType budgetType;
+  final void Function(RecordQuery, BudgetType) notifyParent;
 
   const ButtonGenerator(
       {super.key,
         required this.text,
         required this.notifyParent,
-        required this.queryType});
+        required this.queryType,
+      required this.budgetType});
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: () {
         // print("Im pressed");
-        notifyParent(queryType);
+        notifyParent(queryType, budgetType);
       },
       style: ElevatedButton.styleFrom(
         primary: honeyOrange,
