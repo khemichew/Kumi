@@ -137,8 +137,9 @@ class _ExploreState extends State<Explore> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.transparent,
         appBar: AppBar(
-            backgroundColor: skyBlue,
+            backgroundColor: Colors.transparent,
             title: const Text(
               'Explore deals',
               style: titleStyle,
