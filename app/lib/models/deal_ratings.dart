@@ -22,7 +22,7 @@ class DealRating {
 }
 
 final dealRatingEntries = FirebaseFirestore.instance
-    .collection('deal_ratings')
+    .collection('deal-ratings')
     .withConverter<DealRating>(
         fromFirestore: (snapshots, _) => DealRating.fromJson(snapshots.data()!),
         toFirestore: (entry, _) => entry.toJson());

@@ -81,7 +81,6 @@ class _DealDialogState extends State<DealDialog> {
     final entry = await dealRatingEntries
         .where('userId', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
         .where('dealId', isEqualTo: widget.dealDocRef.id)
-        .limit(1)
         .get();
 
     // Query size will only ever be 0 or 1 since entry is unique
@@ -100,10 +99,10 @@ class _DealDialogState extends State<DealDialog> {
       itemCount: 5,
       itemBuilder: (BuildContext context, int index) =>
           const Icon(Icons.star, color: Colors.amber),
-      onRatingUpdate: (double rating) {
+      onRatingUpdate: (double rating) async {
         // Query for document entry if it is not initialised
         if (ratingDocRef == null) {
-          getRatingEntry();
+          await getRatingEntry();
         }
 
         // Create new entry if it doesn't exist, else update it
