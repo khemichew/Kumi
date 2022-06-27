@@ -1,4 +1,5 @@
 import 'package:app/config/style.dart';
+import 'package:app/models/deal_ratings.dart';
 import 'package:app/models/deals.dart';
 import 'package:app/tabs/explore/deal_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -66,7 +67,9 @@ class _ExploreState extends State<Explore> {
     }
 
     queryText = query;
-    if (queryText.isEmpty || queryText.trim().isEmpty) {
+    if (queryText.isEmpty || queryText
+        .trim()
+        .isEmpty) {
       queryStream = tempQuery.limit(displayLimit).snapshots();
     } else {
       queryStream = tempQuery
@@ -103,10 +106,11 @@ class _ExploreState extends State<Explore> {
           fillColor: _color,
           prefixIcon: const Icon(Icons.search),
           suffixIcon: PopupMenuButton<DealQuery>(
-              onSelected: (value) => setState(() {
-                queryType = value;
-                updateQuery(queryText);
-              }),
+              onSelected: (value) =>
+                  setState(() {
+                    queryType = value;
+                    updateQuery(queryText);
+                  }),
               icon: const Icon(Icons.filter_alt_rounded),
               itemBuilder: (BuildContext context) {
                 return [
@@ -142,42 +146,44 @@ class _ExploreState extends State<Explore> {
             elevation: 0
         ),
         body: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Container(
-              margin: const EdgeInsets.only(top: 15, left: 10, right: 10),
-              child: _searchBar(),
-            ),
-            Expanded (
-              child: StreamBuilder<QuerySnapshot<Deal>>(
-                stream: queryStream as Stream<QuerySnapshot<Deal>>,
-                builder:
-                    (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (snapshot.hasError) {
-                    return const Center(child: Text("Something went wrong"));
-                  }
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Container(
+                margin: const EdgeInsets.only(top: 15, left: 10, right: 10),
+                child: _searchBar(),
+              ),
+              Expanded(
+                  child: StreamBuilder<QuerySnapshot<Deal>>(
+                      stream: queryStream as Stream<QuerySnapshot<Deal>>,
+                      builder:
+                          (BuildContext context,
+                          AsyncSnapshot<QuerySnapshot> snapshot) {
+                        if (snapshot.hasError) {
+                          return const Center(
+                              child: Text("Something went wrong"));
+                        }
 
-                  if (!snapshot.hasData) {
-                    return const Center(child: Text("Loading..."));
-                  }
+                        if (!snapshot.hasData) {
+                          return const Center(child: Text("Loading..."));
+                        }
 
-                  final data = snapshot.requireData;
+                        final data = snapshot.requireData;
 
-                  return ListView.builder(
-                    padding: const EdgeInsets.all(15.0),
-                    itemCount: data.size,
-                    itemBuilder: (context, index) {
-                      final entry = data.docs[index];
-                      return _DealsItem(
-                          entry.data() as Deal,
-                          entry.reference as DocumentReference<Deal>);
-                    },
-                  );
-                }
+                        return ListView.builder(
+                          padding: const EdgeInsets.all(15.0),
+                          itemCount: data.size,
+                          itemBuilder: (context, index) {
+                            final entry = data.docs[index];
+                            return _DealsItem(
+                                entry.data() as Deal,
+                                entry.reference as DocumentReference<Deal>);
+                          },
+                        );
+                      }
+                  )
               )
-            )
-          ]
+            ]
         )
     );
   }
@@ -215,10 +221,27 @@ class _DealsItem extends StatelessWidget {
         ));
   }
 
-  // TUDOU: retrieve from database
-  Widget get retailer {
-    return Text(
-      deal.retailerId,
+  // need to retrieve retailer from database
+  Widget get ratingSummaryAndRetailer {
+    return StreamBuilder<QuerySnapshot<DealRating>>(
+        stream: dealRatingEntries.where('dealId', isEqualTo: dealDocRef.id)
+            .snapshots(),
+        builder:
+            (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          Widget defaultDisplay = Text("No rating ·  ${deal.retailerId}");
+
+          if (snapshot.hasError || !snapshot.hasData) return defaultDisplay;
+
+          final data = snapshot.requireData.docs;
+          if (data.isEmpty) return defaultDisplay;
+
+          final ratingSum = data.fold(0, (prev, elem) => (prev as num) +
+              (elem.data() as DealRating).rating);
+          final averageRating = ratingSum / data.length;
+          final trimmedRating = averageRating.toStringAsPrecision(2);
+
+          return Text("$trimmedRating★ (${data.length} review(s)) ·  ${deal.retailerId}");
+        }
     );
   }
 
@@ -249,7 +272,7 @@ class _DealsItem extends StatelessWidget {
         defaultVerticalAlignment: TableCellVerticalAlignment.bottom,
         children: [
           TableRow(children: [productName, retailPrice]),
-          TableRow(children: [retailer, discountedPrice])
+          TableRow(children: [ratingSummaryAndRetailer, discountedPrice])
         ]);
   }
 
