@@ -137,13 +137,9 @@ class _MyHomePageState extends State<MyHomePage> {
     ];
 
     return Scaffold(
-      body: Center(
-        child: Container(
-          decoration: pageDecoration,
-          child: Center(
-            child: widgetOptions.elementAt(_selectedIndex),
-          ),
-        ),
+      body: Container(
+        decoration: pageDecoration,
+        child: widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: navBar
     );
