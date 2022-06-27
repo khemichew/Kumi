@@ -168,7 +168,10 @@ class _ExploreState extends State<Explore> {
                     padding: const EdgeInsets.all(15.0),
                     itemCount: data.size,
                     itemBuilder: (context, index) {
-                      return _DealsItem(data.docs[index].data() as Deal);
+                      final entry = data.docs[index];
+                      return _DealsItem(
+                          entry.data() as Deal,
+                          entry.reference as DocumentReference<Deal>);
                     },
                   );
                 }
@@ -182,10 +185,11 @@ class _ExploreState extends State<Explore> {
 
 class _DealsItem extends StatelessWidget {
   final Deal deal;
+  final DocumentReference<Deal> dealDocRef;
   final NumberFormat formatCurrency =
   NumberFormat.currency(locale: "en_GB", symbol: "£");
 
-  _DealsItem(this.deal);
+  _DealsItem(this.deal, this.dealDocRef);
 
   Widget get productName {
     return Text(deal.name,
@@ -253,7 +257,7 @@ class _DealsItem extends StatelessWidget {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
-          return DealDialog(deal);
+          return DealDialog(deal, dealDocRef);
         });
   }
 
