@@ -1,6 +1,7 @@
 import 'package:app/config/style.dart';
 import 'package:flutter/material.dart';
 import 'package:app/models/deals.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class DealDialog extends StatelessWidget {
   final Deal deal;
@@ -42,14 +43,21 @@ class DealDialog extends StatelessWidget {
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "Current Price:  ${deal.discountedPrice}\n\n",
+                    "Current Price:  ${deal.discountedPrice}\n",
                     style: smallStyle,
                   ),
+                ),
+                Row(
+                  children: [
+                    const Text("Rate:"),
+                    const Spacer(),
+                    rating
+                  ]
                 ),
                 Align(
                   alignment: Alignment.center,
                   child: Text(
-                    "Discount:  ${percentOff(deal.retailPrice, deal.discountedPrice)}% OFF!!!",
+                    "\nDiscount:  ${percentOff(deal.retailPrice, deal.discountedPrice)}% OFF!!!",
                     style: emphStyle,
                   ),
                 ),
@@ -63,5 +71,19 @@ class DealDialog extends StatelessWidget {
     double ratio = (prev - curr) / prev;
     // print("prev: ${prev}, curr: ${curr}, ratio: ${ratio}");
     return (ratio * 100).toStringAsFixed(1);
+  }
+
+  Widget get rating {
+    return RatingBar.builder(
+      minRating: 1,
+      direction: Axis.horizontal,
+      allowHalfRating: true,
+      itemCount: 5,
+      itemBuilder: (BuildContext context, int index) => const Icon(
+        Icons.star,
+        color: Colors.amber
+      ),
+      onRatingUpdate: (double value) {  },
+    );
   }
 }
