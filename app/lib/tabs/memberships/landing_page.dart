@@ -19,13 +19,14 @@ class MembershipPage extends StatelessWidget {
       title: const Text("Memberships", style: titleStyle),
       actions: <Widget>[
         Container(
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: Colors.black,
-              width: 2.0
-            ),
-            color: Colors.transparent,
+          decoration: const BoxDecoration(
+            // border: Border.all(
+            //   color: Colors.black,
+            //   width: 2.0
+            // ),
+            color: Colors.white,
             shape: BoxShape.circle,
+            boxShadow: lightBoxShadow
           ),
           margin: const EdgeInsets.only(right: 20.0),
           padding: allSidesTenInsets,
