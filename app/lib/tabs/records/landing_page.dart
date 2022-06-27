@@ -13,10 +13,10 @@ class Record extends StatelessWidget {
   Widget build(BuildContext context) {
     // return RecordList();
     return Scaffold(
-      // backgroundColor: skyBlue,
+      backgroundColor: Colors.transparent,
       appBar: AppBar(
-       // backgroundColor: Colors.transparent,
-        backgroundColor: skyBlue,
+        backgroundColor: Colors.transparent,
+        // backgroundColor: skyBlue,
         elevation: 0,
         title: const Text(
           "Records",
