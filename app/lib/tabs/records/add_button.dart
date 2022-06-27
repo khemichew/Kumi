@@ -145,17 +145,17 @@ class AddShoppingState extends State<AddingShopForm> {
                 Container(
                   width: 120,
                   height: 40,
+                  padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.black, width: 1.0),
                     color: Colors.white,
                     borderRadius: regularRadius,
                   ),
                   child: TextField(
-                    style: smallStyle,
+                    style: ordinaryStyle,
                     controller: amountController,
                   ),
                 ),
-                Text((amountController.text))
               ],
             ),
             const SizedBox(
