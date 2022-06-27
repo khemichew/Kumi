@@ -1,9 +1,11 @@
-import 'package:app/config/style.dart';
-import 'package:app/models/deal_ratings.dart';
+import 'package:kumi/config/style.dart';
+import 'package:kumi/models/deal_ratings.dart';
+import 'package:kumi/models/deals.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
-import 'package:app/models/deals.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class DealDialog extends StatefulWidget {

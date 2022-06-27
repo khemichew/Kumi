@@ -1,7 +1,8 @@
-import 'package:app/models/fake_spend_record.dart';
-import 'package:app/config/style.dart';
-import 'package:app/tabs/records/add_button.dart';
-import 'package:app/tabs/records/record_item.dart';
+import 'package:kumi/models/fake_spend_record.dart';
+import 'package:kumi/config/style.dart';
+import 'package:kumi/tabs/records/add_button.dart';
+import 'package:kumi/tabs/records/record_item.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'add_button.dart';

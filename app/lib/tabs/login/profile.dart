@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import 'package:app/config/fire_auth.dart';
-import 'package:app/config/style.dart';
+import 'package:kumi/config/fire_auth.dart';
+import 'package:kumi/config/style.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);

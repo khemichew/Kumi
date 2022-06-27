@@ -1,5 +1,5 @@
-import 'package:app/tabs/explore/landing_page.dart';
-import 'package:app/tabs/track/landing_page.dart';
+import 'package:kumi/tabs/explore/landing_page.dart';
+import 'package:kumi/tabs/track/landing_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -8,15 +8,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:provider/provider.dart';
 
-import 'package:app/config/firebase_options.dart';
-import 'package:app/config/style.dart';
+import 'package:kumi/config/firebase_options.dart';
+import 'package:kumi/config/style.dart';
 
-import 'package:app/models/cached_entries.dart';
-import 'package:app/models/card_options.dart';
+import 'package:kumi/models/cached_entries.dart';
+import 'package:kumi/models/card_options.dart';
 
-import 'package:app/tabs/memberships/landing_page.dart';
-import 'package:app/tabs/records/landing_page.dart';
-import 'package:app/tabs/login/login_page.dart';
+import 'package:kumi/tabs/memberships/landing_page.dart';
+import 'package:kumi/tabs/records/landing_page.dart';
+import 'package:kumi/tabs/login/login_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
       ],
       supportedLocales: const [Locale('en', "EN")],
       debugShowCheckedModeBanner: false,
-      title: 'DRP 27',
+      title: 'kumi',
       home: const MyHomePage(),
       theme: ThemeData(fontFamily: 'Overpass'),
     );

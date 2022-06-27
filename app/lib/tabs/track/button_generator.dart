@@ -1,4 +1,5 @@
-import 'package:app/tabs/track/landing_page.dart';
+import 'package:kumi/tabs/track/landing_page.dart';
+
 import 'package:flutter/material.dart';
 import '../../config/style.dart';
 

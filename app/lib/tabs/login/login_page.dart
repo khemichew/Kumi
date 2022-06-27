@@ -1,9 +1,9 @@
-import 'package:app/config/style.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'package:app/config/fire_auth.dart';
-import 'package:app/tabs/login/register.dart';
+import 'package:kumi/config/fire_auth.dart';
+import 'package:kumi/tabs/login/register.dart';
+import 'package:kumi/config/style.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);

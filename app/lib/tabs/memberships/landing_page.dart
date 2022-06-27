@@ -1,12 +1,13 @@
-import 'package:app/models/cached_entries.dart';
-import 'package:app/models/card_entries.dart';
-import 'package:app/tabs/login/profile.dart';
+import 'package:kumi/models/cached_entries.dart';
+import 'package:kumi/models/card_entries.dart';
+import 'package:kumi/tabs/login/profile.dart';
+import 'package:kumi/config/style.dart';
+import 'package:kumi/tabs/memberships/barcode_list.dart';
+import 'package:kumi/models/card_options.dart';
+import 'package:kumi/tabs/memberships/add_entry.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:app/config/style.dart';
-import 'package:app/tabs/memberships/barcode_list.dart';
-import 'package:app/models/card_options.dart';
-import 'package:app/tabs/memberships/add_entry.dart';
 import 'package:provider/provider.dart';
 
 class MembershipPage extends StatelessWidget {

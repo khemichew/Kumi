@@ -1,7 +1,8 @@
-import 'package:app/config/style.dart';
-import 'package:app/models/deal_ratings.dart';
-import 'package:app/models/deals.dart';
-import 'package:app/tabs/explore/deal_dialog.dart';
+import 'package:kumi/config/style.dart';
+import 'package:kumi/models/deal_ratings.dart';
+import 'package:kumi/models/deals.dart';
+import 'package:kumi/tabs/explore/deal_dialog.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';

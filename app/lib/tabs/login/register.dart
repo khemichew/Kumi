@@ -1,7 +1,8 @@
-import 'package:app/config/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:app/config/fire_auth.dart';
+
+import 'package:kumi/config/style.dart';
+import 'package:kumi/config/fire_auth.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);

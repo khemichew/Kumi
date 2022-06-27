@@ -1,6 +1,7 @@
-import 'package:app/models/cached_entries.dart';
-import 'package:app/models/card_options.dart';
-import 'package:app/models/card_entries.dart';
+import 'package:kumi/models/cached_entries.dart';
+import 'package:kumi/models/card_options.dart';
+import 'package:kumi/models/card_entries.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
