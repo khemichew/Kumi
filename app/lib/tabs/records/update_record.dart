@@ -18,40 +18,37 @@ class UpdateRecord extends StatefulWidget {
 class UpdateRecordState extends State<UpdateRecord> {
   DateTime selectedDate = DateTime.now();
 
-  final storeController = TextEditingController();
   final amountController = TextEditingController();
-  final dateController = TextEditingController();
 
   String defaultAmount = '0';
   String defaultDate = DateTime.now().toString();
 
   ReceiptUpload receiptUpload = ReceiptUpload();
 
-  String dropdownvalue = 'Tesco';
+  String dropdownvalue = "";
 
   var items = [
     'Tesco',
-    'Sainsburys',
+    'Sainsbury\'s',
     'Waitrose',
     'Boots',
     'Holland & Barrette',
-    'Mark & Spencer'
+    'Marks & Spencer',
+    'Co-op',
+    'Argos'
   ];
 
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
-    storeController.dispose();
     amountController.dispose();
-    dateController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    storeController.text = widget.record.store;
     amountController.text = widget.record.amount.toString();
-    dateController.text = widget.record.time.toString();
+    dropdownvalue = dropdownvalue == "" ? widget.record.store : dropdownvalue;
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
@@ -84,19 +81,18 @@ class UpdateRecordState extends State<UpdateRecord> {
     Map<String, dynamic> data = updateUrl ? {
       'store': store,
       'amount': amount,
-      'time': Timestamp.fromDate(DateTime.parse(date)),
+      'time': DateTime.parse(date),
       'receipt-image': url
     } : {
       'store': store,
       'amount': amount,
-      'time': Timestamp.fromDate(DateTime.parse(date))
+      'time': DateTime.parse(date)
     };
 
-    widget.recordDocRef.update(data);
+    await widget.recordDocRef.update(data);
   }
 
-  Future<void> _selectDate(
-      BuildContext context, TextEditingController timeController) async {
+  Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
         locale: const Locale("en", "EN"),
@@ -107,7 +103,6 @@ class UpdateRecordState extends State<UpdateRecord> {
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
-        timeController.text = selectedDate.toString();
       });
     }
   }
@@ -154,7 +149,6 @@ class UpdateRecordState extends State<UpdateRecord> {
                     onChanged: (String? newValue) {
                       setState(() {
                         dropdownvalue = newValue!;
-                        storeController.text = newValue;
                       });
                     },
                   ),
@@ -207,8 +201,8 @@ class UpdateRecordState extends State<UpdateRecord> {
                     borderRadius: regularRadius,
                   ),
                   child: TextButton(
-                    onPressed: () {
-                      _selectDate(context, dateController);
+                    onPressed: () async {
+                      await _selectDate(context);
                     },
                     child: Text("${selectedDate.toLocal()}".split(' ')[0]),
                   ),
@@ -223,8 +217,8 @@ class UpdateRecordState extends State<UpdateRecord> {
             TextButton(
                 onPressed: () {
                   if (double.tryParse(amountController.text) != null) {
-                    updateShopping(storeController.text, amountController.text,
-                        dateController.text);
+                    updateShopping(dropdownvalue, amountController.text,
+                        selectedDate.toLocal().toString());
                   }
                   Navigator.pop(context);
                 },
