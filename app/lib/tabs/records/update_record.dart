@@ -109,7 +109,7 @@ class UpdateRecordState extends State<UpdateRecord> {
 
   contentBox(context) {
     return Container(
-        height: 300,
+        height: 260,
         margin: const EdgeInsets.symmetric(vertical: 10.0),
         padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
         decoration: BoxDecoration(
@@ -212,7 +212,7 @@ class UpdateRecordState extends State<UpdateRecord> {
             const SizedBox(
               height: 10,
             ),
-            receiptUpload.build(context),
+            // receiptUpload.build(context),
 
             TextButton(
                 onPressed: () {
