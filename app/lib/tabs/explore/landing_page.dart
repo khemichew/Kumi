@@ -11,7 +11,7 @@ import 'dart:async';
 enum DealQuery {
   nameAsc,
   nameDesc,
-  ratingDesc,
+  priceAsc,
 }
 
 class Explore extends StatefulWidget {
@@ -60,9 +60,8 @@ class _ExploreState extends State<Explore> {
     if (queryType == DealQuery.nameAsc || queryType == DealQuery.nameDesc) {
       tempQuery = dealEntries.orderBy('name',
           descending: queryType == DealQuery.nameDesc);
-    } else if (queryType == DealQuery.ratingDesc) {
-      tempQuery = dealEntries.orderBy('rating',
-          descending: queryType == DealQuery.ratingDesc);
+    } else if (queryType == DealQuery.priceAsc) {
+      tempQuery = dealEntries.orderBy('discountedPrice');
     } else {
       tempQuery = dealEntries.orderBy('name');
     }
@@ -122,8 +121,8 @@ class _ExploreState extends State<Explore> {
                     child: Text("Name ⬇"),
                   ),
                   const PopupMenuItem(
-                    value: DealQuery.ratingDesc,
-                    child: Text("Rating ⬇"),
+                    value: DealQuery.priceAsc,
+                    child: Text("Price ⬆"),
                   ),
                 ];
               })
