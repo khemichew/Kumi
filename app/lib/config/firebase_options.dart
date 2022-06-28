@@ -66,6 +66,6 @@ class DefaultFirebaseOptions {
     databaseURL: 'https://drp27-e4b6f-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'drp27-e4b6f.appspot.com',
     iosClientId: '326664895837-d8l2848maihq84o06l33h2ivfdnhiujn.apps.googleusercontent.com',
-    iosBundleId: 'com.example.app',
+    iosBundleId: 'com.drp27.kumi',
   );
 }
