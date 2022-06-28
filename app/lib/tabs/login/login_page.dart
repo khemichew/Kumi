@@ -22,6 +22,7 @@ class LoginPageState extends State<LoginPage> {
   final _focusPassword = FocusNode();
 
   bool _isProcessing = false;
+  bool _hasFailed = false;
 
   User? user = FirebaseAuth.instance.currentUser;
 
@@ -91,13 +92,19 @@ class LoginPageState extends State<LoginPage> {
                                     _isProcessing = true;
                                   });
 
-                                  await FireAuth
-                                      .signInUsingEmailPassword(
-                                      email: _emailTextController.text,
-                                      password:
-                                      _passwordTextController.text,
-                                      context: context
-                                  );
+                                  try {
+                                    await FireAuth
+                                        .signInUsingEmailPassword(
+                                        email: _emailTextController.text,
+                                        password:
+                                        _passwordTextController.text,
+                                        context: context
+                                    );
+                                  } on FirebaseAuthException {
+                                    setState(() {
+                                      _hasFailed = true;
+                                    });
+                                  }
 
                                   setState(() {
                                     _isProcessing = false;
@@ -145,6 +152,10 @@ class LoginPageState extends State<LoginPage> {
                               ),
                             ),
                           ),
+                    quadSpacing,
+                    _hasFailed
+                      ? const Text('Login failed, please try again.',)
+                      : const Text ('')
                   ],
                 ),
               )

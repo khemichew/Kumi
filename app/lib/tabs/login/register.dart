@@ -23,6 +23,7 @@ class RegisterPageState extends State<RegisterPage> {
   final _focusPassword = FocusNode();
 
   bool _isProcessing = false;
+  bool _hasFailed = false;
 
   @override
   Widget build(BuildContext context) {
@@ -95,24 +96,32 @@ class RegisterPageState extends State<RegisterPage> {
                               width: double.infinity,
                               child: ElevatedButton(
                                 onPressed: () async {
-                                  setState(() {
-                                    _isProcessing = true;
-                                  });
-
                                   if (_registerFormKey.currentState!
                                       .validate()) {
-                                    User? user = await FireAuth
-                                        .registerUsingEmailPassword(
-                                      name: _nameTextController.text,
-                                      email: _emailTextController.text,
-                                      password:
-                                      _passwordTextController.text,
-                                    );
+                                    setState(() {
+                                      _isProcessing = true;
+                                    });
+
+                                    User? user;
+                                    try {
+                                      user = await FireAuth
+                                          .registerUsingEmailPassword(
+                                        name: _nameTextController.text,
+                                        email: _emailTextController.text,
+                                        password:
+                                        _passwordTextController.text,
+                                      );
+                                    } on FirebaseAuthException {
+                                      setState(() {
+                                        _hasFailed = true;
+                                      });
+                                    }
+
+                                    setState(() {
+                                      _isProcessing = false;
+                                    });
 
                                     if (!mounted) {
-                                      setState(() {
-                                        _isProcessing = false;
-                                      });
                                       return;
                                     }
 
@@ -120,10 +129,6 @@ class RegisterPageState extends State<RegisterPage> {
                                       Navigator.of(context).pop();
                                     }
                                   }
-
-                                  setState(() {
-                                    _isProcessing = false;
-                                  });
                                 },
                                 style: ElevatedButton.styleFrom(
                                   primary: Colors.blueAccent,
@@ -160,6 +165,10 @@ class RegisterPageState extends State<RegisterPage> {
                                 ),
                               ),
                             ),
+                      quadSpacing,
+                      _hasFailed
+                          ? const Text('Register failed, please try again.',)
+                          : const Text ('')
                     ],
                   ),
                 )
