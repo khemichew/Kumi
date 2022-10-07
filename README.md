@@ -35,7 +35,7 @@ The APK will now be produced inside the directory `app/build/app/outputs/apk/rel
 ## Authors and acknowledgment
 - Jacqueline Lee 
 - Khemi Chew 
-- Max Meng 
+- "Max" Herong Meng 
 - Jiang Yutong
 
 ## Project status
