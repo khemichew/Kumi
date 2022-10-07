@@ -36,7 +36,7 @@ The APK will now be produced inside the directory `app/build/app/outputs/apk/rel
 - Jacqueline Lee 
 - Khemi Chew 
 - "Max" Herong Meng 
-- Jiang Yutong
+- Yutong Jiang
 
 ## Project status
 This project is not actively maintained at the moment. If you are interested in extending the project, please contact the contributors of the project.
